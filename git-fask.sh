@@ -36,4 +36,3 @@ do
 
 done
 
-git push
