@@ -4,9 +4,9 @@ import axios from 'axios';
 
 @Controller()
 export class AuthController {
-  constructor(private readonly httpService: HttpService) {}
-  @Post('oauth2/code')
-  async getAuthrizationToken(@Body('code') code: string) {
+  constructor() {}
+  @Post('token')
+  async getToken(@Body('code') code: string) {
     return;
   }
 }
