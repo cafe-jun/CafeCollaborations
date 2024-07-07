@@ -18,9 +18,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@auth/*": ["src/auth/*"],
-      "@app/prisma/*": ["src/common/database/*"],
-      "@app/user/*": ["src/user/*"],
+      "@core/*": ["src/core/*"],
+      "@infrastructure/*": ["src/infrastructure/*"],
+      "@application/*": ["src/application/*"],
+      "@test/*": ["test/*"],
       "@lib/prisma/*": ["prisma/*"]
     }
   }
