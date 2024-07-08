@@ -1,15 +1,15 @@
 import { UserDiTokens } from '@core/domain/user/di/user-di.tokens';
-import { CreateUserService } from '@core/domain/user/service/usecase/create-user.service';
-import { Controller, Inject, Post } from '@nestjs/common';
+import { CreateUserUseCase } from '@core/domain/user/usecase/create-user.usecase';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 
 @Controller('user')
 export class UserController {
   constructor(
     @Inject(UserDiTokens.CreateUserUseCase)
-    private readonly createUserUseCase: CreateUserService,
+    private readonly createUserUseCase: CreateUserUseCase,
   ) {}
   @Post()
-  createUser() {
-    // await this.createUserUseCase.execute()
+  async createUser(@Body() data) {
+    await this.createUserUseCase.execute(data);
   }
 }

@@ -8,7 +8,7 @@ export const PrismaToken = 'PrismaService';
 
 @Global()
 @Module({
-  imports: [PrismaModule.forRoot()],
+  imports: [PrismaModule],
   providers: [
     {
       inject: [PrismaService],
