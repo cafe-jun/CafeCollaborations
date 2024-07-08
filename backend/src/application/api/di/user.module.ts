@@ -1,7 +1,6 @@
 import { UserDiTokens } from '@core/domain/user/di/user-di.tokens';
 import { Module, Provider } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client/extension';
-import { CustomPrismaService } from 'nestjs-prisma';
 
 const persistenceProvider: Provider[] = [
   {
@@ -19,16 +18,8 @@ const useCaseProviders: Provider[] = [
   },
 ];
 
-const handlerProviders: Provider[] = [
-  {
-    provide: UserDiTokens.GetUserPreviewQueryHandler,
-    useFactory: (userRepository) => {},
-    inject: [UserDiTokens.UserRepository],
-  },
-];
-
 @Module({
-  providers: [...persistenceProvider, ...useCaseProviders, ...handlerProviders],
+  providers: [...persistenceProvider, ...useCaseProviders],
   exports: [UserDiTokens.UserRepository],
 })
 export class UserModule {}

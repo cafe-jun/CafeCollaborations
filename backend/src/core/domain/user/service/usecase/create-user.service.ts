@@ -3,8 +3,7 @@ import { CreateUserPort } from '../../port/persistence/create-user.port';
 import { UserRepositoryPort } from '../../port/persistence/user.repository.port';
 import { CreateUserUseCase } from '../../usecase/create-user.usecase';
 import { UserUseCaseDto } from '../../usecase/dto/user.usecase.dto';
-import { User } from '@prisma/client';
-import { UserDto } from '../../user.dto';
+import { User } from '../../entity/user';
 
 export class CreateUserService implements CreateUserUseCase {
   constructor(private readonly userRepository: UserRepositoryPort) {}
@@ -13,11 +12,16 @@ export class CreateUserService implements CreateUserUseCase {
     if (isExistUser) {
       throw new NotFoundException('not found user');
     }
-    const userDto = UserDto.of({
-      email: usecasePort.email,
-      provider: usecasePort.provider,
-    });
-    await this.userRepository.addUser(userDto);
-    return UserUseCaseDto.newFromUser(userDto);
+    const user = new User(
+      {
+        name: usecasePort.name,
+        email: usecasePort.email,
+        provider: usecasePort.provider,
+        createdAt: usecasePort.createdAt,
+      },
+      usecasePort.id,
+    );
+    await this.userRepository.addUser(user);
+    return UserUseCaseDto.newFromUser(user);
   }
 }

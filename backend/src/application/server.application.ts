@@ -28,7 +28,7 @@ export class ServerApplication {
       credentials: true,
     });
   }
-  private;
+
   // static method to create an instance
   public static create(): ServerApplication {
     return new ServerApplication();

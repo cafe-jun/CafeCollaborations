@@ -1,7 +1,6 @@
 import { UserProvider } from '@core/common/enums/user-provider.enum';
-import { User } from '@prisma/client';
 import { Exclude, Expose, plainToInstance } from 'class-transformer';
-import { UserDto } from '../../user.dto';
+import { User } from '../../entity/user';
 
 @Exclude()
 export class UserUseCaseDto {
@@ -14,11 +13,11 @@ export class UserUseCaseDto {
   @Expose()
   public provider: UserProvider;
 
-  public static newFromUser(user: UserDto): UserUseCaseDto {
+  public static newFromUser(user: User): UserUseCaseDto {
     return plainToInstance(UserUseCaseDto, user);
   }
 
-  public static newListFromUsers(users: UserDto[]): UserUseCaseDto[] {
+  public static newListFromUsers(users: User[]): UserUseCaseDto[] {
     return users.map((user) => this.newFromUser(user));
   }
 }
