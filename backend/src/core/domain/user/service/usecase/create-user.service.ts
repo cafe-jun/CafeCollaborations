@@ -12,15 +12,11 @@ export class CreateUserService implements CreateUserUseCase {
     if (isExistUser) {
       throw new NotFoundException('not found user');
     }
-    const user = new User(
-      {
-        name: usecasePort.name,
-        email: usecasePort.email,
-        provider: usecasePort.provider,
-        createdAt: usecasePort.createdAt,
-      },
-      usecasePort.id,
-    );
+    const user = new User({
+      name: usecasePort.name,
+      email: usecasePort.email,
+      provider: usecasePort.provider,
+    });
     await this.userRepository.addUser(user);
     return UserUseCaseDto.newFromUser(user);
   }

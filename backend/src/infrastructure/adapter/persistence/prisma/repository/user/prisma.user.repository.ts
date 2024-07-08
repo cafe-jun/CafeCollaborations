@@ -5,7 +5,7 @@ import { UserRepositoryPort } from '@core/domain/user/port/persistence/user.repo
 
 import { ExtendedPrismaClient } from '@infrastructure/adapter/persistence/prisma/extension/prisma.extension';
 import { Inject, Injectable } from '@nestjs/common';
-import { CustomPrismaService } from 'nestjs-prisma';
+import { CustomPrismaService, PrismaService } from 'nestjs-prisma';
 import { PrismaUserMapper } from '../../entity/user/mapper/prisma-user.mapper';
 
 @Injectable()

@@ -5,15 +5,15 @@ export type UserProps = {
   name: string;
   email: string;
   provider: UserProvider;
-  createdAt: Date | null;
+  createdAt?: Date | null;
 };
 
 export class User {
-  private props: UserProps;
-  private _id;
-  constructor(props: Replace<UserProps, { createdAt: Date }>, id?: number) {
+  private _props: UserProps;
+  private _id: number;
+  constructor(props: Replace<UserProps, { createdAt?: Date | null }>, id?: number) {
     this._id = id;
-    this.props = {
+    this._props = {
       ...props,
       createdAt: props.createdAt || new Date(),
     };
@@ -23,15 +23,15 @@ export class User {
     return this._id;
   }
   public getName(): string {
-    return this.props.name;
+    return this._props.name;
   }
   public getEmail(): string {
-    return this.props.email;
+    return this._props.email;
   }
   public getProvider(): UserProvider {
-    return this.props.provider;
+    return this._props.provider;
   }
-  public getCreatedAt(): Date {
-    return this.props.createdAt;
+  public getCreatedAt(): Date | null {
+    return this._props.createdAt;
   }
 }
