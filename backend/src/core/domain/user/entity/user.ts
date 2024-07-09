@@ -5,7 +5,6 @@ export type UserProps = {
   name: string;
   email: string;
   provider: UserProvider;
-  refreshToken: string;
   createdAt?: Date | null;
 };
 
@@ -34,8 +33,5 @@ export class User {
   }
   public getCreatedAt(): Date | null {
     return this._props.createdAt;
-  }
-  public getRefreshToken(): string {
-    return this._props.refreshToken;
   }
 }

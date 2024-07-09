@@ -1,3 +1,4 @@
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { DB } from '@lib/prisma/generated/types';
 import { Global, Module } from '@nestjs/common';
 import { Kysely, PostgresAdapter, PostgresIntrospector, PostgresQueryCompiler } from 'kysely';
@@ -8,6 +9,11 @@ export const PrismaToken = 'PrismaService';
 @Global()
 @Module({
   imports: [
+    RedisModule.forRoot({
+      config: {
+        url: process.env.REDIS_URL || 'redis://localhost:6379',
+      },
+    }),
     PrismaModule.forRoot({
       prismaServiceOptions: {
         prismaOptions: {

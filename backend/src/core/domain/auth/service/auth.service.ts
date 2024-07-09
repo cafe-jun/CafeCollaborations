@@ -8,10 +8,14 @@ import { TokenPayload } from '../../../../application/auth/jwt/token.payload';
 import { TokenExpiredException, UnAuthorizedAccessException } from '../exception/auth.exception';
 import { AuthToken } from '@application/auth/jwt/auth-token';
 import { CoreAssert } from '../../../common/util/assert/core.assert';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import { Redis } from 'ioredis';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRedis()
+    private readonly redisClient: Redis,
     @Inject(UserDiTokens.UserRepository)
     private readonly userRepository: UserRepositoryPort,
     private readonly jwtService: JwtService,
@@ -51,6 +55,6 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
   private async updateRefreshToken(id: number, refreshToken: string) {
-    return await this.userRepository.updateUser(id, {});
+    await this.redisClient.set(`refreshToken:${id}`, refreshToken, 'EX', 60 * 60 * 24 * 7);
   }
 }

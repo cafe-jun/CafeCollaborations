@@ -15,10 +15,8 @@ export class CreateUserService implements CreateUserUseCase {
       name: dto.name,
       email: dto.email,
       provider: dto.provider,
-      refreshToken: dto.refreshToken,
     });
     const saveUser = await this.userRepository.addUser(user);
-    console.log(saveUser);
     return UserUseCaseDto.newFromUser(user);
   }
 }
