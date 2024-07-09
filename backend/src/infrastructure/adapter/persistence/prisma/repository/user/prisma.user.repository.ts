@@ -2,20 +2,18 @@ import { PrismaToken } from '@application/api/di/infrastructure.module';
 import { Optional } from '@core/common/type/common.types';
 import { User } from '@core/domain/user/entity/user';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/user.repository.port';
-
-import { ExtendedPrismaClient } from '@infrastructure/adapter/persistence/prisma/extension/prisma.extension';
 import { Inject, Injectable } from '@nestjs/common';
-import { CustomPrismaService, PrismaService } from 'nestjs-prisma';
+import { PrismaService } from 'nestjs-prisma';
 import { PrismaUserMapper } from '../../entity/user/mapper/prisma-user.mapper';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepositoryPort {
   constructor(
     @Inject(PrismaToken)
-    private readonly prismaService: CustomPrismaService<ExtendedPrismaClient>,
+    private readonly prismaService: PrismaService,
   ) {}
   async findById(id: number) {
-    return await this.prismaService.client.user.findFirst({
+    return await this.prismaService.user.findFirst({
       where: {
         id,
       },
@@ -23,24 +21,28 @@ export class PrismaUserRepository implements UserRepositoryPort {
   }
   async addUser(user: User): Promise<{ id: number }> {
     const prismaUser = PrismaUserMapper.toPrisma(user);
-    const saveUser = await this.prismaService.client.user.create({
+
+    const saveUser = await this.prismaService.user.create({
       data: prismaUser,
     });
     return { id: saveUser.id };
   }
   async countUsers(): Promise<number> {
-    return 123;
+    return await this.prismaService.user.count();
   }
   async findUserByEmail(email: string): Promise<Optional<User>> {
-    const user = await this.prismaService.client.user.findFirst({
+    const user = await this.prismaService.user.findFirst({
       where: {
         email,
       },
     });
+    if (!user) {
+      return null;
+    }
     return PrismaUserMapper.toDomain(user);
   }
   async findUserById(id: number): Promise<Optional<User>> {
-    const user = await this.prismaService.client.user.findFirst({
+    const user = await this.prismaService.user.findFirst({
       where: {
         id,
       },
@@ -49,7 +51,7 @@ export class PrismaUserRepository implements UserRepositoryPort {
   }
   async updateUser(user: User): Promise<{ id: number }> {
     const prismaUser = PrismaUserMapper.toPrisma(user);
-    const result = await this.prismaService.client.user.update({
+    const result = await this.prismaService.user.update({
       data: prismaUser,
       where: {
         id: user.getId(),

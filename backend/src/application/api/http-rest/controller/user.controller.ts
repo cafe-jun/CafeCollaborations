@@ -1,6 +1,8 @@
 import { UserDiTokens } from '@core/domain/user/di/user-di.tokens';
 import { CreateUserUseCase } from '@core/domain/user/usecase/create-user.usecase';
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { CreateUserRequestDto } from './dto/user/request/create-user.dto';
+import { UserUseCaseDto } from '@core/domain/user/usecase/dto/user.usecase.dto';
 
 @Controller('user')
 export class UserController {
@@ -9,7 +11,7 @@ export class UserController {
     private readonly createUserUseCase: CreateUserUseCase,
   ) {}
   @Post()
-  async createUser(@Body() data) {
-    await this.createUserUseCase.execute(data);
+  async createUser(@Body() body: CreateUserRequestDto): Promise<UserUseCaseDto> {
+    return await this.createUserUseCase.execute(body);
   }
 }

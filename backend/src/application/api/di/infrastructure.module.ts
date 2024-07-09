@@ -1,23 +1,31 @@
-import { extendedPrismaClient } from '@infrastructure/adapter/persistence/prisma/extension/prisma.extension';
 import { DB } from '@lib/prisma/generated/types';
 import { Global, Module } from '@nestjs/common';
 import { Kysely, PostgresAdapter, PostgresIntrospector, PostgresQueryCompiler } from 'kysely';
-import { CustomPrismaService, PrismaModule, PrismaService } from 'nestjs-prisma';
+import { PrismaModule, PrismaService } from 'nestjs-prisma';
 import kyselyExtension from 'prisma-extension-kysely';
 export const PrismaToken = 'PrismaService';
 
 @Global()
 @Module({
-  imports: [PrismaModule],
+  imports: [
+    PrismaModule.forRoot({
+      prismaServiceOptions: {
+        prismaOptions: {
+          log: [{ emit: 'event', level: 'query' }],
+        },
+      },
+    }),
+  ],
   providers: [
     {
       inject: [PrismaService],
       provide: PrismaToken,
       useFactory: (prisma: PrismaService) => {
-        return prisma.$extends(
+        const customPrisma = prisma.$extends(
           kyselyExtension({
             kysely: (driver) =>
               new Kysely<DB>({
+                log: ['query'],
                 dialect: {
                   // This is where the magic happens!
                   createDriver: () => driver,
@@ -32,6 +40,7 @@ export const PrismaToken = 'PrismaService';
               }),
           }),
         );
+        return customPrisma;
       },
     },
   ],

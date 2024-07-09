@@ -3,15 +3,22 @@ import { NestExpressApplication as NestApp } from '@nestjs/platform-express';
 import { AppModule } from './api/di/app.module';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { ApiConfig } from '@infrastructure/config/api-config';
+import { PrismaService } from 'nestjs-prisma';
 
 export class ServerApplication {
   public async start(): Promise<void> {
     const app: NestApp = await NestFactory.create<NestApp>(AppModule);
+    this.prismaEventEmit(app);
     this.buildAPIDocumentation(app);
     this.enableCors(app);
     await app.listen(ApiConfig.PORT);
   }
-
+  private prismaEventEmit(app: NestApp): void {
+    const prismaService: PrismaService = app.get(PrismaService);
+    prismaService.$on('query', (event) => {
+      console.log(event);
+    });
+  }
   private buildAPIDocumentation(app: NestApp): void {
     const title = 'NestJS Boilerplate API';
     const description = 'NestJS Boilerplate API Documentation';

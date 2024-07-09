@@ -8,6 +8,9 @@ export class UserUseCaseDto {
   public id: number;
 
   @Expose()
+  public name: string;
+
+  @Expose()
   public email: string;
 
   @Expose()

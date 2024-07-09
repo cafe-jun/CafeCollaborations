@@ -1,15 +1,15 @@
 import { UserDiTokens } from '@core/domain/user/di/user-di.tokens';
 import { CreateUserService } from '@core/domain/user/service/usecase/create-user.service';
-import { ExtendedPrismaClient, extendedPrismaClient } from '@infrastructure/adapter/persistence/prisma/extension/prisma.extension';
 import { PrismaUserRepository } from '@infrastructure/adapter/persistence/prisma/repository/user/prisma.user.repository';
 import { Module, Provider } from '@nestjs/common';
-import { CustomPrismaService } from 'nestjs-prisma';
+import { PrismaService } from 'nestjs-prisma';
 import { PrismaToken } from './infrastructure.module';
+import { UserController } from '../http-rest/controller/user.controller';
 
 const persistenceProvider: Provider[] = [
   {
     provide: UserDiTokens.UserRepository,
-    useFactory: (prismaService: CustomPrismaService<ExtendedPrismaClient>) => new PrismaUserRepository(prismaService),
+    useFactory: (prismaService: PrismaService) => new PrismaUserRepository(prismaService),
     inject: [PrismaToken],
   },
 ];
@@ -23,6 +23,7 @@ const useCaseProviders: Provider[] = [
 ];
 
 @Module({
+  controllers: [UserController],
   providers: [...persistenceProvider, ...useCaseProviders],
   exports: [UserDiTokens.UserRepository],
 })
