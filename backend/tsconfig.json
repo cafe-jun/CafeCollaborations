@@ -21,6 +21,7 @@
       "@core/*": ["src/core/*"],
       "@infrastructure/*": ["src/infrastructure/*"],
       "@application/*": ["src/application/*"],
+      "@presentation/*": ["src/presentation/*"],
       "@test/*": ["test/*"],
       "@lib/prisma/*": ["prisma/*"]
     }

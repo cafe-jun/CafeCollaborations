@@ -1,8 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import axios from 'axios';
-import { JwtAccessTokenGuard } from '../auth/guard/access-token.guard';
-import { AuthService } from '../auth/auth.service';
+import { JwtAccessTokenGuard } from '../../application/auth/guard/access-token.guard';
+import { AuthService } from '../../core/domain/auth/service/auth.service';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 
 @Controller()

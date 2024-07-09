@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication as NestApp } from '@nestjs/platform-express';
-import { AppModule } from './api/di/app.module';
+import { AppModule } from '../di/app.module';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { ApiConfig } from '@infrastructure/config/api-config';
 import { PrismaService } from 'nestjs-prisma';

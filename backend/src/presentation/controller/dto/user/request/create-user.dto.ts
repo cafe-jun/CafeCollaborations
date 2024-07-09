@@ -10,4 +10,7 @@ export class CreateUserRequestDto {
 
   @IsEnum(UserProvider)
   provider: UserProvider;
+
+  @IsString()
+  refreshToken: string;
 }

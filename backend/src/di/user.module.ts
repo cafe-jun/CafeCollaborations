@@ -4,7 +4,7 @@ import { PrismaUserRepository } from '@infrastructure/adapter/persistence/prisma
 import { Module, Provider } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { PrismaToken } from './infrastructure.module';
-import { UserController } from '../http-rest/controller/user.controller';
+import { UserController } from '../presentation/controller/user.controller';
 
 const persistenceProvider: Provider[] = [
   {

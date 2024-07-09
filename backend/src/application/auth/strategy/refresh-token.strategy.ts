@@ -1,4 +1,4 @@
-import { AuthService } from 'src/application/api/http-rest/auth/auth.service';
+import { AuthService } from '@core/domain/auth/service/auth.service';
 import { JwtRefreshTokenPayload } from 'src/application/api/http-rest/auth/jwt/refresh-token.payload';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

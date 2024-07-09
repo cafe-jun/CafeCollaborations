@@ -6,5 +6,5 @@ export interface UserRepositoryPort {
   findUserByEmail(email: string): Promise<Optional<User>>;
   countUsers(): Promise<number>;
   addUser(user: User): Promise<{ id: number }>;
-  updateUser(user: User): Promise<{ id: number }>;
+  updateUser(id, user: User): Promise<{ id: number }>;
 }
