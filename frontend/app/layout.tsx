@@ -6,11 +6,6 @@ import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// export const metadata: Metadata = {
-//   title: "마케팅을 도워줘",
-//   description: "마케팅을 도와줘 홈페이지 입니다.",
-// };
-
 export default function RootLayout({
   children,
 }: Readonly<{

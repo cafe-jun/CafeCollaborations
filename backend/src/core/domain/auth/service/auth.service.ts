@@ -34,7 +34,8 @@ export class AuthService {
   async refreshToken(id: number, email: string, refreshToken: string): Promise<AuthToken> {
     const user = await this.userRepository.findUserById(id);
     CoreAssert.isEmpty(user, new UnAuthorizedAccessException());
-    CoreAssert.isEqual(user.getRefreshToken(), refreshToken, new TokenExpiredException());
+    const userRefreshToken = await this.redisClient.get(`REFRESH_TOKEN:${id}`);
+    CoreAssert.isEqual(userRefreshToken, refreshToken, new TokenExpiredException());
     const token = await this.generateToken(id, email);
     await this.updateRefreshToken(id, token.refreshToken);
     return token;
@@ -55,6 +56,6 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
   private async updateRefreshToken(id: number, refreshToken: string) {
-    await this.redisClient.set(`refreshToken:${id}`, refreshToken, 'EX', 60 * 60 * 24 * 7);
+    await this.redisClient.set(`REFRESH_TOKEN:${id}`, refreshToken, 'EX', 60 * 60 * 24 * 7);
   }
 }

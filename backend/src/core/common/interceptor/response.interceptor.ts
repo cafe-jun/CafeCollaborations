@@ -1,6 +1,5 @@
 import { CallHandler, ExecutionContext, HttpStatus, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
-import { getToDayISO8601 } from '../util/date.util';
 import { Request, Response } from 'express';
 
 export interface ICommonResponse<T> {
@@ -16,7 +15,6 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ICommonRespons
         try {
           const req = context.switchToHttp().getRequest<Request>();
           const res = context.switchToHttp().getResponse<Response>();
-          const statusCode = res.statusCode;
           const method = req.method;
           const customStatusCode = this.getSuccessCustomsCode(method, result);
           res.status(customStatusCode);
