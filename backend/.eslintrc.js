@@ -23,7 +23,11 @@ module.exports = {
       'error',
       {
         endOfLine: 'auto',
+        printWidth: 150,
       },
     ],
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['warn'],
   },
 };

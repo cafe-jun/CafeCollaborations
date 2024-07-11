@@ -9,7 +9,7 @@ import { AuthService } from '../core/domain/auth/service/auth.service';
       global: true,
     }),
   ],
-  providers: [AuthService],
+  // providers: [AuthService],
   controllers: [AuthController],
 })
 export class AuthModule {}

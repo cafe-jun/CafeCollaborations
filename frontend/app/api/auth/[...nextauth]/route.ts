@@ -1,7 +1,10 @@
+import axios from "axios";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
+
+console.log(process.env.NAVER_CLIENT_ID, process.env.NAVER_SECRET_KEY);
 
 const handler = NextAuth({
   providers: [
@@ -21,6 +24,12 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      console.log(user, account, profile, email, credentials);
+      // const result = await axios.post("http://localhost:3001/auth/token", {
+      //   token: account?.id_token,
+      //   provide: "google",
+      // });
+
       return true; // false to deny access
     },
     async session({ session, user, token }) {
