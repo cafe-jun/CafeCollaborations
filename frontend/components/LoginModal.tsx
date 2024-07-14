@@ -12,6 +12,7 @@ import {
   Text,
   useDisclosure,
   Box,
+  Spacer,
 } from "@chakra-ui/react";
 import { signIn, useSession } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa";
@@ -21,10 +22,17 @@ import { SiNaver } from "react-icons/si";
 export default function LoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: session } = useSession();
-
+  console.log("session :: ", session);
   return (
     <>
-      <Button onClick={onOpen}>로그인</Button>
+      {session ? (
+        <div>
+          <Text>{session.user?.name}</Text>
+          <Button>로그아웃</Button>
+        </div>
+      ) : (
+        <Button onClick={onOpen}>로그인</Button>
+      )}
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />

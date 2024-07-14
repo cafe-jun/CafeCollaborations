@@ -4,10 +4,12 @@ import { AppModule } from '../di/app.module';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { ApiConfig } from '@infrastructure/config/api-config';
 import { PrismaService } from 'nestjs-prisma';
+import * as cookieParser from 'cookie-parser';
 
 export class ServerApplication {
   public async start(): Promise<void> {
     const app: NestApp = await NestFactory.create<NestApp>(AppModule);
+    this.setCookieParser(app);
     this.prismaEventEmit(app);
     this.buildAPIDocumentation(app);
     this.enableCors(app);
@@ -34,6 +36,10 @@ export class ServerApplication {
       origin: true,
       credentials: true,
     });
+  }
+
+  private setCookieParser(app: NestApp) {
+    app.use(cookieParser());
   }
 
   // static method to create an instance

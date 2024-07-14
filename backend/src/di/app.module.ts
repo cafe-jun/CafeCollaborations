@@ -5,11 +5,13 @@ import { UserModule } from './user.module';
 import { APP_PIPE } from '@nestjs/core';
 import { ValidationError } from 'class-validator';
 import { ClassValidator } from '@core/common/util/class-validator/class-validator';
+import { AppHeaderProvider } from '@shared/app-header.provider';
 
 @Module({
   imports: [AuthModule, InfrastructureModule, UserModule],
 
   providers: [
+    AppHeaderProvider,
     {
       provide: APP_PIPE,
       useFactory: () =>
