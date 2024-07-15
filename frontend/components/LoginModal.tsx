@@ -22,7 +22,7 @@ import { SiNaver } from "react-icons/si";
 export default function LoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: session } = useSession();
-  console.log("session :: ", session);
+
   return (
     <>
       {session ? (

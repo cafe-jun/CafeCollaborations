@@ -7,12 +7,9 @@ import ProjectList from "@/components/ProjectList";
 export default function Home() {
   return (
     <>
-      <Header />
-      <Container maxW="1440px" px={[4, 6, 8]}>
-        <NoticeBanner />
-        <PopularPosts />
-        <ProjectList />
-      </Container>
+      <NoticeBanner />
+      <PopularPosts />
+      <ProjectList />
     </>
   );
 }

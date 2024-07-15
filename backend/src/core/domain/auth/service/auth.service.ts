@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Optional } from '@core/common/type/common.types';
 import { UserDiTokens } from '@core/domain/user/di/user-di.tokens';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/user.repository.port';
@@ -16,6 +16,7 @@ import { OAuthValidateToken } from '../provider/oauth.validate';
 import { GoogleValidateToken } from '../provider/google.validate';
 import { KakaoValidateToken } from '../provider/kakao.validate';
 import { NaverValidateToken } from '../provider/naver.validate';
+import { isEmpty } from '@shared/data.helper';
 
 @Injectable()
 export class AuthService {
@@ -42,6 +43,9 @@ export class AuthService {
 
   public async ssoLogin(token: string, provider: UserProvider): Promise<AuthToken> {
     const validateToken = this.providerValidateTokens[provider];
+    if (isEmpty(validateToken)) {
+      throw new NotFoundException('일차하는 Provider가 없습니다.');
+    }
     const user = await validateToken.validateToken(token);
     const isExistUser = await this.userRepository.findUserByEmail(user.getEmail());
     if (!isExistUser) {

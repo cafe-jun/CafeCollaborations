@@ -4,7 +4,7 @@ import { AppModule } from '../di/app.module';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { ApiConfig } from '@infrastructure/config/api-config';
 import { PrismaService } from 'nestjs-prisma';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 
 export class ServerApplication {
   public async start(): Promise<void> {
