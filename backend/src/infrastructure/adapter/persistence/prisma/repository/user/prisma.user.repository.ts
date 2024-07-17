@@ -5,6 +5,7 @@ import { UserRepositoryPort } from '@core/domain/user/port/persistence/user.repo
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { PrismaUserMapper } from '../../entity/user/mapper/prisma-user.mapper';
+import { isEmpty } from '@shared/data.helper';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepositoryPort {
@@ -36,7 +37,7 @@ export class PrismaUserRepository implements UserRepositoryPort {
         email,
       },
     });
-    if (!user) {
+    if (isEmpty(user)) {
       return null;
     }
     return PrismaUserMapper.toDomain(user);

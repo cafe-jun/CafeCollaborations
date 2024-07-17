@@ -12,10 +12,10 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
 
 import { UserProvider } from '@core/common/enums/user-provider.enum';
-import { OAuthValidateToken } from '../provider/oauth.validate';
-import { GoogleValidateToken } from '../provider/google.validate';
-import { KakaoValidateToken } from '../provider/kakao.validate';
-import { NaverValidateToken } from '../provider/naver.validate';
+import { OAuthValidateToken } from '../validate/oauth.validate';
+import { GoogleValidateToken } from '../validate/google.validate';
+import { KakaoValidateToken } from '../validate/kakao.validate';
+import { NaverValidateToken } from '../validate/naver.validate';
 import { isEmpty } from '@shared/data.helper';
 
 @Injectable()
@@ -35,7 +35,7 @@ export class AuthService {
     };
   }
 
-  async validateUser(email: string) {
+  async validateEmail(email: string) {
     const user: Optional<User> = await this.userRepository.findUserByEmail(email);
     CoreAssert.isEmpty(user, new UnAuthorizedAccessException());
     return user;
@@ -50,9 +50,13 @@ export class AuthService {
     const isExistUser = await this.userRepository.findUserByEmail(user.getEmail());
     if (!isExistUser) {
       const result = await this.userRepository.addUser(user);
-      return this.generateToken(result.id, user.getEmail());
+      const authToken = await this.generateToken(result.id, user.getEmail());
+      await this.updateRefreshToken(result.id, authToken.refreshToken);
+      return authToken;
     }
-    return this.generateToken(isExistUser.getId(), user.getEmail());
+    const authToken = await this.generateToken(isExistUser.getId(), user.getEmail());
+    await this.updateRefreshToken(user.getId(), authToken.refreshToken);
+    return authToken;
   }
 
   public async findByUserById(id: number): Promise<Optional<User>> {
@@ -86,6 +90,6 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
   private async updateRefreshToken(id: number, refreshToken: string) {
-    await this.redisClient.set(`REFRESH_TOKEN:${id}`, refreshToken, 'EX', 60 * 60 * 24 * 7);
+    await this.redisClient.set(`REFRESH_TOKEN ${id}`, refreshToken, 'EX', 60 * 60 * 24 * 7);
   }
 }
