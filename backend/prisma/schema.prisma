@@ -30,3 +30,15 @@ model User {
   provider  OauthProvider?
   createdAt DateTime       @default(now())
 }
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  ownerId   String
+  title     String
+  imageId   String
+  content   String
+  status    String
+  createdAt DateTime @default(now())
+  editedAt  DateTime
+  removedAt DateTime
+}

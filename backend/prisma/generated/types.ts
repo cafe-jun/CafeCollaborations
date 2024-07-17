@@ -10,6 +10,17 @@ export const OauthProvider = {
     NAVER: "NAVER"
 } as const;
 export type OauthProvider = (typeof OauthProvider)[keyof typeof OauthProvider];
+export type Post = {
+    id: Generated<number>;
+    ownerId: string;
+    title: string;
+    imageId: string;
+    content: string;
+    status: string;
+    createdAt: Generated<Timestamp>;
+    editedAt: Timestamp;
+    removedAt: Timestamp;
+};
 export type User = {
     id: Generated<number>;
     email: string;
@@ -18,5 +29,6 @@ export type User = {
     createdAt: Generated<Timestamp>;
 };
 export type DB = {
+    Post: Post;
     User: User;
 };
