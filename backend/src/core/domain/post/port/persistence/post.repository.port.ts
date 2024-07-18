@@ -6,5 +6,5 @@ export interface PostRepositoryPort {
   findPosts(): Promise<Optional<Post>>;
   countPosts(): Promise<number>;
   addPost(Post: Post): Promise<{ id: number }>;
-  updatePost(id, Post: Post): Promise<{ id: number }>;
+  updatePost(id: number, Post: Post): Promise<{ id: number }>;
 }

@@ -1,8 +1,9 @@
+import { AuthService } from '@core/domain/auth/service/auth.service';
 import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
-import { AuthService } from '../core/domain/auth/service/auth.service';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ValidateTokenDto } from '@presentation/user/dto/request/validate-token.dto';
 import { Response } from 'express';
-import { ValidateTokenDto } from './dto/user/request/validate-token.dto';
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

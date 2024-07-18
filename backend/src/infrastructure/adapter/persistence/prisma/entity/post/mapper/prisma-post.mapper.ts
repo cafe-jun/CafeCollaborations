@@ -1,4 +1,5 @@
 import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { Post } from '@core/domain/post/entity/post';
 import { User } from '@core/domain/user/entity/user';
 import { OauthProvider, Post as PrismaPost } from '@prisma/client';
 
@@ -6,7 +7,7 @@ export class PrismaPostMapper {
   private constructor() {
     throw new Error('PrismaPostMapper is a static class and should not be instantiated');
   }
-  public static toPrisma(user: User): PrismaPost {
+  public static toPrisma(post: Post): PrismaPost {
     return {
       id: user.getId(),
       name: user.getName(),
@@ -16,8 +17,8 @@ export class PrismaPostMapper {
     };
   }
 
-  public static toDomain(prismaUser: PrismaPost): User {
-    return new User(
+  public static toDomain(prismaPost: PrismaPost): Post {
+    return new Post(
       {
         email: prismaUser.email,
         name: prismaUser.name,
