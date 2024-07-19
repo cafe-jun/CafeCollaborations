@@ -25,7 +25,7 @@ export class Exception<TData> extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 
-  public static throw<TData>(payload: CreateExceptionPayload<TData>): Exception<TData> {
+  public static create<TData>(payload: CreateExceptionPayload<TData>): Exception<TData> {
     return new Exception(payload.code, payload.overrideMessage, payload.data);
   }
 }

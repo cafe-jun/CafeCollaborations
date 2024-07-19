@@ -23,6 +23,7 @@
       "@infrastructure/*": ["src/infrastructure/*"],
       "@application/*": ["src/application/*"],
       "@presentation/*": ["src/presentation/*"],
+      "@di/*": ["src/ioc/*"],
       "@shared/*": ["src/shared/*"],
       "@test/*": ["test/*"],
       "@lib/prisma/*": ["prisma/*"]

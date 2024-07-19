@@ -20,8 +20,8 @@ export interface GetPostListPort {
 
 export interface EditPostPort {
   executorId: number;
-  postId: string;
+  postId: number;
   title?: string;
-  imageId?: string;
+  imageId?: number;
   content?: string;
 }

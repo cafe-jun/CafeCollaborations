@@ -1,4 +1,4 @@
-import { PrismaToken } from 'src/di/infrastructure.module';
+import { PrismaToken } from 'src/ioc/infrastructure.module';
 import { Optional } from '@core/common/type/common.types';
 import { User } from '@core/domain/user/entity/user';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/user.repository.port';

@@ -5,7 +5,7 @@ import { IsDate, IsEnum, IsInstance, IsOptional, IsString } from 'class-validato
 import { PostOwner } from './post-owner';
 import { PostImage } from './post-image';
 import { CreatePostEntityPayload } from './type/create-post-entity.payload';
-
+import { EditPostEntityPayload } from './type/edit-post-entity.payload';
 export class Post extends BaseEntity<number> {
   @IsInstance(PostOwner)
   private readonly owner: PostOwner;
@@ -69,7 +69,7 @@ export class Post extends BaseEntity<number> {
     return this.content;
   }
 
-  public getStatus(): string {
+  public getStatus(): PostStatus {
     return this.status;
   }
 
@@ -87,6 +87,25 @@ export class Post extends BaseEntity<number> {
 
   public getRemovedAt(): Nullable<Date> {
     return this.removedAt;
+  }
+
+  public async edit(payload: EditPostEntityPayload): Promise<void> {
+    const currentDate: Date = new Date();
+
+    if (payload.title) {
+      this.title = payload.title;
+      this.editedAt = currentDate;
+    }
+    if (typeof payload.image !== 'undefined') {
+      this.image = payload.image;
+      this.editedAt = currentDate;
+    }
+    if (typeof payload.content !== 'undefined') {
+      this.content = payload.content;
+      this.editedAt = currentDate;
+    }
+
+    await this.validate();
   }
 
   public static async create(payload: CreatePostEntityPayload): Promise<Post> {

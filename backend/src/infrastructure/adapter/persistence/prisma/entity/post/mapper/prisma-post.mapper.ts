@@ -1,7 +1,8 @@
-import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { PostStatus } from '@core/common/enums/post-status.enum';
+import { Optional } from '@core/common/type/common.types';
 import { Post } from '@core/domain/post/entity/post';
-import { User } from '@core/domain/user/entity/user';
-import { OauthProvider, Post as PrismaPost } from '@prisma/client';
+import { PostOwner } from '@core/domain/post/entity/post-owner';
+import { Post as PrismaPost } from '@prisma/client';
 
 export class PrismaPostMapper {
   private constructor() {
@@ -9,23 +10,32 @@ export class PrismaPostMapper {
   }
   public static toPrisma(post: Post): PrismaPost {
     return {
-      id: user.getId(),
-      name: user.getName(),
-      email: user.getEmail(),
-      provider: user.getProvider() as OauthProvider,
-      createdAt: user.getCreatedAt(),
+      id: post.getId(),
+      userId: post.getOwner().getId(),
+      title: post.getTitle(),
+      content: post.getContent(),
+      status: post.getStatus(),
+      imageId: post.getImage().getId(),
+      createdAt: post.getCreatedAt(),
+      editedAt: post.getEditedAt(),
+      removedAt: post.getRemovedAt(),
     };
   }
 
   public static toDomain(prismaPost: PrismaPost): Post {
-    return new Post(
-      {
-        email: prismaUser.email,
-        name: prismaUser.name,
-        provider: prismaUser.provider as UserProvider,
-        createdAt: prismaUser.createdAt,
-      },
-      prismaUser.id,
-    );
+    return new Post({
+      owner: new PostOwner(prismaPost.userId, `testset`),
+      title: prismaPost.title,
+      // image: prismaPost.imageId ? new PostImage(prismaPost.imageId, 'test') : null,
+      content: prismaPost.content,
+      id: prismaPost.id,
+      status: prismaPost.status as PostStatus,
+      createdAt: prismaPost.createdAt,
+      editedAt: prismaPost.editedAt,
+      removedAt: prismaPost.removedAt,
+    });
+  }
+  public static toDomainEntities(prismaPosts: PrismaPost[]): Optional<Post[]> {
+    return prismaPosts.map((prismaPost) => this.toDomain(prismaPost));
   }
 }

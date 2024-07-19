@@ -1,7 +1,7 @@
 import { AuthService } from '@core/domain/auth/service/auth.service';
 import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
-import { ValidateTokenDto } from '@presentation/user/dto/request/validate-token.dto';
+import { ValidateTokenDto } from '@presentation/rest-doc/user/validate-token.dto';
 import { Response } from 'express';
 
 @Controller('auth')

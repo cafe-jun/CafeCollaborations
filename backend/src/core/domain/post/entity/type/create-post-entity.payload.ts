@@ -8,7 +8,7 @@ export type CreatePostEntityPayload = {
   title: string;
   image?: Nullable<PostImage>;
   content?: Nullable<string>;
-  id?: string;
+  id?: number;
   status?: PostStatus;
   createdAt?: Date;
   editedAt?: Date;

@@ -23,22 +23,29 @@ enum OauthProvider {
   NAVER
 }
 
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
 model User {
   id        Int            @id @default(autoincrement())
   email     String         @unique
   name      String
   provider  OauthProvider?
   createdAt DateTime       @default(now())
+  Post      Post[]
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  ownerId   String
+  id        Int        @id @default(autoincrement())
+  owner     User       @relation(fields: [userId], references: [id])
   title     String
-  imageId   String
+  imageId   Int
   content   String
-  status    String
-  createdAt DateTime @default(now())
+  status    PostStatus
+  createdAt DateTime   @default(now())
   editedAt  DateTime
   removedAt DateTime
+  userId    Int
 }
