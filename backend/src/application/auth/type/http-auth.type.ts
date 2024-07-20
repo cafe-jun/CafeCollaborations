@@ -1,15 +1,15 @@
-import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { UserProvider } from '@core/common/enums/user.enum';
 import { Request } from 'express';
 
-export type HttpUserPayload = {
+export type RestUserPayload = {
   id: number;
   email: string;
   provider: UserProvider;
 };
 
-export type HttpRequestsWIthUser = Request & { user: HttpUserPayload };
+export type RequestsWIthUser = Request & { user: RestUserPayload };
 
-export type HttpLoggedInUser = {
+export type RestLoggedInUser = {
   id: number;
   access_token: string;
 };

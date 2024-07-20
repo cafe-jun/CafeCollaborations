@@ -1,4 +1,4 @@
-import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { UserProvider } from '@core/common/enums/user.enum';
 import { User } from '@core/domain/user/entity/user';
 import { OauthProvider, User as PrismaUser } from '@prisma/client';
 

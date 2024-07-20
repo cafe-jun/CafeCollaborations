@@ -22,6 +22,11 @@ enum OauthProvider {
   GOOGLE
   NAVER
 }
+enum UserRole {
+  ADMIN
+  AUTHOR
+  GUEST
+}
 
 enum PostStatus {
   DRAFT
@@ -35,6 +40,7 @@ model User {
   provider  OauthProvider?
   createdAt DateTime       @default(now())
   Post      Post[]
+  role      UserRole
 }
 
 model Post {

@@ -1,4 +1,4 @@
-import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { UserProvider } from '@core/common/enums/user.enum';
 import { IsEnum, IsString } from 'class-validator';
 
 export class ValidateTokenDto {

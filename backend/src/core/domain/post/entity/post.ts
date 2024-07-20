@@ -108,6 +108,18 @@ export class Post extends BaseEntity<number> {
     await this.validate();
   }
 
+  public async publish(): Promise<void> {
+    const currentDate = new Date();
+    this.status = PostStatus.PUBLISHED;
+    this.editedAt = currentDate;
+    this.publishedAt = currentDate;
+    await this.validate();
+  }
+
+  public async remove(): Promise<void> {
+    this.removedAt = new Date();
+    await this.validate();
+  }
   public static async create(payload: CreatePostEntityPayload): Promise<Post> {
     const post: Post = new Post(payload);
     await post.validate();

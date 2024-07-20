@@ -62,13 +62,13 @@ export default function ProjectList() {
       </HStack>
       <Flex flexWrap="wrap" justifyContent="space-between" mb={4}>
         <HStack spacing={2} mb={2} flex={1} minW="200px">
-          <Select placeholder="기술 스택" size="sm">
+          <Select placeholder="기술 스택" size="xs" borderRadius={"xl"}>
             {/* 옵션들 */}
           </Select>
-          <Select placeholder="포지션" size="sm">
+          <Select placeholder="포지션" size="xs">
             {/* 옵션들 */}
           </Select>
-          <Select placeholder="진행 방식" size="sm">
+          <Select placeholder="진행 방식" size="xs">
             {/* 옵션들 */}
           </Select>
         </HStack>
@@ -85,9 +85,16 @@ export default function ProjectList() {
           size="sm"
         />
       </Flex>
-      <SimpleGrid columns={[1, 2, 3, 4]} spacing={4}>
+      <SimpleGrid columns={[1, 2, 3, 4]} spacing={5}>
         {projects.map((project, index) => (
-          <Box key={index} borderWidth={1} borderRadius="lg" p={4}>
+          <Box
+            key={index}
+            width={"100%"}
+            height={"18rem"}
+            borderWidth={2}
+            borderRadius="xl"
+            p={4}
+          >
             <Badge colorScheme="orange" mb={2}>
               프로젝트
             </Badge>

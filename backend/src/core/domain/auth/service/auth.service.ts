@@ -11,7 +11,7 @@ import { CoreAssert } from '../../../common/util/assert/core.assert';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
 
-import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { UserProvider } from '@core/common/enums/user.enum';
 import { OAuthValidateToken } from '../validate/oauth.validate';
 import { GoogleValidateToken } from '../validate/google.validate';
 import { KakaoValidateToken } from '../validate/kakao.validate';

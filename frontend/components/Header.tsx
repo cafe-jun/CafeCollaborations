@@ -17,6 +17,7 @@ import {
 import LoginModal from "./LoginModal";
 import { useSession, signOut } from "next-auth/react";
 import { ChevronDownIcon, BellIcon } from "@chakra-ui/icons";
+import Link from "next/link";
 export default function Header() {
   const { data: session } = useSession();
   return (
@@ -24,9 +25,11 @@ export default function Header() {
       <Container maxW="1400">
         <Flex py={4} alignItems="center" justifyContent="space-between">
           <Flex alignItems="center">
-            <Text fontWeight="bold" fontSize="2xl" mr={4}>
-              CafeCollaboartion
-            </Text>
+            <Link href="/">
+              <Text fontWeight="bold" fontSize="2xl" mr={4}>
+                CafeCollaboartion
+              </Text>
+            </Link>
             <Text>사장이랑 블로거랑</Text>
           </Flex>
 

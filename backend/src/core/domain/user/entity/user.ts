@@ -1,14 +1,17 @@
-import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { BaseEntity } from '@core/common/entity/base.entity';
+import { UserProvider, UserRole } from '@core/common/enums/user.enum';
 import { Replace } from '@core/common/type/common.types';
+import { extend } from 'lodash';
 
 export type UserProps = {
   name: string;
   email: string;
   provider: UserProvider;
+  role: UserRole;
   createdAt?: Date | null;
 };
 
-export class User {
+export class User extends BaseEntity<number> {
   private _props: UserProps;
   private _id: number;
   constructor(props: Replace<UserProps, { createdAt?: Date | null }>, id?: number) {

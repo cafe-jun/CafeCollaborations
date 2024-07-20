@@ -3,3 +3,9 @@ export enum UserProvider {
   NAVER = 'NAVER',
   GOOGLE = 'GOOGLE',
 }
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  AUTHOR = 'AUTHOR',
+  GUEST = 'GUEST',
+}

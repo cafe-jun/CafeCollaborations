@@ -1,4 +1,4 @@
-import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { UserProvider } from '@core/common/enums/user.enum';
 import { Exclude, Expose, plainToInstance } from 'class-transformer';
 import { User } from '../../entity/user';
 

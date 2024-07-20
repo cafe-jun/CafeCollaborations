@@ -6,6 +6,7 @@ import { PrismaService } from 'nestjs-prisma';
 import { PrismaToken } from 'src/ioc/infrastructure.module';
 import { isEmpty } from 'lodash';
 import { PrismaPostMapper } from '../../entity/post/mapper/prisma-post.mapper';
+import { PostStatus } from '@core/common/enums/post-status.enum';
 
 @Injectable()
 export class PrismaUserRepository implements PostRepositoryPort {
@@ -41,8 +42,15 @@ export class PrismaUserRepository implements PostRepositoryPort {
     }
     return PrismaPostMapper.toDomain(post);
   }
-  async findPosts(): Promise<Optional<Post[]>> {
-    const posts = await this.prismaService.post.findMany();
+  async findPosts(payload: { ownerId: number; status: PostStatus }): Promise<Optional<Post[]>> {
+    const posts = await this.prismaService.post.findMany({
+      where: {
+        owner: {
+          id: payload.ownerId,
+        },
+        status: payload.status,
+      },
+    });
     return PrismaPostMapper.toDomainEntities(posts);
   }
   async updatePost(post: Post): Promise<{ id: number }> {

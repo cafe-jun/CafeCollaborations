@@ -1,11 +1,18 @@
 import { HttpAuth } from '@application/auth/decorator/http-auth.decorator';
 import { HttpUser } from '@application/auth/decorator/http-user.decorator';
-import { HttpUserPayload } from '@application/auth/type/http-auth.type';
+import { RestUserPayload } from '@application/auth/type/http-auth.type';
 import { PostDITokens } from '@core/domain/post/di/post-di.token';
 import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
-import { CreatePostUseCase, EditPostUseCase, GetPostListUseCase, GetPostUseCase } from '@core/domain/post/usecase/post.usecase';
-import { Body, Controller, HttpCode, HttpStatus, Inject, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
+import {
+  CreatePostUseCase,
+  EditPostUseCase,
+  GetPostListUseCase,
+  GetPostUseCase,
+  PublishPostUseCase,
+  RemovePostUseCase,
+} from '@core/domain/post/usecase/post.usecase';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EditPostAdapter } from '@infrastructure/adapter/usecase/post/edit-post.adapter';
 import { RestEditPostRequestPayload } from './rest-doc/post/edit-post-request.payload';
 import { RestApiResponsePost } from './rest-doc/post/post-response.payload';
@@ -13,8 +20,15 @@ import { RestApiResponsePost } from './rest-doc/post/post-response.payload';
 import { RestCreatePostRequestPayload } from './rest-doc/post/create-post-request.payload';
 import { CreatePostAdapter } from '@infrastructure/adapter/usecase/post/create-post.adapter';
 import { CoreApiResponse } from '@core/common/response/core-api.response';
+import { RestGetPostListQuery } from './rest-doc/post/get-post-list.query';
+import { GetPostListAdapter } from '@infrastructure/adapter/usecase/post/get-post-list.adapter';
+import { GetPostAdapter } from '@infrastructure/adapter/usecase/post/get-post.adapter';
+import { PostStatus } from '@core/common/enums/post-status.enum';
+import { PublishPostAdapter } from '@infrastructure/adapter/usecase/post/publish-post.adapter';
+import { RemovePostAdapter } from '@infrastructure/adapter/usecase/post/remove-post.adapter';
 
 @Controller('post')
+@ApiTags('posts')
 export class PostController {
   constructor(
     @Inject(PostDITokens.CreatePostUseCase)
@@ -25,6 +39,12 @@ export class PostController {
     private readonly getPostListUseCase: GetPostListUseCase,
     @Inject(PostDITokens.EditPostUseCase)
     private readonly editPostUseCase: EditPostUseCase,
+
+    @Inject(PostDITokens.PublishPostUseCase)
+    private readonly publishPostUsecase: PublishPostUseCase,
+
+    @Inject(PostDITokens.RemovePostUseCase)
+    private readonly removePostUseCase: RemovePostUseCase,
   ) {}
 
   @Post()
@@ -32,7 +52,7 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   @ApiBody({ type: RestCreatePostRequestPayload })
   @ApiBearerAuth()
-  public async createPost(@HttpUser() user: HttpUserPayload, @Body() body: RestCreatePostRequestPayload) {
+  public async createPost(@HttpUser() user: RestUserPayload, @Body() body: RestCreatePostRequestPayload) {
     const adapter: CreatePostAdapter = await CreatePostAdapter.create({
       executorId: user.id,
       title: body.title,
@@ -48,7 +68,7 @@ export class PostController {
   @ApiBearerAuth()
   @ApiBody({ type: RestEditPostRequestPayload })
   @ApiResponse({ status: HttpStatus.OK, type: RestApiResponsePost })
-  public async editPost(@HttpUser() user: HttpUserPayload, @Body() body: RestEditPostRequestPayload, @Param('postId', ParseIntPipe) postId: number) {
+  public async editPost(@HttpUser() user: RestUserPayload, @Body() body: RestEditPostRequestPayload, @Param('postId', ParseIntPipe) postId: number) {
     const adapter: EditPostAdapter = await EditPostAdapter.create({
       executorId: user.id,
       postId: postId,
@@ -62,69 +82,67 @@ export class PostController {
     return CoreApiResponse.success(editedPost);
   }
 
-  // @Get()
-  // @HttpCode(HttpStatus.OK)
-  // @ApiBearerAuth()
-  // public async getPostList(@HttpUser() user: HttpUserPayload, @Query() query: RestGetPostListQuery) {
-  //   const posts: PostUseCaseDto[] = await this.getPostListUseCase.execute(adapter);
-  //   // this.setFileStorageBasePath(posts);
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth()
+  @ApiQuery({ name: 'authorId', type: Number, required: false })
+  public async getPostList(@HttpUser() user: RestUserPayload, @Query() query: RestGetPostListQuery): Promise<CoreApiResponse<PostUseCaseDto[]>> {
+    const adapter: GetPostListAdapter = await GetPostListAdapter.create({
+      ownerId: query.authorId,
+      executorId: user.id,
+      status: PostStatus.PUBLISHED,
+    });
+    const posts: PostUseCaseDto[] = await this.getPostListUseCase.execute(adapter);
 
-  //   // return CoreApiResponse.success(posts);
-  // }
+    return CoreApiResponse.success(posts);
+  }
 
-  // @Get('mine')
-  // // @HttpAuth(UserRole.AUTHOR)
-  // @HttpCode(HttpStatus.OK)
-  // @ApiBearerAuth()
-  // // @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponsePostList })
-  // public async getMinePostList(@HttpUser() user: HttpUserPayload) {
-  //   // const adapter: GetPostListAdapter = await GetPostListAdapter.new({
-  //   //   executorId: user.id,
-  //   //   ownerId: user.id,
-  //   // });
-  //   const posts: PostUseCaseDto[] = await this.getPostListUseCase.execute(adapter);
-  //   // this.setFileStorageBasePath(posts);
-
-  //   // return CoreApiResponse.success(posts);
-  // }
-
-  // @Get(':postId')
-  // // @HttpAuth(UserRole.AUTHOR, UserRole.ADMIN, UserRole.GUEST)
-  // @HttpCode(HttpStatus.OK)
-  // @ApiBearerAuth()
-  // // @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponsePostList })
-  // public async getPost(@HttpUser() user: HttpUserPayload, @Param('postId') postId: string) {
-  //   const adapter: GetPostAdapter = await GetPostAdapter.new({ executorId: user.id, postId: postId });
-  //   const post: PostUseCaseDto = await this.getPostUseCase.execute(adapter);
-  //   // this.setFileStorageBasePath([post]);
-
-  //   return CoreApiResponse.success(post);
-  // }
-
-  // @Post(':postId/publish')
+  @Get('mine')
   // @HttpAuth(UserRole.AUTHOR)
-  // @HttpCode(HttpStatus.OK)
-  // @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth()
+  // @ApiResponse({ status: HttpStatus.OK, type: RestApiResponsePostList })
+  public async getMinePostList(@HttpUser() user: RestUserPayload): Promise<CoreApiResponse<PostUseCaseDto[]>> {
+    const adapter: GetPostListAdapter = await GetPostListAdapter.create({
+      executorId: user.id,
+      ownerId: user.id,
+    });
+    const posts: PostUseCaseDto[] = await this.getPostListUseCase.execute(adapter);
+    // this.setFileStorageBasePath(posts);
+
+    return CoreApiResponse.success(posts);
+  }
+
+  @Get(':postId')
+  // @HttpAuth(UserRole.AUTHOR, UserRole.ADMIN, UserRole.GUEST)
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth()
   // @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponsePostList })
-  // public async publishPost(@HttpUser() user: HttpUserPayload, @Param('postId') postId: string): Promise<CoreApiResponse<PostUseCaseDto>> {
-  //   const adapter: PublishPostAdapter = await PublishPostAdapter.new({ executorId: user.id, postId: postId });
-  //   const post: PostUseCaseDto = await this.publishPostUseCase.execute(adapter);
-  //   this.setFileStorageBasePath([post]);
+  public async getPost(@HttpUser() user: RestUserPayload, @Param('postId') postId: number) {
+    const adapter: GetPostAdapter = await GetPostAdapter.create({ executorId: user.id, postId: postId });
+    const post: PostUseCaseDto = await this.getPostUseCase.execute(adapter);
+    return CoreApiResponse.success(post);
+  }
 
-  //   return CoreApiResponse.success(post);
-  // }
+  @Post(':postId/publish')
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth()
+  // @ApiResponse({ status: HttpStatus.OK, type: RestApiResponsePostList })
+  public async publishPost(@HttpUser() user: RestUserPayload, @Param('postId') postId: number): Promise<CoreApiResponse<PostUseCaseDto>> {
+    const adapter: PublishPostAdapter = await PublishPostAdapter.create({ executorId: user.id, postId: postId });
+    const post: PostUseCaseDto = await this.publishPostUsecase.execute(adapter);
+    return CoreApiResponse.success(post);
+  }
 
-  // @Delete(':postId')
+  @Delete(':postId')
   // @HttpAuth(UserRole.AUTHOR)
-  // @HttpCode(HttpStatus.OK)
-  // @ApiBearerAuth()
-  // @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponsePostList })
-  // public async removePost(@HttpUser() user: HttpUserPayload, @Param('postId') postId: string): Promise<CoreApiResponse<void>> {
-  //   const adapter: RemovePostAdapter = await RemovePostAdapter.new({ executorId: user.id, postId: postId });
-  //   await this.removePostUseCase.execute(adapter);
-
-  //   return CoreApiResponse.success();
-  // }
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth()
+  public async removePost(@HttpUser() user: RestUserPayload, @Param('postId') postId: number): Promise<CoreApiResponse<void>> {
+    const adapter: RemovePostAdapter = await RemovePostAdapter.create({ executorId: user.id, postId: postId });
+    await this.removePostUseCase.execute(adapter);
+    return CoreApiResponse.success();
+  }
 
   // private setFileStorageBasePath(posts: PostUseCaseDto[]): void {
   //   posts.forEach((post: PostUseCaseDto) => {

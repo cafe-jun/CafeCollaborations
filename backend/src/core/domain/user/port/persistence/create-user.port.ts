@@ -1,4 +1,4 @@
-import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { UserProvider } from '@core/common/enums/user.enum';
 
 export interface CreateUserPort {
   name: string;

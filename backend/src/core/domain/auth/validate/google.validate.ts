@@ -1,7 +1,7 @@
 import { OAuth2Client } from 'google-auth-library';
 import { OAuthValidateToken } from './oauth.validate';
 import { User } from '@core/domain/user/entity/user';
-import { UserProvider } from '@core/common/enums/user-provider.enum';
+import { UserProvider } from '@core/common/enums/user.enum';
 
 export class GoogleValidateToken implements OAuthValidateToken {
   constructor() {}
