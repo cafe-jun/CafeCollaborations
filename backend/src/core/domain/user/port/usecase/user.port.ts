@@ -1,11 +1,11 @@
-import { UserRole } from '@core/common/enums/user.enum';
+import { UserProvider, UserRole } from '@core/common/enums/user.enum';
 
-export interface CreateUserPort {
+export type CreateUserPort = {
   name: string;
   email: string;
-  provider: string;
-  role: UserRole;
-}
-export interface GetUserPort {
+  provider: UserProvider;
+  role?: UserRole;
+};
+export type GetUserPort = {
   userId: number;
-}
+};

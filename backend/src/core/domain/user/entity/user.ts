@@ -2,39 +2,53 @@ import { BaseEntity } from '@core/common/entity/base.entity';
 import { UserProvider, UserRole } from '@core/common/enums/user.enum';
 import { Replace } from '@core/common/type/common.types';
 import { extend } from 'lodash';
-
-export type UserProps = {
-  name: string;
-  email: string;
-  provider: UserProvider;
-  role: UserRole;
-  createdAt?: Date | null;
-};
+import { CreateUserEntityPayload } from './type/create-user-entity.payload';
+import { IsDate, IsEmail, IsEnum, IsString } from 'class-validator';
 
 export class User extends BaseEntity<number> {
-  private _props: UserProps;
-  private _id: number;
-  constructor(props: Replace<UserProps, { createdAt?: Date | null }>, id?: number) {
-    this._id = id;
-    this._props = {
-      ...props,
-      createdAt: props.createdAt || new Date(),
-    };
+  @IsEmail()
+  private email: string;
+
+  @IsString()
+  private name: string;
+
+  @IsEnum(UserProvider)
+  private provider: UserProvider;
+
+  @IsEnum(UserRole)
+  private role: UserRole;
+
+  @IsDate()
+  private readonly createdAt: Date;
+
+  constructor(payload: CreateUserEntityPayload) {
+    super();
+
+    this.email = payload.email;
+    this.name = payload.name;
+    this.provider = payload.provider;
+    this.role = payload.role || UserRole.GUEST;
+    this.createdAt = payload.createdAt || new Date();
   }
 
   public getId(): number {
-    return this._id;
+    return this.id;
   }
   public getName(): string {
-    return this._props.name;
+    return this.name;
   }
   public getEmail(): string {
-    return this._props.email;
+    return this.email;
   }
   public getProvider(): UserProvider {
-    return this._props.provider;
+    return this.provider;
   }
+
+  public getRole(): UserRole {
+    return this.role;
+  }
+
   public getCreatedAt(): Date | null {
-    return this._props.createdAt;
+    return this.createdAt;
   }
 }

@@ -1,6 +1,6 @@
-import { IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class FindUserRequestDto {
-  @IsString()
+export class RestGetUserRequestDto {
+  @ApiProperty({ type: 'string' })
   email: string;
 }

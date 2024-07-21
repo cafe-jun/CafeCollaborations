@@ -2,7 +2,7 @@ import { UserProvider } from '@core/common/enums/user.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsString } from 'class-validator';
 
-export class CreateUserRequestDto {
+export class RestCreateUserRequestDto {
   @ApiProperty({ type: 'string' })
   email: string;
 
