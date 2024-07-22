@@ -13,4 +13,4 @@ export interface GetPostUseCase extends UseCase<GetPostPort, PostUseCaseDto> {}
 
 export interface PublishPostUseCase extends UseCase<PublishPostPort, PostUseCaseDto> {}
 
-export interface RemovePostUseCase extends UseCase<RemovePostPort, PostUseCaseDto> {}
+export interface RemovePostUseCase extends UseCase<RemovePostPort, void> {}

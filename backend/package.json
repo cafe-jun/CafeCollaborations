@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "@liaoliaots/nestjs-redis": "^9.0.5",
+    "@nestjs-cls/transactional": "^2.4.0",
+    "@nestjs-cls/transactional-adapter-prisma": "^1.2.2",
     "@nestjs/axios": "^3.0.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.3",
@@ -41,6 +43,7 @@
     "kysely": "^0.27.3",
     "lodash": "^4.17.21",
     "module-alias": "^2.2.3",
+    "nestjs-cls": "^4.3.0",
     "nestjs-prisma": "^0.23.0",
     "node-lombok": "^1.1.1",
     "passport": "^0.7.0",

@@ -1,10 +1,10 @@
 import { UserDiTokens } from '@core/domain/user/di/user-di.tokens';
-import { CreateUserService } from '@core/domain/user/service/usecase/create-user.service';
 import { PrismaUserRepository } from '@infrastructure/adapter/persistence/prisma/repository/user/prisma.user.repository';
 import { Module, Provider } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { PrismaToken } from './infrastructure.module';
-import { UserController } from '@presentation/user/user.controller';
+import { CreateUserService } from '@core/domain/user/service/create-user.service';
+import { UserController } from '@presentation/user.controller';
 
 const persistenceProvider: Provider[] = [
   {

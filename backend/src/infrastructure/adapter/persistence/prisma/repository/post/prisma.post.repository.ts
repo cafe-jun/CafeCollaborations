@@ -7,9 +7,10 @@ import { PrismaToken } from 'src/ioc/infrastructure.module';
 import { isEmpty } from 'lodash';
 import { PrismaPostMapper } from '../../entity/post/mapper/prisma-post.mapper';
 import { PostStatus } from '@core/common/enums/post-status.enum';
+import { RepositoryRemoveOptions } from '@core/common/persistence/repoistory.option';
 
 @Injectable()
-export class PrismaUserRepository implements PostRepositoryPort {
+export class PrismaPostRepository implements PostRepositoryPort {
   constructor(
     @Inject(PrismaToken)
     private readonly prismaService: PrismaService,
@@ -62,5 +63,13 @@ export class PrismaUserRepository implements PostRepositoryPort {
       },
     });
     return { id: result.id };
+  }
+
+  async removePost(post: Post, options?: RepositoryRemoveOptions): Promise<void> {
+    await this.prismaService.post.delete({
+      where: {
+        id: post.getId(),
+      },
+    });
   }
 }

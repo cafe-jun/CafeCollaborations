@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { Kysely, PostgresAdapter, PostgresIntrospector, PostgresQueryCompiler } from 'kysely';
 import kyselyExtension from 'prisma-extension-kysely';
 /**
- * @deprecated : 사용 안되는 Client
+ * @deprecated : 사용 안되는 Prisma Client Extend
  */
 export const extendedPrismaClient = new PrismaClient().$extends(
   kyselyExtension({

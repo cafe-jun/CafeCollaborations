@@ -6,10 +6,27 @@ import { APP_PIPE } from '@nestjs/core';
 import { ValidationError } from 'class-validator';
 import { ClassValidator } from '@core/common/util/class-validator/class-validator';
 import { AppHeaderProvider } from '@shared/app-header.provider';
+import { ClsModule } from 'nestjs-cls';
+import { ClsPluginTransactional } from '@nestjs-cls/transactional';
+import { PrismaModule, PrismaService } from 'nestjs-prisma';
+import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 
 @Module({
-  imports: [AuthModule, InfrastructureModule, UserModule],
-
+  imports: [
+    AuthModule,
+    InfrastructureModule,
+    UserModule,
+    ClsModule.forRoot({
+      plugins: [
+        new ClsPluginTransactional({
+          imports: [PrismaModule],
+          adapter: new TransactionalAdapterPrisma({
+            prismaInjectionToken: PrismaService,
+          }),
+        }),
+      ],
+    }),
+  ],
   providers: [
     AppHeaderProvider,
     {
