@@ -1,4 +1,4 @@
-import { UserProvider } from '@core/common/enums/user.enum';
+import { UserProvider, UserRole } from '@core/common/enums/user.enum';
 import { User } from '@core/domain/user/entity/user';
 import { OauthProvider, User as PrismaUser } from '@prisma/client';
 
@@ -13,18 +13,18 @@ export class PrismaUserMapper {
       email: user.getEmail(),
       provider: user.getProvider() as OauthProvider,
       createdAt: user.getCreatedAt(),
+      role: user.getRole(),
     };
   }
 
   public static toDomain(prismaUser: PrismaUser): User {
-    return new User(
-      {
-        email: prismaUser.email,
-        name: prismaUser.name,
-        provider: prismaUser.provider as UserProvider,
-        createdAt: prismaUser.createdAt,
-      },
-      prismaUser.id,
-    );
+    return new User({
+      id: prismaUser.id,
+      email: prismaUser.email,
+      name: prismaUser.name,
+      provider: prismaUser.provider as UserProvider,
+      createdAt: prismaUser.createdAt,
+      role: prismaUser.role as UserRole,
+    });
   }
 }

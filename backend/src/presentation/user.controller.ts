@@ -5,6 +5,8 @@ import { UserUseCaseDto } from '@core/domain/user/usecase/dto/user.usecase.dto';
 import { RestCreateUserRequestDto } from './rest-doc/user/create-user-request.dto';
 import { CreateUserAdapter } from '@infrastructure/adapter/usecase/user/create-user.adapter';
 import { RestGetUserRequestDto } from './rest-doc/user/find-user.dto';
+import { GetUserPort } from '@core/domain/user/port/usecase/user.port';
+import { GetUserAdapter } from '@infrastructure/adapter/usecase/user/get-user.adapter';
 
 @Controller('user')
 export class UserController {
@@ -28,7 +30,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Get()
   async getUser(@Query() query: RestGetUserRequestDto) {
-    const adapter: GetUserUseCase = await GetUserUseCase.create({ email: query.email });
+    const adapter: GetUserAdapter = await GetUserAdapter.create({ userId: query.userId });
     await this.getUserUseCase.execute(adapter);
   }
 }

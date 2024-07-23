@@ -10,6 +10,12 @@ export const OauthProvider = {
     NAVER: "NAVER"
 } as const;
 export type OauthProvider = (typeof OauthProvider)[keyof typeof OauthProvider];
+export const UserRole = {
+    ADMIN: "ADMIN",
+    AUTHOR: "AUTHOR",
+    GUEST: "GUEST"
+} as const;
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 export const PostStatus = {
     DRAFT: "DRAFT",
     PUBLISHED: "PUBLISHED"
@@ -32,6 +38,7 @@ export type User = {
     name: string;
     provider: OauthProvider | null;
     createdAt: Generated<Timestamp>;
+    role: UserRole;
 };
 export type DB = {
     Post: Post;

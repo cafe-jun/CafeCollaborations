@@ -5,6 +5,7 @@ import { ClassValidationDetails, ClassValidator } from '../util/class-validator/
 
 export class BaseEntity<TIdentifier extends string | number> {
   protected id: Optional<TIdentifier>;
+
   public getId(): TIdentifier {
     if (typeof this.id === 'undefined') {
       throw Exception.create({

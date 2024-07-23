@@ -5,6 +5,7 @@ import { PrismaService } from 'nestjs-prisma';
 import { PrismaToken } from './infrastructure.module';
 import { CreateUserService } from '@core/domain/user/service/create-user.service';
 import { UserController } from '@presentation/user.controller';
+import { GetUserService } from '@core/domain/user/service/get-user.service';
 
 const persistenceProvider: Provider[] = [
   {
@@ -18,6 +19,11 @@ const useCaseProviders: Provider[] = [
   {
     provide: UserDiTokens.CreateUserUseCase,
     useFactory: (userRepository) => new CreateUserService(userRepository),
+    inject: [UserDiTokens.UserRepository],
+  },
+  {
+    provide: UserDiTokens.GetUserUseCase,
+    useFactory: (userRepository) => new GetUserService(userRepository),
     inject: [UserDiTokens.UserRepository],
   },
 ];

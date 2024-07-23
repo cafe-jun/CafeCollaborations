@@ -23,7 +23,6 @@ export class User extends BaseEntity<number> {
 
   constructor(payload: CreateUserEntityPayload) {
     super();
-
     this.email = payload.email;
     this.name = payload.name;
     this.provider = payload.provider;

@@ -11,6 +11,8 @@ export class CommonMsg extends EnumType<CommonMsg>() implements CoreMsg {
   static readonly SUCCESS = new CommonMsg(200, 'Success');
   static readonly BAD_REQUEST_ERROR = new CommonMsg(400, 'Bad Request');
   static readonly INTERNAL_SERVER_ERROR = new CommonMsg(500, 'Internal Server Error ');
+  static readonly UNAUTHORIZED_ERROR = new CommonMsg(401, 'Unauthorized error.');
+  static readonly WRONG_CREDENTIALS_ERROR = new CommonMsg(402, 'Wrong Credentials.');
   static readonly ACCESS_DENIED_ERROR = new CommonMsg(403, 'Access denied.');
   static readonly ARGUMENT_INVALID = new CommonMsg(4001, '잘못된 파라미터 입니다.');
   static readonly MANDATORY_ARGUMENT_IS_NULL = new CommonMsg(4002, '필수 파라미터가 없습니다.');
