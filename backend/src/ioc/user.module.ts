@@ -3,9 +3,11 @@ import { PrismaUserRepository } from '@infrastructure/adapter/persistence/prisma
 import { Module, Provider } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { PrismaToken } from './infrastructure.module';
-import { CreateUserService } from '@core/domain/user/service/create-user.service';
 import { UserController } from '@presentation/user.controller';
-import { GetUserService } from '@core/domain/user/service/get-user.service';
+import { HandleGetUserPreviewQueryService } from '@core/service/user/handler/get-user-preview-query.service';
+import { NestWrapperGetUserPreviewQueryHandler } from '@infrastructure/handler/user/nest-wrapper-get-user-preview.handler';
+import { CreateUserService } from '@core/service/user/usecase/create-user.service';
+import { GetUserService } from '@core/service/user/usecase/get-user.service';
 
 const persistenceProvider: Provider[] = [
   {
@@ -28,9 +30,18 @@ const useCaseProviders: Provider[] = [
   },
 ];
 
+const handlerProvider: Provider[] = [
+  NestWrapperGetUserPreviewQueryHandler,
+  {
+    provide: UserDiTokens.GetUserPreviewQueryHandler,
+    useFactory: (userRepository) => new HandleGetUserPreviewQueryService(userRepository),
+    inject: [UserDiTokens.UserRepository],
+  },
+];
+
 @Module({
   controllers: [UserController],
-  providers: [...persistenceProvider, ...useCaseProviders],
+  providers: [...persistenceProvider, ...useCaseProviders, ...handlerProvider],
   exports: [UserDiTokens.UserRepository],
 })
 export class UserModule {}

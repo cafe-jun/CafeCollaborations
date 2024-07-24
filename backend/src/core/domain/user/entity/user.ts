@@ -4,8 +4,9 @@ import { Replace } from '@core/common/type/common.types';
 import { extend } from 'lodash';
 import { CreateUserEntityPayload } from './type/create-user-entity.payload';
 import { IsDate, IsEmail, IsEnum, IsString } from 'class-validator';
+import { RemoveEntity } from '@core/common/entity/remove.entity';
 
-export class User extends BaseEntity<number> {
+export class User extends BaseEntity<number> implements RemoveEntity {
   @IsEmail()
   private email: string;
 
@@ -21,6 +22,9 @@ export class User extends BaseEntity<number> {
   @IsDate()
   private readonly createdAt: Date;
 
+  @IsDate()
+  private removeAt: Date;
+
   constructor(payload: CreateUserEntityPayload) {
     super();
     this.email = payload.email;
@@ -30,6 +34,10 @@ export class User extends BaseEntity<number> {
     this.createdAt = payload.createdAt || new Date();
   }
 
+  public async remove(): Promise<void> {
+    this.removeAt = new Date();
+    await this.validate();
+  }
   public getId(): number {
     return this.id;
   }

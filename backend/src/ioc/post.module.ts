@@ -3,18 +3,17 @@ import { PrismaPostRepository } from '@infrastructure/adapter/persistence/prisma
 import { Module, Provider } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { PrismaToken } from './infrastructure.module';
-import { CreatePostUseCase, GetPostUseCase, RemovePostUseCase } from '@core/domain/post/usecase/post.usecase';
-import { CreatePostService } from '@core/domain/post/service/create-post.service';
+import { CreatePostUseCase, RemovePostUseCase } from '@core/domain/post/usecase/post.usecase';
 import { TransactionalUseCaseWrapper } from '@infrastructure/transaction/transactional-usecase.wrapper';
-import { EditPostService } from '@core/domain/post/service/edit-post.service';
-import { GetPostService } from '@core/domain/post/service/get-post.service';
-import { GetPostListUseCase } from '@core/domain/post/usecase/post.usecase';
-import { GetPostListService } from '@core/domain/post/service/get-post-list.service';
 import { PostController } from '@presentation/post.controller';
 import { CoreDITokens } from '@core/common/di/core-di.token';
-import { PublishPostService } from '@core/domain/post/service/publish-post.service';
 import { PublishPostUseCase } from './../core/domain/post/usecase/post.usecase';
-import { RemovePostService } from '@core/domain/post/service/remove-post.service';
+import { CreatePostService } from '@core/service/post/usecase/create-post.service';
+import { EditPostService } from '@core/service/post/usecase/edit-post.service';
+import { GetPostService } from '@core/service/post/usecase/get-post.service';
+import { GetPostListService } from '@core/service/post/usecase/get-post-list.service';
+import { PublishPostService } from '@core/service/post/usecase/publish-post.service';
+import { RemovePostService } from '@core/service/post/usecase/remove-post.service';
 
 const persistencePostProvider: Provider[] = [
   {

@@ -6,7 +6,8 @@ import { PostOwner } from './post-owner';
 import { PostImage } from './post-image';
 import { CreatePostEntityPayload } from './type/create-post-entity.payload';
 import { EditPostEntityPayload } from './type/edit-post-entity.payload';
-export class Post extends BaseEntity<number> {
+import { RemoveEntity } from '@core/common/entity/remove.entity';
+export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsInstance(PostOwner)
   private readonly owner: PostOwner;
 
