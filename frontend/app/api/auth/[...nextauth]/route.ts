@@ -6,8 +6,6 @@ import NaverProvider from "next-auth/providers/naver";
 import { apiConfig } from "./config/apiUrl";
 import { OauthUserMapper } from "@/util/oauth.mapper";
 
-console.log(process.env.NAVER_CLIENT_ID, process.env.NAVER_SECRET_KEY);
-
 const handler = NextAuth({
   providers: [
     GoogleProvider({
