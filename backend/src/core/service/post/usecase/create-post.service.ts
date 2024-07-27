@@ -1,15 +1,17 @@
 import { CoreAssert } from '@core/common/util/assert/core.assert';
-import { CreatePostPort } from '../port/usecase/post.port';
-import { PostUseCaseDto } from '../usecase/dto/post-usecase.dto';
-import { CreatePostUseCase } from '../usecase/post.usecase';
-import { PostRepositoryPort } from '../port/persistence/post.repository.port';
+
 import { QueryBusPort } from '@core/common/port/message/query-bus.port';
 import { Exception } from '@core/common/exception/exception';
 import { CommonMsg } from '@core/common/response/message/common-message';
 import { GetUserPreviewQuery } from './../../../common/message/query/queries/user/get-user-preview.query';
-import { Post } from '../entity/post';
-import { PostOwner } from '../entity/post-owner';
+
 import { GetUserPreviewQueryResult } from '@core/common/message/query/queries/user/result/get-user-preview-query.result';
+import { CreatePostPort } from '@core/domain/post/port/usecase/post.port';
+import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
+import { CreatePostUseCase } from '@core/domain/post/usecase/post.usecase';
+import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
+import { PostOwner } from '@core/domain/post/entity/post-owner';
+import { Post } from '@core/domain/post/entity/post';
 
 export class CreatePostService implements CreatePostUseCase {
   constructor(

@@ -4,3 +4,8 @@ export type PostModel = {
   content: string;
   createdAt: string;
 };
+
+export type GetPostQuery = {
+  pageNo: number;
+  pageSize: number;
+};

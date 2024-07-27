@@ -24,6 +24,7 @@ import PostInfo from "@/components/post/PostInfo";
 import PostHeader from "@/components/post/PostHeader";
 import PostContent from "@/components/post/PostContent";
 import CommentSection from "@/components/post/CommentSection";
+import { useGetPosts } from "@/stores/fetch/post/post";
 
 export default function PostPage() {
   return (

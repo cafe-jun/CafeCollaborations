@@ -14,7 +14,13 @@ import {
 } from "@chakra-ui/react";
 
 import { SearchIcon } from "@chakra-ui/icons";
+import { useGetPosts } from "@/stores/fetch/post/post";
 export default function ProjectList() {
+  const { data, refetch, isFetching } = useGetPosts({
+    pageNo: 1,
+    pageSize: 5,
+  });
+  console.log(data);
   const projects = [
     {
       title: "[PM 모집] 사이드 프로젝트<🤟, 자...?>의 PM을 모집합니다!",

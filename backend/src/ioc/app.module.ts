@@ -29,23 +29,6 @@ import { PostModule } from './post.module';
       ],
     }),
   ],
-  providers: [
-    AppHeaderProvider,
-    {
-      provide: APP_PIPE,
-      useFactory: () =>
-        new ValidationPipe({
-          transformOptions: {
-            enableImplicitConversion: true,
-          },
-          whitelist: true,
-          forbidNonWhitelisted: true,
-          transform: true,
-          exceptionFactory: (errors: ValidationError[]) => {
-            return ClassValidator.validate(errors);
-          },
-        }),
-    },
-  ],
+  providers: [AppHeaderProvider],
 })
 export class AppModule {}

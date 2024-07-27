@@ -1,12 +1,14 @@
 import { PublishPostAdapter } from '@infrastructure/adapter/usecase/post/publish-post.adapter';
-import { PublishPostUseCase } from '../usecase/post.usecase';
-import { PostUseCaseDto } from '../usecase/dto/post-usecase.dto';
-import { Post } from '../entity/post';
+
 import { CoreAssert } from '@core/common/util/assert/core.assert';
-import { PostRepositoryPort } from '../port/persistence/post.repository.port';
-import { PublishPostPort } from '../port/usecase/post.port';
+
 import { Exception } from '@core/common/exception/exception';
 import { CommonMsg } from '@core/common/response/message/common-message';
+import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
+import { PublishPostPort } from '@core/domain/post/port/usecase/post.port';
+import { Post } from '@core/domain/post/entity/post';
+import { PublishPostUseCase } from '@core/domain/post/usecase/post.usecase';
+import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
 
 export class PublishPostService implements PublishPostUseCase {
   constructor(private readonly postRepository: PostRepositoryPort) {}

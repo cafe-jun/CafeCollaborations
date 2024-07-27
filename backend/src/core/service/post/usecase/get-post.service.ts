@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { GetPostUseCase } from '../usecase/post.usecase';
-import { GetPostPort } from '../port/usecase/post.port';
-import { PostUseCaseDto } from '../usecase/dto/post-usecase.dto';
-import { PostRepositoryPort } from '../port/persistence/post.repository.port';
-import { Post } from '../entity/post';
+
 import { CoreAssert } from '@core/common/util/assert/core.assert';
 import { Exception } from '@core/common/exception/Exception';
 import { CommonMsg } from '@core/common/response/message/common-message';
 import { PostStatus } from '@core/common/enums/post-status.enum';
+import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
+import { GetPostUseCase } from '@core/domain/post/usecase/post.usecase';
+import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
+import { Post } from '@core/domain/post/entity/post';
+import { GetPostPort } from '@core/domain/post/port/usecase/post.port';
 
 @Injectable()
 export class GetPostService implements GetPostUseCase {

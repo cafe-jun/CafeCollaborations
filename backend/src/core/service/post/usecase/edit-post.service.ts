@@ -1,12 +1,12 @@
 import { CoreAssert } from '@core/common/util/assert/core.assert';
-import { PostUseCaseDto } from '../usecase/dto/post-usecase.dto';
-import { PostRepositoryPort } from '../port/persistence/post.repository.port';
 import { QueryBusPort } from '@core/common/port/message/query-bus.port';
 import { Exception } from '@core/common/exception/exception';
 import { CommonMsg } from '@core/common/response/message/common-message';
-import { Post } from '../entity/post';
-import { EditPostPort } from '../port/usecase/post.port';
-import { EditPostUseCase } from '../usecase/post.usecase';
+import { EditPostUseCase } from '@core/domain/post/usecase/post.usecase';
+import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
+import { EditPostPort } from '@core/domain/post/port/usecase/post.port';
+import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
+import { Post } from '@core/domain/post/entity/post';
 
 export class EditPostService implements EditPostUseCase {
   constructor(

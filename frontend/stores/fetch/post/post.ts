@@ -1,30 +1,35 @@
 import { customAxios, ErrorType } from "../customAxios";
-import { UseMutationOptions, UseQueryOptions } from "@tanstack/react-query";
-import type { PostModel } from "../../model/post/post.model";
+import {
+  QueryFunction,
+  QueryKey,
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
+} from "@tanstack/react-query";
+import type { GetPostQuery, PostModel } from "../../model/post/post.model";
+import { getPostQueryKey } from "./query-key";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
 
-export const getPosts = () => {
-  return customAxios<PostModel>({ url: `/v1/post`, method: "POST" });
+export const getPosts = (query: {
+  params?: GetPostQuery;
+  signal?: AbortSignal;
+}) => {
+  return customAxios<PostModel>({
+    url: `/v1/post`,
+    method: "POST",
+    params: query.params,
+    signal: query.signal,
+  });
 };
 
-// export const getPosts = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-//   mutation: UseMutationOptions<Awaited<ReturnType<typeof PostModel>,
-//   TError,
-//   void,
-//   TContext,
-// }) => {
-//     console.log("first")
-// };
-
-export const getPostsQueryOption = <
+export const useGetPosts = <
   TData = Awaited<ReturnType<typeof getPosts>>,
   TError = ErrorType<unknown>
 >(
-  userID: string,
-  params?: any,
+  params?: GetPostQuery,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getPosts>>,
@@ -32,4 +37,43 @@ export const getPostsQueryOption = <
       TData
     >;
   }
-) => {};
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getPostsQueryOption({
+    params,
+    options,
+  });
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return query;
+};
+
+export const getPostsQueryOption = <
+  TData = Awaited<ReturnType<typeof getPosts>>,
+  TError = ErrorType<unknown>
+>(query: {
+  params?: GetPostQuery;
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getPosts>>,
+      TError,
+      TData
+    >;
+  };
+}) => {
+  const { query: queryOptions } = query.options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getPostQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getPosts>>> = ({
+    signal,
+  }) => getPosts({ params: query.params });
+
+  return {
+    queryKey,
+    queryFn,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getPosts>>, TError, TData> & {
+    queryKey: QueryKey;
+  };
+};

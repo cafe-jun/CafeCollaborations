@@ -1,5 +1,13 @@
 import { TransactionalUseCase } from '@core/common/usecase/transaction.usecase';
-import { CreatePostPort, EditPostPort, GetPostListPort, GetPostPort, PublishPostPort, RemovePostPort } from '../port/usecase/post.port';
+import {
+  CreatePostPort,
+  EditPostPort,
+  GetAllPostListPort,
+  GetPostListPort,
+  GetPostPort,
+  PublishPostPort,
+  RemovePostPort,
+} from '../port/usecase/post.port';
 import { PostUseCaseDto } from './dto/post-usecase.dto';
 import { UseCase } from '@core/common/usecase/usecase';
 
@@ -14,3 +22,5 @@ export interface GetPostUseCase extends UseCase<GetPostPort, PostUseCaseDto> {}
 export interface PublishPostUseCase extends UseCase<PublishPostPort, PostUseCaseDto> {}
 
 export interface RemovePostUseCase extends UseCase<RemovePostPort, void> {}
+
+export interface GetAllPostUseCase extends UseCase<GetAllPostListPort, PostUseCaseDto[]> {}

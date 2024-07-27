@@ -1,10 +1,10 @@
-import { PostRepositoryPort } from '../port/persistence/post.repository.port';
-import { RemovePostPort } from '../port/usecase/post.port';
-import { RemovePostUseCase } from '../usecase/post.usecase';
 import { Exception } from '@core/common/exception/exception';
 import { CommonMsg } from '@core/common/response/message/common-message';
 import { CoreAssert } from '@core/common/util/assert/core.assert';
-import { Post } from '../entity/post';
+import { Post } from '@core/domain/post/entity/post';
+import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
+import { RemovePostPort } from '@core/domain/post/port/usecase/post.port';
+import { RemovePostUseCase } from '@core/domain/post/usecase/post.usecase';
 
 export class RemovePostService implements RemovePostUseCase {
   constructor(private readonly postRepository: PostRepositoryPort) {}

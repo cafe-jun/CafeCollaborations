@@ -35,3 +35,8 @@ export type RemovePostPort = {
   executorId: number;
   postId: number;
 };
+
+export type GetAllPostListPort = {
+  pageNo: number;
+  pageSize: number;
+};

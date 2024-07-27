@@ -1,10 +1,10 @@
 import { NotFoundException } from '@nestjs/common';
-import { UserRepositoryPort } from '../port/persistence/user.repository.port';
-import { CreateUserUseCase } from '../usecase/user.usecase';
-import { UserUseCaseDto } from '../usecase/dto/user.usecase.dto';
-import { User } from '../entity/user';
 import { CoreAssert } from '@core/common/util/assert/core.assert';
-import { CreateUserPort } from '../port/usecase/user.port';
+import { CreateUserUseCase } from '@core/domain/user/usecase/user.usecase';
+import { UserRepositoryPort } from '@core/domain/user/port/persistence/user.repository.port';
+import { UserUseCaseDto } from '@core/domain/user/usecase/dto/user.usecase.dto';
+import { CreateUserPort } from '@core/domain/user/port/usecase/user.port';
+import { User } from '@core/domain/user/entity/user';
 
 export class CreateUserService implements CreateUserUseCase {
   constructor(private readonly userRepository: UserRepositoryPort) {}

@@ -1,7 +1,10 @@
 import { Text, VStack, HStack, Link, Icon } from "@chakra-ui/react";
 import { CalendarIcon, TimeIcon, ChatIcon } from "@chakra-ui/icons";
+import { useGetPosts } from "@/stores/fetch/post/post";
 
 export default async function PostInfo() {
+  const { data, refetch, isFetching } = useGetPosts();
+
   return (
     <HStack
       spacing={8}

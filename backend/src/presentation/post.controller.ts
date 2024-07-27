@@ -6,6 +6,7 @@ import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
 import {
   CreatePostUseCase,
   EditPostUseCase,
+  GetAllPostUseCase,
   GetPostListUseCase,
   GetPostUseCase,
   PublishPostUseCase,
@@ -26,6 +27,9 @@ import { GetPostAdapter } from '@infrastructure/adapter/usecase/post/get-post.ad
 import { PostStatus } from '@core/common/enums/post-status.enum';
 import { PublishPostAdapter } from '@infrastructure/adapter/usecase/post/publish-post.adapter';
 import { RemovePostAdapter } from '@infrastructure/adapter/usecase/post/remove-post.adapter';
+import { GetAllPostListAdapter } from '@infrastructure/adapter/usecase/post/get-all-post-list.adapter';
+import { RestGetAllPostListQuery } from './rest-doc/post/get-all-post-list.query';
+import { RestApiModelPost } from './rest-doc/post/post.model';
 
 @Controller('post')
 @ApiTags('posts')
@@ -45,6 +49,9 @@ export class PostController {
 
     @Inject(PostDITokens.RemovePostUseCase)
     private readonly removePostUseCase: RemovePostUseCase,
+
+    @Inject(PostDITokens.GetAllPostListUseCase)
+    private readonly getAllPostListUsecase: GetAllPostUseCase,
   ) {}
 
   @Post()
@@ -84,16 +91,13 @@ export class PostController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  @ApiBearerAuth()
-  @ApiQuery({ name: 'authorId', type: Number, required: false })
-  public async getPostList(@HttpUser() user: RestUserPayload, @Query() query: RestGetPostListQuery): Promise<CoreApiResponse<PostUseCaseDto[]>> {
-    const adapter: GetPostListAdapter = await GetPostListAdapter.create({
-      ownerId: query.authorId,
-      executorId: user.id,
-      status: PostStatus.PUBLISHED,
+  @ApiResponse({ status: HttpStatus.OK, type: RestApiModelPost })
+  public async getAllPostsList(@Query() query: RestGetAllPostListQuery): Promise<CoreApiResponse<PostUseCaseDto[]>> {
+    const adapter: GetAllPostListAdapter = await GetAllPostListAdapter.create({
+      pageNo: query.pageNo,
+      pageSize: query.pageSize,
     });
-    const posts: PostUseCaseDto[] = await this.getPostListUseCase.execute(adapter);
-
+    const posts: PostUseCaseDto[] = await this.getAllPostListUsecase.execute(adapter);
     return CoreApiResponse.success(posts);
   }
 
