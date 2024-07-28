@@ -7,7 +7,6 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import type { GetPostQuery, PostModel } from "../../model/post/post.model";
-import { getPostQueryKey } from "./query-key";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -63,7 +62,7 @@ export const getPostsQueryOption = <
   };
 }) => {
   const { query: queryOptions } = query.options ?? {};
-  const queryKey = queryOptions?.queryKey ?? getPostQueryKey();
+  const queryKey = queryOptions?.queryKey;
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getPosts>>> = ({
     signal,

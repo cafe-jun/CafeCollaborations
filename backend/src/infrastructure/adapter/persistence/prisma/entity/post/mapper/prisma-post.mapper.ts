@@ -13,6 +13,7 @@ export class PrismaPostMapper {
       id: post.getId(),
       userId: post.getOwner().getId(),
       title: post.getTitle(),
+      category: post.getCategory(),
       content: post.getContent(),
       status: post.getStatus(),
       imageId: post.getImage().getId(),

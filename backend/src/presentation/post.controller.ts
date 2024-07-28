@@ -67,7 +67,7 @@ export class PostController {
       imageId: body.imageId,
     });
     const createPost: PostUseCaseDto = await this.createPostUseCase.execute(adapter);
-    return CoreApiResponse.success(createPost);
+    return CoreApiResponse.success(createPost, 'Post created successfully');
   }
 
   @Put(':postId')
@@ -98,7 +98,7 @@ export class PostController {
       pageSize: query.pageSize,
     });
     const posts: PostUseCaseDto[] = await this.getAllPostListUsecase.execute(adapter);
-    return CoreApiResponse.success(posts);
+    return CoreApiResponse.success(posts, 'Posts fetched successfully', {});
   }
 
   @Get('mine')

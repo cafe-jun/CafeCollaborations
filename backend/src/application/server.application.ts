@@ -26,6 +26,7 @@ export class ServerApplication {
   }
 
   private setVersioning(app: NestApp) {
+    app.setGlobalPrefix('/api');
     app.enableVersioning({
       type: VersioningType.URI,
       defaultVersion: '1',

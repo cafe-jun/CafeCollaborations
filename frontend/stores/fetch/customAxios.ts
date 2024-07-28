@@ -1,8 +1,7 @@
 import Axios, { AxiosError, AxiosRequestConfig } from "axios";
 
-console.log("process.env.NEXT_API_URL ", process.env.NEXT_API_URL);
 export const axiosInstance = Axios.create({
-  baseURL: process.env.NEXT_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL, // NEXT_API_URL 로 세팅시 발동이 안됨
   timeout: 15 * 1000,
 });
 type CustomAxiosProps = AxiosRequestConfig & {
@@ -13,12 +12,11 @@ export const customAxios = <T>(config: CustomAxiosProps): Promise<T> => {
   const headers = config?.Authentication
     ? {
         ...config?.headers,
-        Cookie: `Authentication=${config?.Authentication}`,
+        // Cookie: `Authentication=${config?.Authentication}`,
       }
     : config?.headers;
 
   return axiosInstance({
-    url: "http://localhost:3001",
     ...config,
     headers,
     withCredentials: true,

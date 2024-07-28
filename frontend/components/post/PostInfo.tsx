@@ -1,6 +1,6 @@
 import { Text, VStack, HStack, Link, Icon } from "@chakra-ui/react";
 import { CalendarIcon, TimeIcon, ChatIcon } from "@chakra-ui/icons";
-import { useGetPosts } from "@/stores/fetch/post/post";
+import { useGetPosts } from "@/stores/fetch/post/post.back";
 
 export default async function PostInfo() {
   const { data, refetch, isFetching } = useGetPosts();

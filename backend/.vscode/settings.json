@@ -1,3 +1,7 @@
 {
-  "prisma.fileWatcher": true
+  "prisma.fileWatcher": true,
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "editor.formatOnSave": true
 }

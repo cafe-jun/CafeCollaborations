@@ -32,7 +32,7 @@ export default function NoticeBanner() {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  console.log(bannerItems);
+
   return (
     <Box bg="green.50" py={8}>
       <Container maxW="1600px">

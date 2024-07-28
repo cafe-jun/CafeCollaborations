@@ -9,11 +9,16 @@ import { Injectable } from '@nestjs/common';
 export class GetAllPostListService implements GetAllPostUseCase {
   constructor(private readonly postRepository: PostRepositoryPort) {}
 
-  async execute(payload: GetAllPostListPort): Promise<PostUseCaseDto[]> {
-    const posts: Post[] = await this.postRepository.findPostByPagination({
+  async execute(
+    payload: GetAllPostListPort,
+  ): Promise<{ items: PostUseCaseDto[]; totalCount: number; pageCount: number; pageSize: number; pageNo: number }> {
+    const { items, totalCount } = await this.postRepository.findPostByPagination({
       pageNo: payload.pageNo,
       pageSize: payload.pageSize,
     });
-    return PostUseCaseDto.newListFromPosts(posts);
+    const posts = PostUseCaseDto.newListFromPosts(items);
+    const pageCount = Math.ceil(totalCount / payload.pageSize);
+
+    return { items: posts, totalCount, pageCount, pageSize: payload.pageSize, pageNo: payload.pageNo };
   }
 }

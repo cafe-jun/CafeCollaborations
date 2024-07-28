@@ -1,7 +1,7 @@
 import { Nullable } from '../type/common.types';
 import { CommonMsg } from './message/common-message';
 
-export class CoreApiResponse<TData> {
+export class CoreApiResponse<TData, TMeta = any> {
   public readonly code: number;
 
   public readonly message: string;
@@ -10,17 +10,20 @@ export class CoreApiResponse<TData> {
 
   public readonly data: Nullable<TData>;
 
-  private constructor(code: number, message: string, data?: TData) {
+  public readonly meta: Nullable<TMeta>;
+
+  private constructor(code: number, message: string, data?: TData, meta?: TMeta) {
     this.code = code;
     this.message = message;
     this.data = data || null;
+    this.meta = meta || null;
     this.timestamp = Date.now();
   }
 
-  public static success<TData>(data?: TData, message?: string): CoreApiResponse<TData> {
+  public static success<TData, TMeta>(data?: TData, message?: string, meta?: TMeta): CoreApiResponse<TData, TMeta> {
     const resultCode: number = CommonMsg.SUCCESS.code;
     const resultMessage: string = message || CommonMsg.SUCCESS.message;
-    return new CoreApiResponse(resultCode, resultMessage, data);
+    return new CoreApiResponse(resultCode, resultMessage, data, meta);
   }
 
   public static error<TData>(code?: number, message?: string, data?: TData): CoreApiResponse<TData> {

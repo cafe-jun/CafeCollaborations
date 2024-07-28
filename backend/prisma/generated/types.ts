@@ -24,13 +24,24 @@ export type PostStatus = (typeof PostStatus)[keyof typeof PostStatus];
 export type Post = {
     id: Generated<number>;
     title: string;
-    imageId: number;
+    category: string;
+    imageId: number | null;
     content: string;
     status: PostStatus;
     createdAt: Generated<Timestamp>;
-    editedAt: Timestamp;
-    removedAt: Timestamp;
+    editedAt: Timestamp | null;
+    removedAt: Timestamp | null;
     userId: number;
+};
+export type PostTag = {
+    id: Generated<number>;
+    postId: number;
+    tagId: number;
+};
+export type Tag = {
+    id: Generated<number>;
+    name: string;
+    postTagId: number;
 };
 export type User = {
     id: Generated<number>;
@@ -42,5 +53,7 @@ export type User = {
 };
 export type DB = {
     Post: Post;
+    PostTag: PostTag;
+    Tag: Tag;
     User: User;
 };

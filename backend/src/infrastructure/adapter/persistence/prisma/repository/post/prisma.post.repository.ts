@@ -44,12 +44,13 @@ export class PrismaPostRepository implements PostRepositoryPort {
     return PrismaPostMapper.toDomain(post);
   }
 
-  public async findPostByPagination(by: { pageNo: number; pageSize: number }): Promise<Post[]> {
+  public async findPostByPagination(by: { pageNo: number; pageSize: number }): Promise<{ items: Post[]; totalCount: number }> {
     const posts = await this.prismaService.post.findMany({
-      skip: by.pageNo,
+      skip: (by.pageNo - 1) * by.pageSize,
       take: by.pageSize,
     });
-    return PrismaPostMapper.toDomainEntities(posts);
+    const totalCount = await this.prismaService.post.count();
+    return { items: PrismaPostMapper.toDomainEntities(posts), totalCount: totalCount };
   }
 
   public async findPosts(payload: { ownerId: number; status: PostStatus }): Promise<Optional<Post[]>> {

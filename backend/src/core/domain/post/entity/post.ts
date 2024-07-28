@@ -14,6 +14,9 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsString()
   private title: string;
 
+  @IsString()
+  private category: string;
+
   @IsOptional()
   @IsInstance(PostImage)
   private image: Nullable<PostImage>;
@@ -61,7 +64,9 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   public getTitle(): string {
     return this.title;
   }
-
+  public getCategory(): string {
+    return this.category;
+  }
   public getImage(): Nullable<PostImage> {
     return this.image;
   }

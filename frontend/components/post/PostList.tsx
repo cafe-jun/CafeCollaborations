@@ -14,51 +14,26 @@ import {
 } from "@chakra-ui/react";
 
 import { SearchIcon } from "@chakra-ui/icons";
-import { useGetPosts } from "@/stores/fetch/post/post";
-export default function ProjectList() {
-  const { data, refetch, isFetching } = useGetPosts({
-    pageNo: 1,
-    pageSize: 5,
-  });
-  console.log(data);
-  const projects = [
-    {
-      title: "[PM 모집] 사이드 프로젝트<🤟, 자...?>의 PM을 모집합니다!",
-      category: "PM",
-      skills: ["기획자", "마케터"],
-    },
-    {
-      title: "프트롤러를 위한 토이프로젝트 디자이너 한 분 모집합니다!",
-      category: "디자이너",
-      skills: [],
-    },
-    {
-      title: "영어학습앱-PM, UX UI기획 모집",
-      category: "PM",
-      skills: ["기획자"],
-    },
-    {
-      title: "앱 모 앱 프로젝트 디자이너 모집",
-      category: "디자이너",
-      skills: [],
-    },
-    {
-      title: "프트롤러를 위한 토이프로젝트 디자이너 한 분 모집합니다!",
-      category: "디자이너",
-      skills: [],
-    },
-    {
-      title: "영어학습앱-PM, UX UI기획 모집",
-      category: "PM",
-      skills: ["기획자"],
-    },
-    {
-      title: "앱 모 앱 프로젝트 디자이너 모집",
-      category: "디자이너",
-      skills: [],
-    },
-  ];
+import { usePost } from "@/stores/fetch/post/usePost.service";
+import PostPagination from "./PostPagination";
+import { useEffect, useState } from "react";
+export default function PostList() {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalItems = 114;
+  const pageCount = Math.ceil(totalItems / 20);
+  const handlePageChange = (item: { selected: number }) => {
+    setCurrentPage(item.selected + 1);
+  };
 
+  const { data: posts, refetch } = usePost({
+    pageSize: 20,
+    pageNo: currentPage,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, refetch]);
+  if (!posts) return;
   return (
     <Box my={8}>
       <HStack spacing={2} mb={4}>
@@ -92,7 +67,7 @@ export default function ProjectList() {
         />
       </Flex>
       <SimpleGrid columns={[1, 2, 3, 4]} spacing={5}>
-        {projects.map((project, index) => (
+        {posts?.map((post, index) => (
           <Box
             key={index}
             width={"100%"}
@@ -105,18 +80,24 @@ export default function ProjectList() {
               프로젝트
             </Badge>
             <Text fontWeight="bold" mb={2} noOfLines={2}>
-              {project.title}
+              {post.title}
             </Text>
             <Flex>
-              {project.skills.map((skill, idx) => (
+              {/* 태그 들어갈 자리 
+               {post..map((skill, idx) => (
                 <Badge key={idx} mr={1}>
                   {skill}
                 </Badge>
-              ))}
+              ))} */}
             </Flex>
           </Box>
         ))}
       </SimpleGrid>
+      <PostPagination
+        currentPage={currentPage}
+        pageCount={pageCount}
+        onPageChange={handlePageChange}
+      />
     </Box>
   );
 }
