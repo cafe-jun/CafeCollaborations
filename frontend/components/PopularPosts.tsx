@@ -30,13 +30,13 @@ export default function PopularPosts() {
   return (
     <Box my={8}>
       <Text fontSize="2xl" fontWeight="bold" mb={4}>
-        🔥 이번주 올라 인기글
+        🔥 이번주 체험단 인기글
       </Text>
       <SimpleGrid columns={[1, 2, 2, 4]} spacing={4}>
         {posts.map((post, index) => (
           <Box key={index} borderWidth={1} borderRadius="lg" p={4}>
             <Badge colorScheme="orange" mb={2}>
-              프로젝트
+              체험단
             </Badge>
             <Text fontWeight="bold" mb={2} noOfLines={2}>
               {post.title}

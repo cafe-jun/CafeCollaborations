@@ -8,24 +8,58 @@ import {
   Flex,
   Button,
   Input,
-  Select,
   HStack,
   IconButton,
+  WrapItem,
+  Wrap,
+  Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Spacer,
+  PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverBody,
+  VStack,
+  Checkbox,
 } from "@chakra-ui/react";
 
-import { SearchIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { usePost } from "@/stores/fetch/post/usePost.service";
 import PostPagination from "./PostPagination";
 import { useEffect, useState } from "react";
+import PostMenu from "./PostMenu";
+const technologies = [
+  { name: "React", icon: "/path/to/react-icon.png" },
+  { name: "TypeScript", icon: "/path/to/typescript-icon.png" },
+  { name: "JavaScript", icon: "/path/to/javascript-icon.png" },
+  { name: "Vue", icon: "/path/to/vue-icon.png" },
+  { name: "Next.js", icon: "/path/to/nextjs-icon.png" },
+  { name: "Node.js", icon: "/path/to/nodejs-icon.png" },
+  { name: "Java", icon: "/path/to/java-icon.png" },
+  { name: "Spring", icon: "/path/to/spring-icon.png" },
+  { name: "Kotlin", icon: "/path/to/kotlin-icon.png" },
+  { name: "Nest.js", icon: "/path/to/nestjs-icon.png" },
+  { name: "Swift", icon: "/path/to/swift-icon.png" },
+  { name: "Flutter", icon: "/path/to/flutter-icon.png" },
+  { name: "Figma", icon: "/path/to/figma-icon.png" },
+];
 export default function PostList() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const totalItems = 114;
-  const pageCount = Math.ceil(totalItems / 20);
+
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  // ... 기존 코드 ...
+
+  const handleMenuToggle = (menuName: string) => {
+    setOpenMenu(openMenu === menuName ? null : menuName);
+  };
   const handlePageChange = (item: { selected: number }) => {
     setCurrentPage(item.selected + 1);
   };
 
-  const { data: posts, refetch } = usePost({
+  const { data, refetch } = usePost({
     pageSize: 20,
     pageNo: currentPage,
   });
@@ -33,41 +67,38 @@ export default function PostList() {
   useEffect(() => {
     refetch();
   }, [currentPage, refetch]);
-  if (!posts) return;
+  if (!data?.data) return;
+
   return (
     <Box my={8}>
-      <HStack spacing={2} mb={4}>
-        <Button variant="outline">전체</Button>
-        <Button variant="outline">프로젝트</Button>
-        <Button variant="outline">스터디</Button>
-      </HStack>
-      <Flex flexWrap="wrap" justifyContent="space-between" mb={4}>
-        <HStack spacing={2} mb={2} flex={1} minW="200px">
-          <Select placeholder="기술 스택" size="xs" borderRadius={"xl"}>
-            {/* 옵션들 */}
-          </Select>
-          <Select placeholder="포지션" size="xs">
-            {/* 옵션들 */}
-          </Select>
-          <Select placeholder="진행 방식" size="xs">
-            {/* 옵션들 */}
-          </Select>
-        </HStack>
-        <Button colorScheme="teal" size="sm" mb={2}>
-          👍 내 맘대로 보기
-        </Button>
-      </Flex>
-      <Flex mb={4}>
-        <Input placeholder="제목, 글 내용을 검색해보세요." size="sm" />
-        <IconButton
-          aria-label="search"
-          icon={<SearchIcon />}
-          ml={2}
-          size="sm"
+      <HStack marginBottom="3rem" justifyContent="space-between">
+        <PostMenu
+          title={"지역"}
+          isOpen={openMenu === "업종"}
+          onToggle={() => handleMenuToggle("업종")}
         />
-      </Flex>
+        <PostMenu
+          title={"업종"}
+          isOpen={openMenu === "지역"}
+          onToggle={() => handleMenuToggle("지역")}
+        />
+        <Spacer />
+        <Flex mb={4} alignItems="center" justifyContent="center">
+          <Input
+            placeholder="제목, 글 내용을 검색해보세요."
+            size="lg"
+            width="30rem"
+          />
+          <IconButton
+            aria-label="search"
+            icon={<SearchIcon />}
+            ml={2}
+            size="lg"
+          />
+        </Flex>
+      </HStack>
       <SimpleGrid columns={[1, 2, 3, 4]} spacing={5}>
-        {posts?.map((post, index) => (
+        {data?.data?.map((post, index) => (
           <Box
             key={index}
             width={"100%"}
@@ -95,7 +126,7 @@ export default function PostList() {
       </SimpleGrid>
       <PostPagination
         currentPage={currentPage}
-        pageCount={pageCount}
+        pageCount={data?.meta.totalPage ?? 0}
         onPageChange={handlePageChange}
       />
     </Box>

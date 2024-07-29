@@ -16,7 +16,7 @@ export default async function PostInfo() {
       <VStack align="start" spacing={2}>
         <HStack>
           <Text fontWeight="bold">모집 구분:</Text>
-          <Text>프로젝트</Text>
+          <Text>체험단</Text>
         </HStack>
         <HStack>
           <Text fontWeight="bold">모집 인원:</Text>

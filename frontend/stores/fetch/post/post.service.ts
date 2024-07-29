@@ -3,14 +3,22 @@ import { PostModel } from "@/stores/model/post/post.model";
 import { createApiQueryUrl } from "@/util/react-query";
 
 class PostService extends Service {
-  getPost(query: { pageNo: number; pageSize: number }) {
+  getPost(query: { pageNo: number; pageSize: number }): Promise<{
+    data: PostModel[];
+    meta: { totalCount: number; totalPage: number; currentPage: number };
+  }> {
     const querys = createApiQueryUrl<{ pageNo: number; pageSize: number }>(
       "/post",
       { pageNo: query.pageNo, pageSize: query.pageSize }
     );
     return this.http
-      .get<{ data: PostModel[] }>(querys)
-      .then((res) => res?.data);
+      .get<{
+        data: PostModel[];
+        meta: { totalCount: number; totalPage: number; currentPage: number };
+      }>(querys)
+      .then((res) => {
+        return { data: res.data, meta: res.meta };
+      });
   }
 
   getPostDetail(postId: number) {
