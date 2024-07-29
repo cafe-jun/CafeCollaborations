@@ -6,7 +6,6 @@ import { isEmpty } from '@shared/data.helper';
 
 export abstract class UseCaseValidateAdapter {
   public async validate(): Promise<void> {
-    console.log(this);
     const details: Optional<ClassValidationDetails> = await ClassValidator.validate(this);
     if (isEmpty(details)) return;
     throw Exception.create({ code: CommonMsg.USE_CASE_PORT_VALIDATION_ERROR.getDescription(), data: details });
