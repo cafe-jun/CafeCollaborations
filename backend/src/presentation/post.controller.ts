@@ -51,7 +51,7 @@ export class PostController {
     private readonly removePostUseCase: RemovePostUseCase,
 
     @Inject(PostDITokens.GetAllPostListUseCase)
-    private readonly getAllPostListUsecase: GetAllPostUseCase,
+    private readonly getAllPostListUseCase: GetAllPostUseCase,
   ) {}
 
   @Post()
@@ -97,8 +97,8 @@ export class PostController {
       pageNo: query.pageNo,
       pageSize: query.pageSize,
     });
-    const posts: PostUseCaseDto[] = await this.getAllPostListUsecase.execute(adapter);
-    return CoreApiResponse.success(posts, 'Posts fetched successfully', {});
+    const result = await this.getAllPostListUseCase.execute(adapter);
+    return CoreApiResponse.success(result.items, 'Posts fetched successfully', result.meta);
   }
 
   @Get('mine')

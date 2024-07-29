@@ -1,4 +1,4 @@
-import { Post } from '@core/domain/post/entity/post';
+import { PaginationResponse } from '@core/common/pagination/pagination.response';
 import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
 import { GetAllPostListPort } from '@core/domain/post/port/usecase/post.port';
 import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
@@ -9,16 +9,17 @@ import { Injectable } from '@nestjs/common';
 export class GetAllPostListService implements GetAllPostUseCase {
   constructor(private readonly postRepository: PostRepositoryPort) {}
 
-  async execute(
-    payload: GetAllPostListPort,
-  ): Promise<{ items: PostUseCaseDto[]; totalCount: number; pageCount: number; pageSize: number; pageNo: number }> {
+  async execute(payload: GetAllPostListPort): Promise<PaginationResponse<PostUseCaseDto>> {
     const { items, totalCount } = await this.postRepository.findPostByPagination({
       pageNo: payload.pageNo,
       pageSize: payload.pageSize,
     });
     const posts = PostUseCaseDto.newListFromPosts(items);
-    const pageCount = Math.ceil(totalCount / payload.pageSize);
-
-    return { items: posts, totalCount, pageCount, pageSize: payload.pageSize, pageNo: payload.pageNo };
+    const response = new PaginationResponse<PostUseCaseDto>({
+      pageSize: payload.pageSize,
+      items: posts,
+      totalCount: totalCount,
+    });
+    return response;
   }
 }

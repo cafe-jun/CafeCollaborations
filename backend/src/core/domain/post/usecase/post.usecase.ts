@@ -10,6 +10,7 @@ import {
 } from '../port/usecase/post.port';
 import { PostUseCaseDto } from './dto/post-usecase.dto';
 import { UseCase } from '@core/common/usecase/usecase';
+import { PaginationResponse } from '@core/common/pagination/pagination.response';
 
 export interface CreatePostUseCase extends TransactionalUseCase<CreatePostPort, PostUseCaseDto> {}
 
@@ -23,4 +24,4 @@ export interface PublishPostUseCase extends UseCase<PublishPostPort, PostUseCase
 
 export interface RemovePostUseCase extends UseCase<RemovePostPort, void> {}
 
-export interface GetAllPostUseCase extends UseCase<GetAllPostListPort, PostUseCaseDto[]> {}
+export interface GetAllPostUseCase extends UseCase<GetAllPostListPort, PaginationResponse<PostUseCaseDto>> {}

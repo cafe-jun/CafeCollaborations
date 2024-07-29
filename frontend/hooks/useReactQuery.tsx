@@ -4,9 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 {
   /* NOTE: development 환경에서만 실행됨 */
 }
-export default function ReactQueryProviders({
-  children,
-}: React.PropsWithChildren) {
+export default function ReactQueryProviders({ children }: React.PropsWithChildren) {
   const [queryClient] = useState(
     () =>
       new QueryClient({

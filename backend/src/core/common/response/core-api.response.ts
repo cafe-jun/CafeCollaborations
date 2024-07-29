@@ -20,7 +20,7 @@ export class CoreApiResponse<TData, TMeta = any> {
     this.timestamp = Date.now();
   }
 
-  public static success<TData, TMeta>(data?: TData, message?: string, meta?: TMeta): CoreApiResponse<TData, TMeta> {
+  public static success<TData>(data?: TData, message?: string, meta?: any): CoreApiResponse<TData> {
     const resultCode: number = CommonMsg.SUCCESS.code;
     const resultMessage: string = message || CommonMsg.SUCCESS.message;
     return new CoreApiResponse(resultCode, resultMessage, data, meta);
