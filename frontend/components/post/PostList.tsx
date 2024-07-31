@@ -31,21 +31,29 @@ import { usePost } from "@/stores/fetch/post/usePost.service";
 import PostPagination from "./PostPagination";
 import { useEffect, useState } from "react";
 import PostMenu from "./PostMenu";
-const technologies = [
-  { name: "React", icon: "/path/to/react-icon.png" },
-  { name: "TypeScript", icon: "/path/to/typescript-icon.png" },
-  { name: "JavaScript", icon: "/path/to/javascript-icon.png" },
-  { name: "Vue", icon: "/path/to/vue-icon.png" },
-  { name: "Next.js", icon: "/path/to/nextjs-icon.png" },
-  { name: "Node.js", icon: "/path/to/nodejs-icon.png" },
-  { name: "Java", icon: "/path/to/java-icon.png" },
-  { name: "Spring", icon: "/path/to/spring-icon.png" },
-  { name: "Kotlin", icon: "/path/to/kotlin-icon.png" },
-  { name: "Nest.js", icon: "/path/to/nestjs-icon.png" },
-  { name: "Swift", icon: "/path/to/swift-icon.png" },
-  { name: "Flutter", icon: "/path/to/flutter-icon.png" },
-  { name: "Figma", icon: "/path/to/figma-icon.png" },
+const geoItems = [
+  { name: "경기", icon: "/path/to/react-icon.png" },
+  { name: "서울", icon: "/path/to/typescript-icon.png" },
+  { name: "강원", icon: "/path/to/javascript-icon.png" },
+  { name: "충북", icon: "/path/to/vue-icon.png" },
+  { name: "충남", icon: "/path/to/nextjs-icon.png" },
+  { name: "전북", icon: "/path/to/nodejs-icon.png" },
+  { name: "전남", icon: "/path/to/java-icon.png" },
+  { name: "경북", icon: "/path/to/spring-icon.png" },
+  { name: "경남", icon: "/path/to/kotlin-icon.png" },
+  { name: "제조", icon: "/path/to/nestjs-icon.png" },
 ];
+
+const categoryItems = [
+  { name: "숙박", icon: "/path/to/react-icon.png" },
+  { name: "먹거리", icon: "/path/to/typescript-icon.png" },
+  { name: "패션", icon: "/path/to/javascript-icon.png" },
+  { name: "뷰티", icon: "/path/to/vue-icon.png" },
+  { name: "앱", icon: "/path/to/nextjs-icon.png" },
+  { name: "생활용품", icon: "/path/to/nodejs-icon.png" },
+  { name: "애견용품", icon: "/path/to/java-icon.png" },
+];
+
 export default function PostList() {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -76,11 +84,13 @@ export default function PostList() {
           title={"지역"}
           isOpen={openMenu === "업종"}
           onToggle={() => handleMenuToggle("업종")}
+          items={geoItems}
         />
         <PostMenu
           title={"업종"}
           isOpen={openMenu === "지역"}
           onToggle={() => handleMenuToggle("지역")}
+          items={categoryItems}
         />
         <Spacer />
         <Flex mb={4} alignItems="center" justifyContent="center">
@@ -108,7 +118,7 @@ export default function PostList() {
             p={4}
           >
             <Badge colorScheme="orange" mb={2}>
-              프로젝트
+              체험단
             </Badge>
             <Text fontWeight="bold" mb={2} noOfLines={2}>
               {post.title}

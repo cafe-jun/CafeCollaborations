@@ -45,18 +45,19 @@ model User {
 }
 
 model Post {
-  id        Int        @id @default(autoincrement())
-  owner     User       @relation(fields: [userId], references: [id])
-  title     String
-  category  String
-  imageId   Int?
-  content   String
-  status    PostStatus
-  createdAt DateTime   @default(now())
-  editedAt  DateTime?
-  removedAt DateTime?
-  userId    Int
-  postTag   PostTag[]
+  id         Int        @id @default(autoincrement())
+  owner      User       @relation(fields: [userId], references: [id])
+  title      String
+  category   String
+  imageId    Int?
+  content    String
+  status     PostStatus
+  regionCode String
+  createdAt  DateTime   @default(now())
+  editedAt   DateTime?
+  removedAt  DateTime?
+  userId     Int
+  postTag    PostTag[]
 }
 
 model PostTag {

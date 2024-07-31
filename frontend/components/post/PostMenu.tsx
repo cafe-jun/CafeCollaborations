@@ -11,40 +11,32 @@ import {
   PopoverContent,
   PopoverTrigger,
   SimpleGrid,
-  Wrap,
-  WrapItem,
 } from "@chakra-ui/react";
 import { useState } from "react";
-
-const technologies = [
-  { name: "React", icon: "/path/to/react-icon.png" },
-  { name: "TypeScript", icon: "/path/to/typescript-icon.png" },
-  { name: "JavaScript", icon: "/path/to/javascript-icon.png" },
-  { name: "Vue", icon: "/path/to/vue-icon.png" },
-  { name: "Next.js", icon: "/path/to/nextjs-icon.png" },
-  { name: "Node.js", icon: "/path/to/nodejs-icon.png" },
-  { name: "Java", icon: "/path/to/java-icon.png" },
-  { name: "Spring", icon: "/path/to/spring-icon.png" },
-  { name: "Kotlin", icon: "/path/to/kotlin-icon.png" },
-  { name: "Nest.js", icon: "/path/to/nestjs-icon.png" },
-  { name: "Swift", icon: "/path/to/swift-icon.png" },
-  { name: "Flutter", icon: "/path/to/flutter-icon.png" },
-  { name: "Figma", icon: "/path/to/figma-icon.png" },
-];
 
 type PostMenuProps = {
   title: string;
   isOpen: boolean;
   onToggle: () => void;
+  items: { name: string; icon: string }[];
 };
-export default function PostMenu({ title, isOpen, onToggle }: PostMenuProps) {
-  const [selectedTechs, setSelectedTechs] = useState([]);
-  console.log(title);
-  const handleSelect = (tech) => {
-    if (selectedTechs.includes(tech)) {
-      setSelectedTechs(selectedTechs.filter((t) => t !== tech));
+export default function PostMenu({
+  title,
+  isOpen,
+  onToggle,
+  items,
+}: PostMenuProps) {
+  const [selectedItems, setSelectedItems] = useState<
+    {
+      name: string;
+      icon: string;
+    }[]
+  >([]);
+  const handleSelect = (item) => {
+    if (selectedItems.includes({ name: item.name, icon: item.icon })) {
+      setSelectedItems(selectedItems.filter((t) => t !== item));
     } else {
-      setSelectedTechs([...selectedTechs, tech]);
+      setSelectedItems([...selectedItems, item]);
     }
   };
   return (
@@ -54,29 +46,34 @@ export default function PostMenu({ title, isOpen, onToggle }: PostMenuProps) {
           <Button
             width="8rem"
             height="3rem"
+            textAlign={"center"}
             rightIcon={<ChevronDownIcon />}
             onClick={onToggle}
           >
             {title}
           </Button>
         </PopoverTrigger>
-        <PopoverContent width="300px">
+        <PopoverContent width="13.5rem">
           <PopoverBody>
-            <SimpleGrid columns={2} spacing={2} width="10rem" overflowY="auto">
-              {technologies.map((tech) => (
+            <SimpleGrid columns={2} spacing={1} width="12rem">
+              {items.map((item) => (
                 <Button
-                  key={tech.name}
+                  key={item.name}
                   size="lg"
+                  width="5rem"
                   variant={
-                    selectedTechs.includes(tech.name) ? "solid" : "outline"
+                    items.includes({ icon: item.icon, name: item.name })
+                      ? "solid"
+                      : "outline"
                   }
                   colorScheme={
-                    selectedTechs.includes(tech.name) ? "blue" : "gray"
+                    items.includes({ icon: item.icon, name: item.name })
+                      ? "blue"
+                      : "gray"
                   }
-                  onClick={() => handleSelect(tech.name)}
-                  leftIcon={<Image src={tech.icon} boxSize="20px" />}
+                  onClick={() => handleSelect(item.name)}
                 >
-                  {tech.name}
+                  {item.name}
                 </Button>
               ))}
             </SimpleGrid>
