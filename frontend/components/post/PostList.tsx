@@ -6,24 +6,10 @@ import {
   SimpleGrid,
   Badge,
   Flex,
-  Button,
   Input,
   HStack,
   IconButton,
-  WrapItem,
-  Wrap,
-  Image,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Spacer,
-  PopoverTrigger,
-  Popover,
-  PopoverContent,
-  PopoverBody,
-  VStack,
-  Checkbox,
 } from "@chakra-ui/react";
 
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
@@ -41,7 +27,7 @@ const geoItems = [
   { name: "전남", icon: "/path/to/java-icon.png" },
   { name: "경북", icon: "/path/to/spring-icon.png" },
   { name: "경남", icon: "/path/to/kotlin-icon.png" },
-  { name: "제조", icon: "/path/to/nestjs-icon.png" },
+  { name: "제주", icon: "/path/to/nestjs-icon.png" },
 ];
 
 const categoryItems = [

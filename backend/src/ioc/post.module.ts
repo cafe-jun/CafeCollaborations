@@ -78,19 +78,20 @@ const useCaseProviders: Provider[] = [
   {
     provide: PostSearchService,
     useFactory: (esService, postRepository) => new PostSearchService(esService, postRepository),
-    inject: [ElasticsearchService, PostDITokens.PostRepository],
+    inject: [PostDITokens.PostRepository],
   },
 ];
 
 @Module({
-  imports: [SearchModule],
   providers: [...persistencePostProvider, ...useCaseProviders],
   controllers: [PostController],
   exports: [...persistencePostProvider],
 })
-export class PostModule implements OnModuleInit {
-  constructor(private readonly postSearchService: PostSearchService) {}
-  onModuleInit() {
-    this.postSearchService.createIndex();
-  }
-}
+export class PostModule {}
+
+// implements OnModuleInit {
+//   constructor(private readonly postSearchService: PostSearchService) {}
+//   onModuleInit() {
+//     this.postSearchService.createIndex();
+//   }
+// }

@@ -9,6 +9,7 @@ import { PrismaModule, PrismaService } from 'nestjs-prisma';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { PostModule } from './post.module';
 import { SearchModule } from './search.module';
+import { CommonController } from '@presentation/common.controller';
 
 @Module({
   imports: [
@@ -16,7 +17,6 @@ import { SearchModule } from './search.module';
     InfrastructureModule,
     UserModule,
     PostModule,
-    SearchModule,
     ClsModule.forRoot({
       plugins: [
         new ClsPluginTransactional({
@@ -28,6 +28,7 @@ import { SearchModule } from './search.module';
       ],
     }),
   ],
+  controllers: [CommonController],
   providers: [AppHeaderProvider],
 })
 export class AppModule {}

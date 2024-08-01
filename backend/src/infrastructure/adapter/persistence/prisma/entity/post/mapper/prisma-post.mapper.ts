@@ -28,7 +28,6 @@ export class PrismaPostMapper {
     return new Post({
       owner: new PostOwner(prismaPost.userId, `testset`),
       title: prismaPost.title,
-      // image: prismaPost.imageId ? new PostImage(prismaPost.imageId, 'test') : null,
       content: prismaPost.content,
       id: prismaPost.id,
       status: prismaPost.status as PostStatus,
