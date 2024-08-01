@@ -17,6 +17,7 @@ export class PrismaPostMapper {
       content: post.getContent(),
       status: post.getStatus(),
       imageId: post.getImage().getId(),
+      regionCode: post.getRegionCode() as string,
       createdAt: post.getCreatedAt(),
       editedAt: post.getEditedAt(),
       removedAt: post.getRemovedAt(),

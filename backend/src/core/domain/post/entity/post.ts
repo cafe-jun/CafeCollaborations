@@ -7,6 +7,7 @@ import { PostImage } from './post-image';
 import { CreatePostEntityPayload } from './type/create-post-entity.payload';
 import { EditPostEntityPayload } from './type/edit-post-entity.payload';
 import { RemoveEntity } from '@core/common/entity/remove.entity';
+import { RegionCode } from '@core/common/enums/region-code.enum';
 export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsInstance(PostOwner)
   private readonly owner: PostOwner;
@@ -43,6 +44,10 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsOptional()
   @IsDate()
   private removedAt: Nullable<Date>;
+
+  @IsOptional()
+  @IsString()
+  private regionCode: RegionCode;
 
   constructor(payload: CreatePostEntityPayload) {
     super();
@@ -93,6 +98,9 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
 
   public getRemovedAt(): Nullable<Date> {
     return this.removedAt;
+  }
+  public getRegionCode(): string {
+    return this.regionCode.code;
   }
 
   public async edit(payload: EditPostEntityPayload): Promise<void> {

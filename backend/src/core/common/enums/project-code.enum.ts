@@ -1,6 +1,6 @@
 import { Enum, EnumType } from 'ts-jenum';
 
-@Enum('projectCode')
+@Enum('code')
 export class CommonProjectCode extends EnumType<CommonProjectCode>() {
   static readonly REGION_CODE = new CommonProjectCode('CO1001', 'REGION');
 

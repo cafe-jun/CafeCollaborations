@@ -6,6 +6,7 @@ import { RepositoryRemoveOptions } from '@core/common/persistence/repoistory.opt
 export interface PostRepositoryPort {
   findPostById(payload: { id: number }): Promise<Optional<Post>>;
   findPosts(payload: { ownerId?: number; status?: PostStatus }): Promise<Optional<Post[]>>;
+  findAllPost(): Promise<Post[]>;
   findPostByPagination(by: { pageNo: number; pageSize: number }): Promise<{ items: Post[]; totalCount: number }>;
   countPosts(): Promise<number>;
   addPost(Post: Post): Promise<{ id: number }>;

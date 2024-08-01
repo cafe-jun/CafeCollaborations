@@ -1,6 +1,6 @@
 import { PostDITokens } from '@core/domain/post/di/post-di.token';
 import { PrismaPostRepository } from '@infrastructure/adapter/persistence/prisma/repository/post/prisma.post.repository';
-import { Module, Provider } from '@nestjs/common';
+import { Module, OnModuleInit, Provider } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { PrismaToken } from './infrastructure.module';
 import { CreatePostUseCase, GetAllPostUseCase, RemovePostUseCase } from '@core/domain/post/usecase/post.usecase';
@@ -15,6 +15,10 @@ import { GetPostListService } from '@core/service/post/usecase/get-post-list.ser
 import { PublishPostService } from '@core/service/post/usecase/publish-post.service';
 import { RemovePostService } from '@core/service/post/usecase/remove-post.service';
 import { GetAllPostListService } from '@core/service/post/usecase/get-all-post.service';
+import { PostSearchService } from '@core/service/post/usecase/search-post.service';
+import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { SearchModule } from './search.module';
 
 const persistencePostProvider: Provider[] = [
   {
@@ -71,10 +75,22 @@ const useCaseProviders: Provider[] = [
     useFactory: (postRepository) => new GetAllPostListService(postRepository),
     inject: [PostDITokens.PostRepository],
   },
+  {
+    provide: PostSearchService,
+    useFactory: (esService, postRepository) => new PostSearchService(esService, postRepository),
+    inject: [ElasticsearchService, PostDITokens.PostRepository],
+  },
 ];
 
 @Module({
+  imports: [SearchModule],
   providers: [...persistencePostProvider, ...useCaseProviders],
   controllers: [PostController],
+  exports: [...persistencePostProvider],
 })
-export class PostModule {}
+export class PostModule implements OnModuleInit {
+  constructor(private readonly postSearchService: PostSearchService) {}
+  onModuleInit() {
+    this.postSearchService.createIndex();
+  }
+}

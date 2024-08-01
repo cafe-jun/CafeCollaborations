@@ -22,6 +22,11 @@ export class PrismaPostRepository implements PostRepositoryPort {
       },
     });
   }
+  async findAllPost(): Promise<Post[]> {
+    const prismaPosts = await this.prismaService.post.findMany();
+    return PrismaPostMapper.toDomainEntities(prismaPosts);
+  }
+
   public async addPost(post: Post): Promise<{ id: number }> {
     const prismaPost = PrismaPostMapper.toPrisma(post);
     const savePost = await this.prismaService.post.create({

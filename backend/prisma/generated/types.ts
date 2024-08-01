@@ -28,6 +28,7 @@ export type Post = {
     imageId: number | null;
     content: string;
     status: PostStatus;
+    regionCode: string | null;
     createdAt: Generated<Timestamp>;
     editedAt: Timestamp | null;
     removedAt: Timestamp | null;
