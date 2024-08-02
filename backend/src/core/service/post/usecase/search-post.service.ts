@@ -1,15 +1,16 @@
 import { Post } from '@core/domain/post/entity/post';
+import { SearchRequest } from '@elastic/elasticsearch/api/types';
 import { Injectable } from '@nestjs/common';
 
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 
-interface PostSearchBody {
-  id: number;
-  title: string;
-  category: string;
-  content: string;
-  // 기타 필요한 필드들...
-}
+// interface PostSearchBody {
+//   id: number;
+//   title: string;
+//   category: string;
+//   content: string;
+//   // 기타 필요한 필드들...
+// }
 
 @Injectable()
 export class SearchPostService {
@@ -76,8 +77,11 @@ export class SearchPostService {
     });
   }
 
-  async search(query: string, filters?: { category?: string; regionCode?: string }) {
-    const body = {
+  async search(query: string, paging: { pageNo: number; pageSize: number }, filters?: { category?: string; regionCode?: string }) {
+    const body: SearchRequest['body'] = {
+      from: (paging.pageNo - 1) * paging.pageSize,
+      size: paging.pageSize,
+      track_total_hits: true,
       query: {
         bool: {
           must: [
@@ -94,25 +98,26 @@ export class SearchPostService {
     };
 
     if (filters?.category) {
-      body.query.bool.filter.push({ term: { category: filters.category } });
+      (body.query.bool.filter as any[]).push({ term: { category: filters.category } });
     }
 
     if (filters?.regionCode) {
-      body.query.bool.filter.push({ term: { regionCode: filters.regionCode } });
+      (body.query.bool.filter as any[]).push({ term: { regionCode: filters.regionCode } });
     }
 
-    const result = await this.esService.search({
+    const { body: result } = await this.esService.search({
       index: this.index,
       body,
     });
-
-    // return result.hits.hits.map((hit) => ({
-    //   id: hit._source.id,
-    //   title: hit._source.title,
-    //   category: hit._source.category,
-    //   content: hit._source.content,
-    //   score: hit._score,
-    // }));
+    console.log(result);
+    const items = result.hits.hits.map((hit) => ({
+      id: hit._source.id,
+      title: hit._source.title,
+      category: hit._source.category,
+      content: hit._source.content,
+      score: hit._score,
+    }));
+    return { items, totalCount: result.hits.total.value };
   }
 
   async updatePost(post: Post) {

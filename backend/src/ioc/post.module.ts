@@ -73,13 +73,8 @@ const useCaseProviders: Provider[] = [
   },
   {
     provide: PostDITokens.GetAllPostListUseCase,
-    useFactory: (postRepository) => new GetAllPostListService(postRepository),
-    inject: [PostDITokens.PostRepository],
-  },
-  {
-    provide: PostDITokens.SearchPostListUseCase,
-    useFactory: (esService: ElasticsearchService) => new SearchPostService(esService),
-    inject: [ElasticsearchService],
+    useFactory: (postRepository, searchPostService) => new GetAllPostListService(postRepository, searchPostService),
+    inject: [PostDITokens.PostRepository, SearchPostService],
   },
 ];
 
@@ -91,13 +86,16 @@ const useCaseProviders: Provider[] = [
 })
 export class PostModule implements OnModuleInit {
   constructor(
-    private readonly searchPostService: SearchPostService,
+    // private readonly searchPostService: SearchPostService,
     @Inject(PostDITokens.GetAllPostListUseCase)
     private readonly getAllPostUseCase: GetAllPostListService,
   ) {}
   async onModuleInit() {
-    const posts = await this.getAllPostUseCase.execute({ pageNo: 1, pageSize: 100 });
-    const items = posts.items.map((item) => Post.toPostDomain(item));
-    await this.searchPostService.createIndex(items);
+    // const posts = await this.getAllPostUseCase.execute({ pageNo: 1, pageSize: 100 });
+    // console.log(posts);
+    // const items = posts.items.map((item) => Post.toPostDomain(item));
+    // await this.searchPostService.createIndex(items);
+    // const result = await this.searchPostService.search('', { pageNo: 1, pageSize: 100 });
+    // console.log(result);
   }
 }

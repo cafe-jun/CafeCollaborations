@@ -54,8 +54,8 @@ export class PostController {
     @Inject(PostDITokens.GetAllPostListUseCase)
     private readonly getAllPostListUseCase: GetAllPostUseCase,
 
-    @Inject(PostDITokens.SearchPostListUseCase)
-    private readonly searchPostListUseCase: SearchPostUseCase,
+    // @Inject(PostDITokens.SearchPostListUseCase)
+    // private readonly searchPostListUseCase: SearchPostUseCase,
   ) {}
 
   @Post()
@@ -97,11 +97,12 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: HttpStatus.OK, type: RestApiModelPost })
   public async getAllPostsList(@Query() query: RestGetAllPostListQuery): Promise<CoreApiResponse<PostUseCaseDto[]>> {
-    this.searchPostListUseCase.execute();
+    // this.searchPostListUseCase.execute();
     const adapter: GetAllPostListAdapter = await GetAllPostListAdapter.create({
       pageNo: query.pageNo,
       pageSize: query.pageSize,
     });
+    // await this.searchPostListUseCase.execute();
     const result = await this.getAllPostListUseCase.execute(adapter);
     return CoreApiResponse.success(result.items, 'Posts fetched successfully', result.meta);
   }
