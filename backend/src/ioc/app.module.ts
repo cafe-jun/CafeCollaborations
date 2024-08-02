@@ -9,12 +9,12 @@ import { PrismaModule, PrismaService } from 'nestjs-prisma';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { PostModule } from './post.module';
 import { SearchModule } from './search.module';
-import { CommonController } from '@presentation/common.controller';
 
 @Module({
   imports: [
     AuthModule,
     InfrastructureModule,
+    SearchModule,
     UserModule,
     PostModule,
     ClsModule.forRoot({
@@ -28,7 +28,7 @@ import { CommonController } from '@presentation/common.controller';
       ],
     }),
   ],
-  controllers: [CommonController],
+  // controllers: [CommonController],
   providers: [AppHeaderProvider],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import { PostDITokens } from '@core/domain/post/di/post-di.token';
 import { PrismaPostRepository } from '@infrastructure/adapter/persistence/prisma/repository/post/prisma.post.repository';
-import { Module, OnModuleInit, Provider } from '@nestjs/common';
+import { Inject, Module, OnModuleInit, Provider } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { PrismaToken } from './infrastructure.module';
 import { CreatePostUseCase, GetAllPostUseCase, RemovePostUseCase } from '@core/domain/post/usecase/post.usecase';
@@ -15,12 +15,13 @@ import { GetPostListService } from '@core/service/post/usecase/get-post-list.ser
 import { PublishPostService } from '@core/service/post/usecase/publish-post.service';
 import { RemovePostService } from '@core/service/post/usecase/remove-post.service';
 import { GetAllPostListService } from '@core/service/post/usecase/get-all-post.service';
-import { PostSearchService } from '@core/service/post/usecase/search-post.service';
-import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
-import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { ElasticsearchModule, ElasticsearchService } from '@nestjs/elasticsearch';
 import { SearchModule } from './search.module';
+import { SearchPostService } from '@core/service/post/usecase/search-post.service';
+import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
+import { Post } from '@core/domain/post/entity/post';
 
-const persistencePostProvider: Provider[] = [
+export const persistencePostProvider: Provider[] = [
   {
     provide: PostDITokens.PostRepository,
     useFactory: (prismaService: PrismaService) => new PrismaPostRepository(prismaService),
@@ -76,22 +77,27 @@ const useCaseProviders: Provider[] = [
     inject: [PostDITokens.PostRepository],
   },
   {
-    provide: PostSearchService,
-    useFactory: (esService, postRepository) => new PostSearchService(esService, postRepository),
-    inject: [PostDITokens.PostRepository],
+    provide: PostDITokens.SearchPostListUseCase,
+    useFactory: (esService: ElasticsearchService) => new SearchPostService(esService),
+    inject: [ElasticsearchService],
   },
 ];
 
 @Module({
+  imports: [SearchModule],
   providers: [...persistencePostProvider, ...useCaseProviders],
   controllers: [PostController],
   exports: [...persistencePostProvider],
 })
-export class PostModule {}
-
-// implements OnModuleInit {
-//   constructor(private readonly postSearchService: PostSearchService) {}
-//   onModuleInit() {
-//     this.postSearchService.createIndex();
-//   }
-// }
+export class PostModule implements OnModuleInit {
+  constructor(
+    private readonly searchPostService: SearchPostService,
+    @Inject(PostDITokens.GetAllPostListUseCase)
+    private readonly getAllPostUseCase: GetAllPostListService,
+  ) {}
+  async onModuleInit() {
+    const posts = await this.getAllPostUseCase.execute({ pageNo: 1, pageSize: 100 });
+    const items = posts.items.map((item) => Post.toPostDomain(item));
+    await this.searchPostService.createIndex(items);
+  }
+}

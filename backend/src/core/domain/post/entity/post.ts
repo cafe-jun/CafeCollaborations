@@ -8,6 +8,7 @@ import { CreatePostEntityPayload } from './type/create-post-entity.payload';
 import { EditPostEntityPayload } from './type/edit-post-entity.payload';
 import { RemoveEntity } from '@core/common/entity/remove.entity';
 import { RegionCode } from '@core/common/enums/region-code.enum';
+import { PostUseCaseDto } from '../usecase/dto/post-usecase.dto';
 export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsInstance(PostOwner)
   private readonly owner: PostOwner;
@@ -51,6 +52,7 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
 
   constructor(payload: CreatePostEntityPayload) {
     super();
+    this.id = payload.id;
     this.owner = payload.owner;
     this.title = payload.title;
     this.image = payload.image || null;
@@ -69,9 +71,11 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   public getTitle(): string {
     return this.title;
   }
+
   public getCategory(): string {
     return this.category;
   }
+
   public getImage(): Nullable<PostImage> {
     return this.image;
   }
@@ -100,7 +104,7 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     return this.removedAt;
   }
   public getRegionCode(): string {
-    return this.regionCode.code;
+    return '3020';
   }
 
   public async edit(payload: EditPostEntityPayload): Promise<void> {
@@ -138,5 +142,15 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     const post: Post = new Post(payload);
     await post.validate();
     return post;
+  }
+
+  public static toPostDomain(dto: PostUseCaseDto): Post {
+    return new Post({
+      id: dto.id,
+      title: dto.title,
+      status: dto.status,
+      content: dto.content,
+      owner: new PostOwner(dto.owner.id, dto.owner.name),
+    });
   }
 }

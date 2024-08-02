@@ -7,7 +7,7 @@ import { PostOwner } from '../../entity/post-owner';
 
 export class PostUseCaseDto {
   @Expose()
-  public id: string;
+  public id: number;
 
   public image: Nullable<{ id: number; url: string }>;
 

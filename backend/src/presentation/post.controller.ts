@@ -11,6 +11,7 @@ import {
   GetPostUseCase,
   PublishPostUseCase,
   RemovePostUseCase,
+  SearchPostUseCase,
 } from '@core/domain/post/usecase/post.usecase';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -52,6 +53,9 @@ export class PostController {
 
     @Inject(PostDITokens.GetAllPostListUseCase)
     private readonly getAllPostListUseCase: GetAllPostUseCase,
+
+    @Inject(PostDITokens.SearchPostListUseCase)
+    private readonly searchPostListUseCase: SearchPostUseCase,
   ) {}
 
   @Post()
@@ -93,6 +97,7 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: HttpStatus.OK, type: RestApiModelPost })
   public async getAllPostsList(@Query() query: RestGetAllPostListQuery): Promise<CoreApiResponse<PostUseCaseDto[]>> {
+    this.searchPostListUseCase.execute();
     const adapter: GetAllPostListAdapter = await GetAllPostListAdapter.create({
       pageNo: query.pageNo,
       pageSize: query.pageSize,

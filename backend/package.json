@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^8.14.0",
+    "@elastic/elasticsearch": "^7.17.14",
     "@liaoliaots/nestjs-redis": "^9.0.5",
     "@nestjs-cls/transactional": "^2.4.0",
     "@nestjs-cls/transactional-adapter-prisma": "^1.2.2",

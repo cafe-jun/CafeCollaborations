@@ -1,7 +1,6 @@
 import { Post } from '@core/domain/post/entity/post';
-import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 interface PostSearchBody {
@@ -13,50 +12,48 @@ interface PostSearchBody {
 }
 
 @Injectable()
-export class PostSearchService {
-  private readonly index: string;
+export class SearchPostService {
+  private readonly index: string = 'post-index';
 
-  constructor(
-    private readonly esService: ElasticsearchService,
-    private readonly postRepositoryPort: PostRepositoryPort,
-  ) {}
+  constructor(private readonly esService: ElasticsearchService) {}
 
-  async createIndex() {
-    const checkIndex = await this.esService.indices.exists({ index: process.env.ELASTICSEARCH_INDEX });
-    if (checkIndex) {
-      this.esService.indices.create({
-        index: process.env.ELASTICSEARCH_INDEX,
-        mappings: {
-          properties: {
-            id: { type: 'integer' },
-            title: { type: 'text', analyzer: 'standard' },
-            content: { type: 'text', analyzer: 'standard' },
-            category: { type: 'keyword' },
-            status: { type: 'keyword' },
-            regionCode: { type: 'keyword' },
+  async createIndex(posts: Post[]) {
+    const checkIndex = await this.esService.indices.exists({ index: this.index });
+
+    if (!checkIndex.body) {
+      await this.esService.indices.create({
+        index: this.index,
+        body: {
+          mappings: {
+            properties: {
+              id: { type: 'integer' },
+              title: { type: 'text', analyzer: 'standard' },
+              content: { type: 'text', analyzer: 'standard' },
+              category: { type: 'keyword' },
+              status: { type: 'keyword' },
+              regionCode: { type: 'keyword' },
+            },
           },
-        },
-        settings: {
-          number_of_shards: 1,
-          number_of_replicas: 1,
-          analysis: {
-            analyzer: {
-              custom_analyzer: {
-                type: 'custom',
-                tokenizer: 'standard',
-                filter: ['lowercase', 'asciifolding'],
+          settings: {
+            number_of_shards: 1,
+            number_of_replicas: 1,
+            analysis: {
+              analyzer: {
+                custom_analyzer: {
+                  type: 'custom',
+                  tokenizer: 'standard',
+                  filter: ['lowercase', 'asciifolding'],
+                },
               },
             },
           },
         },
       });
-      await this.indexAllPosts();
+      await this.indexAllPosts(posts);
     }
   }
-  async indexAllPosts() {
-    const posts = await this.postRepositoryPort.findAllPost();
+  async indexAllPosts(posts: Post[]) {
     const body = posts.flatMap((post) => [{ index: { _index: this.index, _id: post.getId() } }, this.postToElasticsearchBody(post)]);
-
     await this.esService.bulk({ body });
   }
 
@@ -104,18 +101,18 @@ export class PostSearchService {
       body.query.bool.filter.push({ term: { regionCode: filters.regionCode } });
     }
 
-    const result = await this.esService.search<PostSearchBody>({
+    const result = await this.esService.search({
       index: this.index,
       body,
     });
 
-    return result.hits.hits.map((hit) => ({
-      id: hit._source.id,
-      title: hit._source.title,
-      category: hit._source.category,
-      content: hit._source.content,
-      score: hit._score,
-    }));
+    // return result.hits.hits.map((hit) => ({
+    //   id: hit._source.id,
+    //   title: hit._source.title,
+    //   category: hit._source.category,
+    //   content: hit._source.content,
+    //   score: hit._score,
+    // }));
   }
 
   async updatePost(post: Post) {
@@ -125,6 +122,7 @@ export class PostSearchService {
       body: {
         doc: this.postToElasticsearchBody(post),
       },
+      refresh: true,
     });
   }
 

@@ -25,3 +25,5 @@ export interface PublishPostUseCase extends UseCase<PublishPostPort, PostUseCase
 export interface RemovePostUseCase extends UseCase<RemovePostPort, void> {}
 
 export interface GetAllPostUseCase extends UseCase<GetAllPostListPort, PaginationResponse<PostUseCaseDto>> {}
+
+export interface SearchPostUseCase extends UseCase<void, void> {}

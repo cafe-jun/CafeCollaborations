@@ -25,16 +25,17 @@ export class PrismaPostMapper {
   }
 
   public static toDomain(prismaPost: PrismaPost): Post {
-    return new Post({
+    const post = new Post({
+      id: prismaPost.id,
       owner: new PostOwner(prismaPost.userId, `testset`),
       title: prismaPost.title,
       content: prismaPost.content,
-      id: prismaPost.id,
       status: prismaPost.status as PostStatus,
       createdAt: prismaPost.createdAt,
       editedAt: prismaPost.editedAt,
       removedAt: prismaPost.removedAt,
     });
+    return post;
   }
   public static toDomainEntities(prismaPosts: PrismaPost[]): Optional<Post[]> {
     return prismaPosts.map((prismaPost) => this.toDomain(prismaPost));

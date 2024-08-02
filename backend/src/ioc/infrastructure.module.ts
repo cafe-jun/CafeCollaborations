@@ -11,11 +11,10 @@ import { APP_FILTER } from '@nestjs/core';
 import { Kysely, PostgresAdapter, PostgresIntrospector, PostgresQueryCompiler } from 'kysely';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 import kyselyExtension from 'prisma-extension-kysely';
-import { SearchModule } from './search.module';
 
 export const PrismaToken = 'PrismaService';
 
-const CqrsProvider: Provider[] = [
+const CQRSProvider: Provider[] = [
   {
     provide: CoreDITokens.CommandBus,
     useClass: NestCommandBusAdapter,
@@ -76,16 +75,15 @@ const prismaProvider: Provider = {
         },
       },
     }),
-    SearchModule,
   ],
   providers: [
-    ...CqrsProvider,
+    ...CQRSProvider,
     prismaProvider,
     {
       provide: APP_FILTER,
       useClass: NestRestExceptionFilter,
     },
   ],
-  exports: [PrismaToken, ...CqrsProvider],
+  exports: [PrismaToken, ...CQRSProvider],
 })
 export class InfrastructureModule {}
