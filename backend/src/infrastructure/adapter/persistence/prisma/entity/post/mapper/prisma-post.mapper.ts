@@ -1,3 +1,4 @@
+import { Category } from '@core/common/enums/category.enum';
 import { DurationType } from '@core/common/enums/duration-type.enum';
 import { PostStatus } from '@core/common/enums/post-status.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
@@ -33,6 +34,7 @@ export class PrismaPostMapper {
       publishedAt: post.getPublishedAt(),
       editedAt: post.getEditedAt(),
       removedAt: post.getRemovedAt(),
+      updatedAt: post.getUpdateAt(),
     };
   }
 
@@ -46,7 +48,7 @@ export class PrismaPostMapper {
       createdAt: prismaPost.createdAt,
       editedAt: prismaPost.editedAt,
       removedAt: prismaPost.removedAt,
-      category: prismaPost.category,
+      category: Category.getByCode(prismaPost.category),
       region: Region.getByCode(prismaPost.region),
       recruitMember: RecruitMember.getByCode(prismaPost.recruitMembers),
       durationType: DurationType.getByCode(prismaPost.durationType),

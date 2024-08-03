@@ -7,6 +7,7 @@ import { PostOwner } from '../../entity/post-owner';
 import { Region } from '@core/common/enums/region.enum';
 import { DurationType } from '@core/common/enums/duration-type.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
+import { Category } from '@core/common/enums/category.enum';
 
 export class PostUseCaseDto {
   @Expose()
@@ -25,7 +26,7 @@ export class PostUseCaseDto {
   @Expose()
   public status: PostStatus;
 
-  public category: string;
+  public category: Category;
 
   public createdAt: Date;
 

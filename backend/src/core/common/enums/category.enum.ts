@@ -31,6 +31,10 @@ export class Category extends EnumType<Category>() {
     return this._projectCode;
   }
 
+  static getByCode(code: string): Category {
+    return this.values().find((c) => c.code === code);
+  }
+
   static getValues() {
     return this.values().map((code) => code.code);
   }

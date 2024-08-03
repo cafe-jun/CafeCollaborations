@@ -63,6 +63,10 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsEnum(RecruitMember)
   private recruitMember: RecruitMember;
 
+  @IsOptional()
+  @IsDate()
+  private updatedAt: Date;
+
   constructor(payload: CreatePostEntityPayload) {
     super();
     this.id = payload.id;
@@ -129,6 +133,10 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
 
   public getRecruitMember(): RecruitMember {
     return this.recruitMember;
+  }
+
+  public getUpdateAt(): Date | null {
+    return this.updatedAt;
   }
 
   public async edit(payload: EditPostEntityPayload): Promise<void> {

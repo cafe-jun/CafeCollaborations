@@ -1,3 +1,4 @@
+import { Category } from '@core/common/enums/category.enum';
 import { DurationType } from '@core/common/enums/duration-type.enum';
 import { PostStatus } from '@core/common/enums/post-status.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
@@ -14,8 +15,8 @@ export class RestCreatePostRequestPayload {
   @ApiProperty({ type: 'string', required: false })
   public content: string;
 
-  @ApiProperty({ type: 'string', required: false })
-  public category: string;
+  @ApiProperty({ type: 'string', enum: Category.getValues(), required: false })
+  public category: Category;
 
   @ApiProperty({ type: 'enum', enum: Region.getValues(), required: false })
   public region: Region;
