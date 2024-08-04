@@ -47,6 +47,7 @@ class Service {
           "Content-Type": "application/json",
           ...config?.headers,
         },
+        cache: "no-store",
         credentials: "include",
         body: data ? JSON.stringify(data) : undefined,
         ...config,

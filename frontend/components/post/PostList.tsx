@@ -17,6 +17,8 @@ import { usePost } from "@/stores/fetch/post/usePost.service";
 import PostPagination from "./PostPagination";
 import { useEffect, useState } from "react";
 import PostMenu from "./PostMenu";
+import Link from "next/link";
+import PostItem from "./PostItem";
 const geoItems = [
   { name: "경기", icon: "/path/to/react-icon.png" },
   { name: "서울", icon: "/path/to/typescript-icon.png" },
@@ -44,7 +46,12 @@ export default function PostList() {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  // ... 기존 코드 ...
+
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
+
+  const handleSearchKeyworkd = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(e.target.value);
+  };
 
   const handleMenuToggle = (menuName: string) => {
     setOpenMenu(openMenu === menuName ? null : menuName);
@@ -56,7 +63,12 @@ export default function PostList() {
   const { data, refetch } = usePost({
     pageSize: 20,
     pageNo: currentPage,
+    keyword: searchKeyword,
   });
+
+  const handleSearchKeyword = () => {
+    refetch();
+  };
 
   useEffect(() => {
     refetch();
@@ -84,40 +96,21 @@ export default function PostList() {
             placeholder="제목, 글 내용을 검색해보세요."
             size="lg"
             width="30rem"
+            value={searchKeyword}
+            onChange={handleSearchKeyworkd}
           />
           <IconButton
             aria-label="search"
             icon={<SearchIcon />}
             ml={2}
             size="lg"
+            onClick={handleSearchKeyword}
           />
         </Flex>
       </HStack>
       <SimpleGrid columns={[1, 2, 3, 4]} spacing={5}>
         {data?.data?.map((post, index) => (
-          <Box
-            key={index}
-            width={"100%"}
-            height={"18rem"}
-            borderWidth={2}
-            borderRadius="xl"
-            p={4}
-          >
-            <Badge colorScheme="orange" mb={2}>
-              체험단
-            </Badge>
-            <Text fontWeight="bold" mb={2} noOfLines={2}>
-              {post.title}
-            </Text>
-            <Flex>
-              {/* 태그 들어갈 자리 
-               {post..map((skill, idx) => (
-                <Badge key={idx} mr={1}>
-                  {skill}
-                </Badge>
-              ))} */}
-            </Flex>
-          </Box>
+          <PostItem key={index} post={post} index={index} />
         ))}
       </SimpleGrid>
       <PostPagination

@@ -7,11 +7,9 @@ import {
   CreatePostUseCase,
   EditPostUseCase,
   GetAllPostUseCase,
-  GetPostListUseCase,
-  GetPostUseCase,
+  GetPostDetailUseCase,
   PublishPostUseCase,
   RemovePostUseCase,
-  SearchPostUseCase,
 } from '@core/domain/post/usecase/post.usecase';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -22,10 +20,7 @@ import { RestApiResponsePost } from './rest-doc/post/post-response.payload';
 import { RestCreatePostRequestPayload } from './rest-doc/post/create-post-request.payload';
 import { CreatePostAdapter } from '@infrastructure/adapter/usecase/post/create-post.adapter';
 import { CoreApiResponse } from '@core/common/response/core-api.response';
-import { RestGetPostListQuery } from './rest-doc/post/get-post-list.query';
-import { GetPostListAdapter } from '@infrastructure/adapter/usecase/post/get-post-list.adapter';
 import { GetPostAdapter } from '@infrastructure/adapter/usecase/post/get-post.adapter';
-import { PostStatus } from '@core/common/enums/post-status.enum';
 import { PublishPostAdapter } from '@infrastructure/adapter/usecase/post/publish-post.adapter';
 import { RemovePostAdapter } from '@infrastructure/adapter/usecase/post/remove-post.adapter';
 import { GetAllPostListAdapter } from '@infrastructure/adapter/usecase/post/get-all-post-list.adapter';
@@ -38,10 +33,10 @@ export class PostController {
   constructor(
     @Inject(PostDITokens.CreatePostUseCase)
     private readonly createPostUseCase: CreatePostUseCase,
-    @Inject(PostDITokens.GetPostUseCase)
-    private readonly getPostUseCase: GetPostUseCase,
-    @Inject(PostDITokens.GetPostListUseCase)
-    private readonly getPostListUseCase: GetPostListUseCase,
+
+    @Inject(PostDITokens.GetPostDetailUseCase)
+    private readonly detailPostUseCase: GetPostDetailUseCase,
+
     @Inject(PostDITokens.EditPostUseCase)
     private readonly editPostUseCase: EditPostUseCase,
 
@@ -97,40 +92,40 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: HttpStatus.OK, type: RestApiModelPost })
   public async getAllPostsList(@Query() query: RestGetAllPostListQuery): Promise<CoreApiResponse<PostUseCaseDto[]>> {
-    // this.searchPostListUseCase.execute();
     const adapter: GetAllPostListAdapter = await GetAllPostListAdapter.create({
       pageNo: query.pageNo,
       pageSize: query.pageSize,
+      keyword: query.keyword,
     });
-    // await this.searchPostListUseCase.execute();
     const result = await this.getAllPostListUseCase.execute(adapter);
+
     return CoreApiResponse.success(result.items, 'Posts fetched successfully', result.meta);
   }
 
-  @Get('mine')
-  // @HttpAuth(UserRole.AUTHOR)
-  @HttpCode(HttpStatus.OK)
-  @ApiBearerAuth()
-  // @ApiResponse({ status: HttpStatus.OK, type: RestApiResponsePostList })
-  public async getMinePostList(@HttpUser() user: RestUserPayload): Promise<CoreApiResponse<PostUseCaseDto[]>> {
-    const adapter: GetPostListAdapter = await GetPostListAdapter.create({
-      executorId: user.id,
-      ownerId: user.id,
-    });
-    const posts: PostUseCaseDto[] = await this.getPostListUseCase.execute(adapter);
-    // this.setFileStorageBasePath(posts);
+  // @Get('mine')
+  // // @HttpAuth(UserRole.AUTHOR)
+  // @HttpCode(HttpStatus.OK)
+  // @ApiBearerAuth()
+  // // @ApiResponse({ status: HttpStatus.OK, type: RestApiResponsePostList })
+  // public async getMinePostList(@HttpUser() user: RestUserPayload): Promise<CoreApiResponse<PostUseCaseDto[]>> {
+  //   const adapter: GetPostListAdapter = await GetPostListAdapter.create({
+  //     executorId: user.id,
+  //     ownerId: user.id,
+  //   });
+  //   const posts: PostUseCaseDto[] = await this.getPostListUseCase.execute(adapter);
 
-    return CoreApiResponse.success(posts);
-  }
+  //   return CoreApiResponse.success(posts);
+  // }
 
   @Get(':postId')
   // @HttpAuth(UserRole.AUTHOR, UserRole.ADMIN, UserRole.GUEST)
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()
-  // @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponsePostList })
-  public async getPost(@HttpUser() user: RestUserPayload, @Param('postId') postId: number) {
-    const adapter: GetPostAdapter = await GetPostAdapter.create({ executorId: user.id, postId: postId });
-    const post: PostUseCaseDto = await this.getPostUseCase.execute(adapter);
+  @ApiResponse({ status: HttpStatus.OK, type: RestApiModelPost })
+  public async getPost(@HttpUser() user: RestUserPayload, @Param('postId', ParseIntPipe) postId: number) {
+    const adapter: GetPostAdapter = await GetPostAdapter.create({ postId: postId });
+
+    const post: PostUseCaseDto = await this.detailPostUseCase.execute(adapter);
     return CoreApiResponse.success(post);
   }
 

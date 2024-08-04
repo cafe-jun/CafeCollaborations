@@ -8,13 +8,11 @@ import { ClsPluginTransactional } from '@nestjs-cls/transactional';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { PostModule } from './post.module';
-import { SearchModule } from './search.module';
 
 @Module({
   imports: [
     AuthModule,
     InfrastructureModule,
-    SearchModule,
     UserModule,
     PostModule,
     ClsModule.forRoot({

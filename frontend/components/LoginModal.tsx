@@ -31,24 +31,27 @@ export default function LoginModal() {
           <Button>로그아웃</Button>
         </div>
       ) : (
-        <Button onClick={onOpen}>로그인</Button>
+        <Button
+          borderRadius="lg"
+          height={"3.5rem"}
+          width={"7rem"}
+          onClick={onOpen}
+        >
+          로그인
+        </Button>
       )}
-
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent borderRadius="xl" maxWidth="400px">
           <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold">
-            HOLA
+            CafeCollaboartion
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <VStack spacing={4} align="stretch">
-              <Text textAlign="center" fontWeight="bold" fontSize="lg">
-                Hola에 오신 것을 환영합니다!
-              </Text>
               <Text textAlign="center" fontSize="sm" color="gray.600">
-                스터디와 사이드 프로젝트를 찾는 가장 쉬운 방법! Hola에서 함께 할
-                팀원들을 찾으세요
+                홍보를 위한 블로거들을 찾는 가장 쉬운 방법! CafeCollaboartion
+                에서 찾아보세요
               </Text>
               <Button
                 leftIcon={<FaGoogle />}

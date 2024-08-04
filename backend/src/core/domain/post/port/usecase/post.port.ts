@@ -7,8 +7,7 @@ export type CreatePostPort = {
   content?: string;
 };
 
-export type GetPostPort = {
-  executorId: number;
+export type GetPostDetailPort = {
   postId: number;
 };
 
@@ -39,4 +38,5 @@ export type RemovePostPort = {
 export type GetAllPostListPort = {
   pageNo: number;
   pageSize: number;
+  keyword?: string;
 };

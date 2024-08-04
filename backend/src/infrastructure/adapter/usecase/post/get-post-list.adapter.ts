@@ -1,6 +1,6 @@
 import { UseCaseValidateAdapter } from '@core/common/adapter/usecase/usecase-validate.adapter';
 import { PostStatus } from '@core/common/enums/post-status.enum';
-import { GetPostListPort, GetPostPort } from '@core/domain/post/port/usecase/post.port';
+import { GetPostListPort } from '@core/domain/post/port/usecase/post.port';
 import { Exclude, Expose, plainToInstance } from 'class-transformer';
 import { IsNumber, IsOptional } from 'class-validator';
 

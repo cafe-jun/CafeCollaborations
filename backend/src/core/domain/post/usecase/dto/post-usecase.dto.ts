@@ -22,6 +22,8 @@ export class PostUseCaseDto {
   @Expose()
   public status: PostStatus;
 
+  public category: string;
+
   public createdAt: number;
 
   public editedAt: Nullable<number>;

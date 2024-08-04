@@ -3,8 +3,8 @@ import {
   CreatePostPort,
   EditPostPort,
   GetAllPostListPort,
+  GetPostDetailPort,
   GetPostListPort,
-  GetPostPort,
   PublishPostPort,
   RemovePostPort,
 } from '../port/usecase/post.port';
@@ -18,7 +18,7 @@ export interface EditPostUseCase extends TransactionalUseCase<EditPostPort, Post
 
 export interface GetPostListUseCase extends UseCase<GetPostListPort, PostUseCaseDto[]> {}
 
-export interface GetPostUseCase extends UseCase<GetPostPort, PostUseCaseDto> {}
+export interface GetPostDetailUseCase extends UseCase<GetPostDetailPort, PostUseCaseDto> {}
 
 export interface PublishPostUseCase extends UseCase<PublishPostPort, PostUseCaseDto> {}
 

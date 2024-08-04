@@ -8,12 +8,13 @@ const queryKeys = {
 };
 
 const queryOptions = {
-  all: (query: { pageNo: number; pageSize: number }) => ({
+  all: (query: { pageNo: number; pageSize: number; keyword: string }) => ({
     queryKey: queryKeys.all,
     queryFn: () =>
       PostService.getPost({
         pageNo: query.pageNo,
         pageSize: query.pageSize,
+        keyword: query.keyword,
       }),
   }),
   detail: (postId: number) => ({

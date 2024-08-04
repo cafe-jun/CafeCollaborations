@@ -1,5 +1,5 @@
 import { UseCaseValidateAdapter } from '@core/common/adapter/usecase/usecase-validate.adapter';
-import { GetPostPort, PublishPostPort } from '@core/domain/post/port/usecase/post.port';
+import { PublishPostPort } from '@core/domain/post/port/usecase/post.port';
 import { Exclude, Expose, plainToInstance } from 'class-transformer';
 import { IsNumber } from 'class-validator';
 
