@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Box, VStack, Heading, SimpleGrid, Button } from "@chakra-ui/react";
 import FormField from "./FormField";
+import ProjectDescriptionEditor from "./PostDescription";
 
 const ProjectInfoForm = () => {
   const formRef = useRef(null);
@@ -30,14 +31,10 @@ const ProjectInfoForm = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
+      console.log(event);
       // if (formRef.current && !formRef.current.contains(event.target)) {
       //   setOpenSelect(null);
       // }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -57,7 +54,7 @@ const ProjectInfoForm = () => {
     >
       <VStack spacing={6} align="stretch">
         <Heading as="h1" size="lg">
-          프로젝트 기본 정보를 입력해주세요.
+          모집 기본 정보를 입력해주세요.
         </Heading>
 
         <SimpleGrid columns={2} spacing={6}>
@@ -170,6 +167,8 @@ const ProjectInfoForm = () => {
             fieldName="contactMethod"
           />
         </SimpleGrid>
+
+        <ProjectDescriptionEditor />
       </VStack>
     </Box>
   );
