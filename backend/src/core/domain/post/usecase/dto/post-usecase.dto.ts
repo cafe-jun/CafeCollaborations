@@ -24,11 +24,13 @@ export class PostUseCaseDto {
 
   public category: string;
 
-  public createdAt: number;
+  public createdAt: Date;
 
-  public editedAt: Nullable<number>;
+  public regionCode: string;
 
-  public publishedAt: Nullable<number>;
+  public editedAt: Nullable<Date>;
+
+  public publishedAt: Nullable<Date>;
 
   public static newFromPost(post: Post): PostUseCaseDto {
     const dto: PostUseCaseDto = plainToInstance(PostUseCaseDto, post);
@@ -41,10 +43,10 @@ export class PostUseCaseDto {
     if (postImage) {
       dto.image = { id: postImage.getId(), url: postImage.getRelativePath() };
     }
-
-    dto.createdAt = post.getCreatedAt().getTime();
-    dto.editedAt = post.getEditedAt()?.getTime() || null;
-    dto.publishedAt = post.getPublishedAt()?.getTime() || null;
+    dto.regionCode = post.getRegionCode();
+    dto.createdAt = post.getCreatedAt();
+    dto.editedAt = post.getEditedAt() || null;
+    dto.publishedAt = post.getPublishedAt() || null;
 
     return dto;
   }

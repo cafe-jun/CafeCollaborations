@@ -1,10 +1,9 @@
 import { PaginationResponse } from '@core/common/pagination/pagination.response';
-import { PostDITokens } from '@core/domain/post/di/post-di.token';
 import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
 import { GetAllPostListPort } from '@core/domain/post/port/usecase/post.port';
 import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
 import { GetAllPostUseCase } from '@core/domain/post/usecase/post.usecase';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class GetAllPostListService implements GetAllPostUseCase {

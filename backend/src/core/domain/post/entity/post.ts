@@ -47,8 +47,8 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   private removedAt: Nullable<Date>;
 
   @IsOptional()
-  @IsString()
-  private regionCode: RegionCode;
+  @IsEnum(RegionCode)
+  private regionCode: string;
 
   constructor(payload: CreatePostEntityPayload) {
     super();
@@ -59,6 +59,8 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     this.content = payload.content || null;
     this.status = payload.status || PostStatus.DRAFT;
     this.createdAt = payload.createdAt || new Date();
+    this.category = payload.category;
+    this.regionCode = payload.regionCode || RegionCode.Seoul_CODE.code;
     this.editedAt = payload.editedAt || null;
     this.publishedAt = payload.publishedAt || null;
     this.removedAt = payload.removedAt || null;
@@ -150,6 +152,10 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
       title: dto.title,
       status: dto.status,
       content: dto.content,
+      category: dto.category,
+      regionCode: dto.regionCode,
+      publishedAt: dto.publishedAt,
+      createdAt: dto.createdAt,
       owner: new PostOwner(dto.owner.id, dto.owner.name),
     });
   }

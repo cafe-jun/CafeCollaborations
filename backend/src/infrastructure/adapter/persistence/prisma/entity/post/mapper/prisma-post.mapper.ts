@@ -34,6 +34,8 @@ export class PrismaPostMapper {
       createdAt: prismaPost.createdAt,
       editedAt: prismaPost.editedAt,
       removedAt: prismaPost.removedAt,
+      category: prismaPost.category,
+      regionCode: prismaPost.regionCode,
     });
     return post;
   }

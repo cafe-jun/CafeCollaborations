@@ -1,6 +1,5 @@
 import { Optional } from '@core/common/type/common.types';
 import { Post } from '../../entity/post';
-import { PostStatus } from '@core/common/enums/post-status.enum';
 import { RepositoryRemoveOptions } from '@core/common/persistence/repoistory.option';
 
 export interface PostRepositoryPort {

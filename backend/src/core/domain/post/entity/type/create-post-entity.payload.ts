@@ -12,6 +12,8 @@ export type CreatePostEntityPayload = {
   status?: PostStatus;
   createdAt?: Date;
   editedAt?: Date;
+  category: string;
+  regionCode: string;
   publishedAt?: Date;
   removedAt?: Date;
 };
