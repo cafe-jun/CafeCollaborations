@@ -1,7 +1,8 @@
 import { UseCaseValidateAdapter } from '@core/common/adapter/usecase/usecase-validate.adapter';
+import { Region } from '@core/common/enums/region.enum';
 import { CreatePostPort } from '@core/domain/post/port/usecase/post.port';
 import { Exclude, Expose, plainToInstance } from 'class-transformer';
-import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @Exclude()
 export class CreatePostAdapter extends UseCaseValidateAdapter implements CreatePostPort {
@@ -13,6 +14,9 @@ export class CreatePostAdapter extends UseCaseValidateAdapter implements CreateP
   @IsOptional()
   @IsString()
   public title: string;
+
+  @IsEnum(Region.getValues())
+  public region: Region;
 
   @Expose()
   @IsOptional()

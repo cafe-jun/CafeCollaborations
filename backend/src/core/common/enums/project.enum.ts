@@ -21,6 +21,10 @@ export class CommonProjectCode extends EnumType<CommonProjectCode>() {
     return this._codeName;
   }
 
+  static getValues() {
+    return this.values().map((code) => code.code);
+  }
+
   static getAllProjectCode() {
     return this.values().map((code) => {
       return {

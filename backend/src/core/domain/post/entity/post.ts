@@ -7,8 +7,9 @@ import { PostImage } from './post-image';
 import { CreatePostEntityPayload } from './type/create-post-entity.payload';
 import { EditPostEntityPayload } from './type/edit-post-entity.payload';
 import { RemoveEntity } from '@core/common/entity/remove.entity';
-import { RegionCode } from '@core/common/enums/region-code.enum';
+
 import { PostUseCaseDto } from '../usecase/dto/post-usecase.dto';
+import { Region } from '@core/common/enums/region.enum';
 export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsInstance(PostOwner)
   private readonly owner: PostOwner;
@@ -47,8 +48,8 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   private removedAt: Nullable<Date>;
 
   @IsOptional()
-  @IsEnum(RegionCode)
-  private regionCode: string;
+  @IsEnum(Region.getValues())
+  private region: string;
 
   constructor(payload: CreatePostEntityPayload) {
     super();
@@ -60,7 +61,7 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     this.status = payload.status || PostStatus.DRAFT;
     this.createdAt = payload.createdAt || new Date();
     this.category = payload.category;
-    this.regionCode = payload.regionCode || RegionCode.Seoul_CODE.code;
+    this.regionCode = payload.regionCode || Region.Seoul.code;
     this.editedAt = payload.editedAt || null;
     this.publishedAt = payload.publishedAt || null;
     this.removedAt = payload.removedAt || null;

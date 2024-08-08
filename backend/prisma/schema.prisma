@@ -52,7 +52,7 @@ model Post {
   imageId     Int?
   content     String
   status      PostStatus
-  regionCode  String?
+  region      String?
   createdAt   DateTime   @default(now())
   editedAt    DateTime?
   removedAt   DateTime?

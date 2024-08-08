@@ -18,7 +18,7 @@ export class CreatePostService implements CreatePostUseCase {
     private readonly postRepository: PostRepositoryPort,
     private readonly queryBus: QueryBusPort,
   ) {}
-  public async execute(usecasePort: CreatePostPort): Promise<PostUseCaseDto> {
+  public async execute(payload: CreatePostPort): Promise<PostUseCaseDto> {
     const postOwner: GetUserPreviewQueryResult = CoreAssert.notEmpty(
       await this.queryBus.sendQuery(GetUserPreviewQuery),
       Exception.create({ code: CommonMsg.ENTITY_NOT_FOUND_ERROR, overrideMessage: 'Post Owner not Found' }),
@@ -26,8 +26,9 @@ export class CreatePostService implements CreatePostUseCase {
 
     const post: Post = await Post.create({
       owner: await PostOwner.create(postOwner.id, postOwner.name),
-      title: usecasePort.title,
-      content: usecasePort.content,
+      title: payload.title,
+      content: payload.content,
+      regionCode:
     });
     await this.postRepository.addPost(post);
     return PostUseCaseDto.newFromPost(post);

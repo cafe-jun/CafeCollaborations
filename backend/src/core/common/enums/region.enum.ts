@@ -27,7 +27,12 @@ export class Region extends EnumType<Region>() {
   get codeName(): string {
     return this._codeName;
   }
+
   get projectCode(): CommonProjectCode {
     return this._projectCode;
+  }
+
+  static getValues() {
+    return this.values().map((code) => code.code);
   }
 }
