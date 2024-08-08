@@ -1,6 +1,42 @@
-version: "3"
+version: "3.8"
 
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  logstash:
+    build:
+      context: ./logstash/
+      dockerfile: Dockerfile
+
+    image: docker.elastic.co/logstash/logstash:7.14.0
+
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+
+    environment:
+      - CONFIG_SUPPORT_ESCAPE=true
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+      - postgres
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.14.0
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+
   postgres:
     container_name: postgres
     build:
@@ -15,34 +51,6 @@ services:
     volumes:
       - postgres_data:/var/lib/postgres/data
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
-    environment:
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    ports:
-      - "9200:9200"
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-
-  logstash:
-    image: docker.elastic.co/logstash/logstash:7.14.0
-    volumes:
-      - ./logstash/pipeline:/usr/share/logstash/pipeline
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-      - ./logstash/jdbc/postgresql-42.2.13.jar:/usr/share/logstash/logstash-core/lib/jars/postgresql-42.2.13.jar
-    depends_on:
-      - postgres
-      - elasticsearch
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.14.0
-    ports:
-      - "5601:5601"
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-
 volumes:
-  postgres_data:
   elasticsearch_data:
+  postgres_data:

@@ -12,3 +12,7 @@ export interface PostRepositoryPort {
   updatePost(post: Post): Promise<{ id: number }>;
   removePost(post: Post, options?: RepositoryRemoveOptions): Promise<void>;
 }
+
+export interface PostReaderRepository {}
+
+export interface PostWriteRepository {}

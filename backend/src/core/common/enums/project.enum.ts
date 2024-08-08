@@ -2,7 +2,10 @@ import { Enum, EnumType } from 'ts-jenum';
 
 @Enum('code')
 export class CommonProjectCode extends EnumType<CommonProjectCode>() {
-  static readonly REGION_CODE = new CommonProjectCode('CO1001', 'REGION');
+  static readonly REGION = new CommonProjectCode('CO1001', 'REGION');
+  static readonly CATEGORY = new CommonProjectCode('CO1002', 'CATEGORY');
+  static readonly RECRUIT_MEMBER = new CommonProjectCode('CO1003', 'RECRUIT_MEMBER');
+  static readonly DURATION_TYPE = new CommonProjectCode('CO1004', 'DURATION_TYPE');
 
   private constructor(
     private readonly _code: string,
