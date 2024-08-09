@@ -28,7 +28,7 @@ export class CreatePostService implements CreatePostUseCase {
       owner: await PostOwner.create(postOwner.id, postOwner.name),
       title: payload.title,
       content: payload.content,
-      regionCode:
+      region,
     });
     await this.postRepository.addPost(post);
     return PostUseCaseDto.newFromPost(post);

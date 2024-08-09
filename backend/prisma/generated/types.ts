@@ -28,10 +28,13 @@ export type Post = {
     imageId: number | null;
     content: string;
     status: PostStatus;
-    regionCode: string | null;
+    region: string | null;
+    recruitdMember: string | null;
+    durationType: string | null;
     createdAt: Generated<Timestamp>;
     editedAt: Timestamp | null;
     removedAt: Timestamp | null;
+    publishedAt: Timestamp | null;
     userId: number;
 };
 export type PostTag = {

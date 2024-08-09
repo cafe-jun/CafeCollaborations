@@ -1,5 +1,14 @@
-import { Post, PrismaClient } from '@prisma/client';
+import { Post, PrismaClient, User } from '@prisma/client';
 const prisma = new PrismaClient();
+
+export const TempUser: User = {
+  id: 1,
+  email: 'test@test.com',
+  name: 'test',
+  provider: 'GOOGLE',
+  role: 'GUEST',
+  createdAt: new Date(),
+};
 
 export const TempPosts = [
   {
@@ -53,6 +62,8 @@ export const TempPosts = [
   },
 ];
 async function main() {
+  await prisma.user.create({ data: TempUser });
+
   await prisma.post.createMany({
     data: [
       {

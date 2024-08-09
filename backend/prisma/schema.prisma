@@ -53,6 +53,8 @@ model Post {
   content     String
   status      PostStatus
   region      String?
+  recruitdMember String?
+  durationType String?
   createdAt   DateTime   @default(now())
   editedAt    DateTime?
   removedAt   DateTime?

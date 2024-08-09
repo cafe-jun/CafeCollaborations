@@ -7,7 +7,7 @@ services:
       context: ./postgres/
       dockerfile: Dockerfile
     environment:
-      POSTGRES_DB: mydb
+      POSTGRES_DB: DEV
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
@@ -42,7 +42,15 @@ services:
       ELASTICSEARCH_URL: http://elasticsearch:9200
     depends_on:
       - elasticsearch
+  redis:
+    image: redis:latest # 공식 Redis 이미지를 사용합니다.
+    container_name: redis # 컨테이너 이름을 지정합니다.
+    ports:
+      - "6379:6379" # Redis의 기본 포트인 6379를 호스트와 컨테이너에서 모두 사용 가능하게 매핑합니다.
+    volumes:
+      - redis_data:/data
 
 volumes:
   postgres_data:
   elasticsearch_data:
+  redis_data:
