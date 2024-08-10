@@ -1,3 +1,4 @@
+import { Region } from '@core/common/enums/region.enum';
 import { RepositoryRemoveOptions } from '@core/common/persistence/repoistory.option';
 import { Optional } from '@core/common/type/common.types';
 import { Post } from '@core/domain/post/entity/post';
@@ -10,17 +11,17 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Injectable()
-export class ElasticPostRepository implements PostRepositoryPort, OnModuleInit {
-  private readonly index: string = 'post-index';
+export class ElasticPostRepository implements PostRepositoryPort {
+  private readonly index: string = 'post_index';
 
   constructor(
     @Inject(ElasticToken)
     private readonly esService: ElasticsearchService,
   ) {}
 
-  async onModuleInit() {
-    await this.createIndex();
-  }
+  // async onModuleInit() {
+  //   await this.createIndex();
+  // }
 
   private async createIndex() {
     const checkIndex = await this.esService.indices.exists({ index: this.index });
@@ -73,7 +74,7 @@ export class ElasticPostRepository implements PostRepositoryPort, OnModuleInit {
     });
   }
 
-  async findPosts(paging: { pageNo: number; pageSize: number }, filters?: { category?: string; regionCode?: string; keyword?: string }) {
+  async findPosts(paging: { pageNo: number; pageSize: number }, filters?: { category?: string; region?: Region; keyword?: string }) {
     const body: SearchRequest['body'] = {
       from: (paging.pageNo - 1) * paging.pageSize,
       size: paging.pageSize,
@@ -104,8 +105,8 @@ export class ElasticPostRepository implements PostRepositoryPort, OnModuleInit {
       (body.query.bool.filter as any[]).push({ term: { category: filters.category } });
     }
 
-    if (filters?.regionCode) {
-      (body.query.bool.filter as any[]).push({ term: { regionCode: filters.regionCode } });
+    if (filters?.region) {
+      (body.query.bool.filter as any[]).push({ term: { region: filters.region } });
     }
     const { body: result } = await this.esService.search({
       index: this.index,
@@ -119,7 +120,9 @@ export class ElasticPostRepository implements PostRepositoryPort, OnModuleInit {
         category: hit._source.category,
         content: hit._source.content,
         status: hit._source.status,
-        regionCode: hit._source.regionCode,
+        durationType: hit._source?.durationType,
+        recuritMember: hit.source?.recuritMember,
+        region: hit._source.region,
         createdAt: hit._source.createdAt,
         updatedAt: hit._source.updatedAt,
       };
@@ -130,6 +133,10 @@ export class ElasticPostRepository implements PostRepositoryPort, OnModuleInit {
         title: result.title,
         content: result.content,
         status: result.status,
+        category: result.category,
+        region: result.region,
+        durationType: result.durationType,
+        recruitMember: result.recuritMember,
         createdAt: result.createdAt,
       });
     });
@@ -163,7 +170,7 @@ export class ElasticPostRepository implements PostRepositoryPort, OnModuleInit {
       category: post.getCategory(),
       content: post.getContent(),
       status: post.getStatus(),
-      regionCode: post.getRegionCode(),
+      regionCode: post.getRegion(),
     };
   }
 

@@ -10,6 +10,9 @@ import { RemoveEntity } from '@core/common/entity/remove.entity';
 
 import { PostUseCaseDto } from '../usecase/dto/post-usecase.dto';
 import { Region } from '@core/common/enums/region.enum';
+import { DurationType } from '@core/common/enums/duration-type.enum';
+import { RecruitMember } from '@core/common/enums/recruite-member.enum';
+import { Category } from '@core/common/enums/category.enum';
 export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsInstance(PostOwner)
   private readonly owner: PostOwner;
@@ -17,8 +20,9 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsString()
   private title: string;
 
+  @IsEnum(Category.getValues())
   @IsString()
-  private category: string;
+  private category: Category;
 
   @IsOptional()
   @IsInstance(PostImage)
@@ -49,7 +53,15 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
 
   @IsOptional()
   @IsEnum(Region.getValues())
-  private region: string;
+  private region: Region;
+
+  @IsOptional()
+  @IsEnum(DurationType)
+  private durationType: DurationType;
+
+  @IsOptional()
+  @IsEnum(RecruitMember)
+  private recruitMember: RecruitMember;
 
   constructor(payload: CreatePostEntityPayload) {
     super();
@@ -61,8 +73,9 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     this.status = payload.status || PostStatus.DRAFT;
     this.createdAt = payload.createdAt || new Date();
     this.category = payload.category;
-    this.regionCode = payload.regionCode || Region.Seoul.code;
-    this.editedAt = payload.editedAt || null;
+    this.region = payload.region || Region.Seoul;
+    this.durationType = payload.durationType || DurationType.LessThanOneMonth;
+    this.recruitMember = payload.recruitMember || RecruitMember.Indefinite;
     this.publishedAt = payload.publishedAt || null;
     this.removedAt = payload.removedAt || null;
   }
@@ -75,7 +88,7 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     return this.title;
   }
 
-  public getCategory(): string {
+  public getCategory(): Category {
     return this.category;
   }
 
@@ -106,8 +119,16 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   public getRemovedAt(): Nullable<Date> {
     return this.removedAt;
   }
-  public getRegionCode(): string {
-    return '3020';
+  public getRegion(): Region {
+    return this.region;
+  }
+
+  public getDurationType(): DurationType {
+    return this.durationType;
+  }
+
+  public getRecruitMember(): RecruitMember {
+    return this.recruitMember;
   }
 
   public async edit(payload: EditPostEntityPayload): Promise<void> {
@@ -154,9 +175,12 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
       status: dto.status,
       content: dto.content,
       category: dto.category,
-      regionCode: dto.regionCode,
+      region: dto.region,
       publishedAt: dto.publishedAt,
       createdAt: dto.createdAt,
+      editedAt: dto.editedAt,
+      durationType: dto.durationType,
+      recruitMember: dto.recruitMember,
       owner: new PostOwner(dto.owner.id, dto.owner.name),
     });
   }

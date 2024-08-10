@@ -35,4 +35,8 @@ export class Region extends EnumType<Region>() {
   static getValues() {
     return this.values().map((code) => code.code);
   }
+
+  static getByCode(code: string): Region {
+    return this.values().find((c) => c.code === code);
+  }
 }

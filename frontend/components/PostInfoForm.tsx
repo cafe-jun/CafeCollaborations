@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { Box, VStack, Heading, SimpleGrid, Button } from "@chakra-ui/react";
 import FormField from "./FormField";
 import ProjectDescriptionEditor from "./PostDescription";
+import { categoryItems, regionItems } from "./post/PostList";
 
 const ProjectInfoForm = () => {
   const formRef = useRef(null);
 
   const [formData, setFormData] = useState({
-    recruitmentType: "",
+    regionType: "",
     memberCount: "",
     progressMethod: "",
     duration: "",
@@ -22,6 +23,15 @@ const ProjectInfoForm = () => {
   const [openSelect, setOpenSelect] = useState(null);
 
   const handleChange = (field) => (value) => {
+    if (field === "techStack") {
+      return;
+    }
+    if (field === "regionType") {
+      const result = regionItems.find((item) => item.name === value);
+      if (!result) return;
+      setFormData((prev) => ({ ...prev, [field]: result?.code }));
+      return;
+    }
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -30,11 +40,12 @@ const ProjectInfoForm = () => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: React.MouseEvent) => {
       console.log(event);
-      // if (formRef.current && !formRef.current.contains(event.target)) {
-      //   setOpenSelect(null);
-      // }
+
+      if (formRef.current) {
+        setOpenSelect(null);
+      }
     };
   }, []);
 
@@ -59,15 +70,15 @@ const ProjectInfoForm = () => {
 
         <SimpleGrid columns={2} spacing={6}>
           <FormField
-            label="모집 구분"
+            label="지역 구분"
             type="select"
-            options={["스터디", "프로젝트"]}
-            value={formData.recruitmentType}
-            onChange={handleChange("recruitmentType")}
-            placeholder="스터디/프로젝트"
-            isOpen={openSelect === "recruitmentType"}
+            options={regionItems.map((item) => item.name)}
+            value={formData.regionType}
+            onChange={handleChange("regionType")}
+            placeholder="모집 지역"
+            isOpen={openSelect === "regionType"}
             onToggle={handleToggle}
-            fieldName="recruitmentType"
+            fieldName="regionType"
           />
           <FormField
             label="모집 인원"
@@ -80,18 +91,7 @@ const ProjectInfoForm = () => {
             onToggle={handleToggle}
             fieldName="memberCount"
           />
-          {/* 다른 필드들도 비슷한 방식으로 구현 */}
-          <FormField
-            label="진행 방식"
-            type="select"
-            options={["온라인", "오프라인", "온/오프라인 병행"]}
-            value={formData.progressMethod}
-            onChange={handleChange("progressMethod")}
-            placeholder="온라인/오프라인"
-            isOpen={openSelect === "progressMethod"}
-            onToggle={handleToggle}
-            fieldName="progressMethod"
-          />
+
           <FormField
             label="진행 기간"
             type="select"
@@ -110,50 +110,15 @@ const ProjectInfoForm = () => {
             fieldName="duration"
           />
           <FormField
-            label="기술 스택"
+            label="업종 구분"
             type="select"
-            options={[
-              "React",
-              "Vue",
-              "Angular",
-              "Node.js",
-              "Python",
-              "Java",
-              "기타",
-            ]}
+            options={categoryItems.map((item) => item.name)}
             value={formData.techStack}
             onChange={handleChange("techStack")}
             isOpen={openSelect === "techStack"}
             onToggle={handleToggle}
-            placeholder="프로젝트 사용 스택"
+            placeholder="모집 업종"
             fieldName="techStack"
-          />
-          {/* <FormField
-            label="모집 마감일"
-            type="date"
-            value={formData.deadline}
-            onChange={handleChange("deadline")}
-            isOpen={openSelect === "deadline"}
-            onToggle={handleToggle}
-            fieldName="deadline"
-          /> */}
-          <FormField
-            label="모집 포지션"
-            type="select"
-            options={[
-              "프론트엔드",
-              "백엔드",
-              "풀스택",
-              "디자이너",
-              "기획자",
-              "PM",
-            ]}
-            value={formData.positions}
-            onChange={handleChange("positions")}
-            placeholder="프론트엔드, 백엔드..."
-            isOpen={openSelect === "positions"}
-            onToggle={handleToggle}
-            fieldName="positions"
           />
           <FormField
             label="연락 방법"

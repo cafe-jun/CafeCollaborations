@@ -4,6 +4,9 @@ import { Expose, plainToInstance } from 'class-transformer';
 import { Post } from '../../entity/post';
 import { PostImage } from '../../entity/post-image';
 import { PostOwner } from '../../entity/post-owner';
+import { Region } from '@core/common/enums/region.enum';
+import { DurationType } from '@core/common/enums/duration-type.enum';
+import { RecruitMember } from '@core/common/enums/recruite-member.enum';
 
 export class PostUseCaseDto {
   @Expose()
@@ -26,7 +29,11 @@ export class PostUseCaseDto {
 
   public createdAt: Date;
 
-  public regionCode: string;
+  public region: Region;
+
+  public durationType: DurationType;
+
+  public recruitMember: RecruitMember;
 
   public editedAt: Nullable<Date>;
 
@@ -43,7 +50,7 @@ export class PostUseCaseDto {
     if (postImage) {
       dto.image = { id: postImage.getId(), url: postImage.getRelativePath() };
     }
-    dto.regionCode = post.getRegionCode();
+    dto.region = post.getRegion();
     dto.createdAt = post.getCreatedAt();
     dto.editedAt = post.getEditedAt() || null;
     dto.publishedAt = post.getPublishedAt() || null;

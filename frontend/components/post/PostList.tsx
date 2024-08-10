@@ -12,34 +12,34 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon } from "@chakra-ui/icons";
 import { usePost } from "@/stores/fetch/post/usePost.service";
 import PostPagination from "./PostPagination";
 import { useEffect, useState } from "react";
 import PostMenu from "./PostMenu";
-import Link from "next/link";
+
 import PostItem from "./PostItem";
-const geoItems = [
-  { name: "경기", icon: "/path/to/react-icon.png" },
-  { name: "서울", icon: "/path/to/typescript-icon.png" },
-  { name: "강원", icon: "/path/to/javascript-icon.png" },
-  { name: "충북", icon: "/path/to/vue-icon.png" },
-  { name: "충남", icon: "/path/to/nextjs-icon.png" },
-  { name: "전북", icon: "/path/to/nodejs-icon.png" },
-  { name: "전남", icon: "/path/to/java-icon.png" },
-  { name: "경북", icon: "/path/to/spring-icon.png" },
-  { name: "경남", icon: "/path/to/kotlin-icon.png" },
-  { name: "제주", icon: "/path/to/nestjs-icon.png" },
+export const regionItems = [
+  { name: "경기", code: "RE1000" },
+  { name: "서울", code: "RE1001" },
+  { name: "강원", code: "RE1002" },
+  { name: "충북", code: "RE1003" },
+  { name: "충남", code: "RE1004" },
+  { name: "전북", code: "RE1005" },
+  { name: "전남", code: "RE1006" },
+  { name: "경북", code: "RE1007" },
+  { name: "경남", code: "RE1008" },
+  { name: "제주", code: "RE1009" },
 ];
 
-const categoryItems = [
-  { name: "숙박", icon: "/path/to/react-icon.png" },
-  { name: "먹거리", icon: "/path/to/typescript-icon.png" },
-  { name: "패션", icon: "/path/to/javascript-icon.png" },
-  { name: "뷰티", icon: "/path/to/vue-icon.png" },
-  { name: "앱", icon: "/path/to/nextjs-icon.png" },
-  { name: "생활용품", icon: "/path/to/nodejs-icon.png" },
-  { name: "애견용품", icon: "/path/to/java-icon.png" },
+export const categoryItems = [
+  { name: "숙박", code: "CA1000" },
+  { name: "먹거리", code: "CA1001" },
+  { name: "패션", code: "CA1002" },
+  { name: "뷰티", code: "CA1003" },
+  { name: "앱", code: "CA1004" },
+  { name: "생활용품", code: "CA1005" },
+  { name: "애견용품", code: "CA1006" },
 ];
 
 export default function PostList() {
@@ -82,7 +82,7 @@ export default function PostList() {
           title={"지역"}
           isOpen={openMenu === "업종"}
           onToggle={() => handleMenuToggle("업종")}
-          items={geoItems}
+          items={regionItems}
         />
         <PostMenu
           title={"업종"}

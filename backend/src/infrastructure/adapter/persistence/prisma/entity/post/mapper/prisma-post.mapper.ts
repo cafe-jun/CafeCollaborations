@@ -1,8 +1,17 @@
+import { DurationType } from '@core/common/enums/duration-type.enum';
 import { PostStatus } from '@core/common/enums/post-status.enum';
+import { RecruitMember } from '@core/common/enums/recruite-member.enum';
+import { Region } from '@core/common/enums/region.enum';
 import { Optional } from '@core/common/type/common.types';
 import { Post } from '@core/domain/post/entity/post';
 import { PostOwner } from '@core/domain/post/entity/post-owner';
-import { Post as PrismaPost } from '@prisma/client';
+import {
+  Post as PrismaPost,
+  Region as PrismaRegion,
+  RecruitMember as PrismaRecruitMember,
+  DurationType as PrismaDurationType,
+  Category as PrismaCategory,
+} from '@prisma/client';
 
 export class PrismaPostMapper {
   private constructor() {
@@ -13,12 +22,15 @@ export class PrismaPostMapper {
       id: post.getId(),
       userId: post.getOwner().getId(),
       title: post.getTitle(),
-      category: post.getCategory(),
+      category: post.getCategory().code as PrismaCategory,
       content: post.getContent(),
       status: post.getStatus(),
+      durationType: post.getDurationType().code as PrismaDurationType,
+      recruitMembers: post.getRecruitMember().code as PrismaRecruitMember,
+      region: post.getRegion().code as PrismaRegion,
       imageId: post.getImage().getId(),
-      regionCode: post.getRegionCode() as string,
       createdAt: post.getCreatedAt(),
+      publishedAt: post.getPublishedAt(),
       editedAt: post.getEditedAt(),
       removedAt: post.getRemovedAt(),
     };
@@ -27,7 +39,7 @@ export class PrismaPostMapper {
   public static toDomain(prismaPost: PrismaPost): Post {
     const post = new Post({
       id: prismaPost.id,
-      owner: new PostOwner(prismaPost.userId, `testset`),
+      owner: new PostOwner(prismaPost.userId, 'test'),
       title: prismaPost.title,
       content: prismaPost.content,
       status: prismaPost.status as PostStatus,
@@ -35,7 +47,10 @@ export class PrismaPostMapper {
       editedAt: prismaPost.editedAt,
       removedAt: prismaPost.removedAt,
       category: prismaPost.category,
-      regionCode: prismaPost.regionCode,
+      region: Region.getByCode(prismaPost.region),
+      recruitMember: RecruitMember.getByCode(prismaPost.recruitMembers),
+      durationType: DurationType.getByCode(prismaPost.durationType),
+      publishedAt: prismaPost.publishedAt,
     });
     return post;
   }

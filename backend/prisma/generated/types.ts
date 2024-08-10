@@ -21,43 +21,80 @@ export const PostStatus = {
     PUBLISHED: "PUBLISHED"
 } as const;
 export type PostStatus = (typeof PostStatus)[keyof typeof PostStatus];
+export const Category = {
+    CA1000: "CA1000",
+    CA1001: "CA1001",
+    CA1002: "CA1002",
+    CA1003: "CA1003",
+    CA1004: "CA1004",
+    CA1005: "CA1005",
+    CA1006: "CA1006"
+} as const;
+export type Category = (typeof Category)[keyof typeof Category];
+export const RecruitMember = {
+    RM1000: "RM1000",
+    RM1002: "RM1002",
+    RM1003: "RM1003",
+    RM1004: "RM1004"
+} as const;
+export type RecruitMember = (typeof RecruitMember)[keyof typeof RecruitMember];
+export const DurationType = {
+    DU1000: "DU1000",
+    DU1002: "DU1002",
+    DU1003: "DU1003",
+    DU1004: "DU1004"
+} as const;
+export type DurationType = (typeof DurationType)[keyof typeof DurationType];
+export const Region = {
+    RE1000: "RE1000",
+    RE1002: "RE1002",
+    RE1003: "RE1003",
+    RE1004: "RE1004",
+    RE1005: "RE1005",
+    RE1006: "RE1006",
+    RE1007: "RE1007",
+    RE1008: "RE1008",
+    RE1009: "RE1009"
+} as const;
+export type Region = (typeof Region)[keyof typeof Region];
 export type Post = {
     id: Generated<number>;
     title: string;
-    category: string;
-    imageId: number | null;
+    category: Category;
+    image_id: number | null;
     content: string;
     status: PostStatus;
-    region: string | null;
-    recruitdMember: string | null;
-    durationType: string | null;
-    createdAt: Generated<Timestamp>;
-    editedAt: Timestamp | null;
-    removedAt: Timestamp | null;
-    publishedAt: Timestamp | null;
-    userId: number;
+    region: Region | null;
+    recruit_members: RecruitMember | null;
+    duration_type: DurationType | null;
+    created_at: Generated<Timestamp | null>;
+    updated_at: Timestamp | null;
+    edited_at: Timestamp | null;
+    removed_at: Timestamp | null;
+    published_at: Timestamp | null;
+    user_id: number;
 };
 export type PostTag = {
     id: Generated<number>;
-    postId: number;
-    tagId: number;
+    post_id: number;
+    tag_id: number;
 };
 export type Tag = {
     id: Generated<number>;
     name: string;
-    postTagId: number;
+    post_tag_id: number;
 };
 export type User = {
     id: Generated<number>;
     email: string;
     name: string;
     provider: OauthProvider | null;
-    createdAt: Generated<Timestamp>;
+    created_at: Generated<Timestamp>;
     role: UserRole;
 };
 export type DB = {
-    Post: Post;
-    PostTag: PostTag;
-    Tag: Tag;
-    User: User;
+    post_tags: PostTag;
+    posts: Post;
+    tags: Tag;
+    users: User;
 };

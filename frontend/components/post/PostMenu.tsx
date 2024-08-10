@@ -18,7 +18,7 @@ type PostMenuProps = {
   title: string;
   isOpen: boolean;
   onToggle: () => void;
-  items: { name: string; icon: string }[];
+  items: { name: string; code: string }[];
 };
 export default function PostMenu({
   title,
@@ -29,11 +29,11 @@ export default function PostMenu({
   const [selectedItems, setSelectedItems] = useState<
     {
       name: string;
-      icon: string;
+      code: string;
     }[]
   >([]);
-  const handleSelect = (item) => {
-    if (selectedItems.includes({ name: item.name, icon: item.icon })) {
+  const handleSelect = (item: { name: string; code: string }) => {
+    if (selectedItems.includes({ name: item.name, code: item.code })) {
       setSelectedItems(selectedItems.filter((t) => t !== item));
     } else {
       setSelectedItems([...selectedItems, item]);
@@ -62,16 +62,16 @@ export default function PostMenu({
                   size="lg"
                   width="5rem"
                   variant={
-                    items.includes({ icon: item.icon, name: item.name })
+                    items.includes({ code: item.code, name: item.name })
                       ? "solid"
                       : "outline"
                   }
                   colorScheme={
-                    items.includes({ icon: item.icon, name: item.name })
+                    items.includes({ code: item.code, name: item.name })
                       ? "blue"
                       : "gray"
                   }
-                  onClick={() => handleSelect(item.name)}
+                  onClick={() => handleSelect(item)}
                 >
                   {item.name}
                 </Button>

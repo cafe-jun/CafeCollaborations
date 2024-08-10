@@ -25,4 +25,12 @@ export class RecruitMember extends EnumType<RecruitMember>() {
   get projectCode(): CommonProjectCode {
     return this._projectCode;
   }
+
+  static getValues() {
+    return this.values().map((code) => code.code);
+  }
+
+  static getByCode(code: string): RecruitMember {
+    return this.values().find((c) => c.code === code);
+  }
 }

@@ -64,6 +64,11 @@ export class PostController {
       title: body.title,
       content: body.content,
       imageId: body.imageId,
+      category: body.category,
+      region: body.region,
+      durationType: body.durationType,
+      recruitMember: body.recruitMember,
+      status: body.status,
     });
     const createPost: PostUseCaseDto = await this.createPostUseCase.execute(adapter);
     return CoreApiResponse.success(createPost, 'Post created successfully');
