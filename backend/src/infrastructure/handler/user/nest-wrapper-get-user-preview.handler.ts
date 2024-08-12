@@ -13,7 +13,9 @@ export class NestWrapperGetUserPreviewQueryHandler implements IQueryHandler {
     @Inject(UserDiTokens.GetUserPreviewQueryHandler)
     private readonly handleService: GetUserPreviewQueryHandler,
   ) {}
-  execute(query: GetUserPreviewQuery): Promise<Optional<GetUserPreviewQueryResult>> {
-    return this.handleService.handle(query);
+  async execute(query: GetUserPreviewQuery): Promise<Optional<GetUserPreviewQueryResult>> {
+    const result = await this.handleService.handle(query);
+    console.log(result);
+    return result;
   }
 }

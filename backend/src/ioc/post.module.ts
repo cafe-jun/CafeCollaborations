@@ -35,7 +35,7 @@ const useCaseProviders: Provider[] = [
     provide: PostDITokens.CreatePostUseCase,
     useFactory: (postRepository, queryBus) => {
       const service: CreatePostUseCase = new CreatePostService(postRepository, queryBus);
-      return new TransactionalUseCaseWrapper(service);
+      return service;
     },
     inject: [PostDITokens.PostWriteRepository, CoreDITokens.QueryBus],
   },
