@@ -3,7 +3,7 @@ import { UserProvider, UserRole } from '@core/common/enums/user.enum';
 import { Replace } from '@core/common/type/common.types';
 import { extend } from 'lodash';
 import { CreateUserEntityPayload } from './type/create-user-entity.payload';
-import { IsDate, IsEmail, IsEnum, IsString } from 'class-validator';
+import { IsDate, IsEmail, IsEnum, IsNumber, IsString } from 'class-validator';
 import { RemoveEntity } from '@core/common/entity/remove.entity';
 
 export class User extends BaseEntity<number> implements RemoveEntity {
@@ -27,6 +27,7 @@ export class User extends BaseEntity<number> implements RemoveEntity {
 
   constructor(payload: CreateUserEntityPayload) {
     super();
+    this.id = payload.id;
     this.email = payload.email;
     this.name = payload.name;
     this.provider = payload.provider;
@@ -50,11 +51,9 @@ export class User extends BaseEntity<number> implements RemoveEntity {
   public getProvider(): UserProvider {
     return this.provider;
   }
-
   public getRole(): UserRole {
     return this.role;
   }
-
   public getCreatedAt(): Date | null {
     return this.createdAt;
   }

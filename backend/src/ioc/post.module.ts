@@ -16,7 +16,6 @@ import { RemovePostService } from '@core/service/post/usecase/remove-post.servic
 import { GetAllPostListService } from '@core/service/post/usecase/get-all-post.service';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { ElasticPostRepository } from '@infrastructure/adapter/persistence/elasticsearch/post/elastic-post.adpater';
-import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
 
 export const persistencePostProvider: Provider[] = [
   {

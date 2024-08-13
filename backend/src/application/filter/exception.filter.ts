@@ -13,7 +13,6 @@ export class NestRestExceptionFilter implements ExceptionFilter {
     let errorResponse: CoreApiResponse<unknown> = CoreApiResponse.error(CommonMsg.INTERNAL_SERVER_ERROR.code, error.message);
     errorResponse = this.handelNestError(error, errorResponse);
     errorResponse = this.handleCoreException(error, errorResponse);
-
     const message: string = `Method: ${request.method}; ` + `Path: ${request.path}; ` + `Error: ${errorResponse.message}`;
     Logger.error(message);
     response.json(errorResponse);

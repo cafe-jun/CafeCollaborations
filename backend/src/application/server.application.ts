@@ -37,7 +37,7 @@ export class ServerApplication {
     const description = 'NestJS Boilerplate API Documentation';
     const version = '1.0.0';
 
-    const options = new DocumentBuilder().setTitle(title).setDescription(description).setVersion(version).build();
+    const options = new DocumentBuilder().setTitle(title).setDescription(description).setVersion(version).addBearerAuth().build(); // 토큰 내용 추가.build();
     const document: OpenAPIObject = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('docs/api', app, document);
   }

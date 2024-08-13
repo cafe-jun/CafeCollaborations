@@ -9,22 +9,22 @@ export class RestCreatePostRequestPayload {
   @ApiProperty({ type: 'string' })
   public title: string;
 
-  @ApiProperty({ type: 'string', required: false })
+  @ApiProperty({ type: 'number', default: 1, required: false })
   public imageId: string;
 
   @ApiProperty({ type: 'string', required: false })
   public content: string;
 
-  @ApiProperty({ type: 'string', enum: Category.getValues(), required: false })
+  @ApiProperty({ type: 'string', enum: Category.getValues(), default: Category.ACCOMMODATION_CODE.code, required: false })
   public category: Category;
 
-  @ApiProperty({ type: 'enum', enum: Region.getValues(), required: false })
+  @ApiProperty({ type: 'enum', enum: Region.getValues(), default: Region.Seoul.code, required: false })
   public region: Region;
 
-  @ApiProperty({ type: 'enum', enum: DurationType.getValues(), required: false })
+  @ApiProperty({ type: 'enum', enum: DurationType.getValues(), default: DurationType.LessThanOneMonth.code, required: false })
   public durationType: DurationType;
 
-  @ApiProperty({ type: 'enum', enum: RecruitMember.getValues(), required: false })
+  @ApiProperty({ type: 'enum', enum: RecruitMember.getValues(), default: RecruitMember.OneToFive.code, required: false })
   public recruitMember: RecruitMember;
 
   @ApiProperty({ type: 'enum', enum: PostStatus, required: false })

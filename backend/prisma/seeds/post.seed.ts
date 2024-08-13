@@ -124,13 +124,8 @@ export const TempPosts: Omit<Post, 'id'>[] = [
     updatedAt: null,
   },
 ];
-// console.log(TempPosts);
 async function main() {
   await prisma.user.create({ data: TempUser });
-
-  // await prisma.post.create({
-  //   data: tempPost,
-  // });
 
   await prisma.post.createMany({
     data: [...TempPosts],

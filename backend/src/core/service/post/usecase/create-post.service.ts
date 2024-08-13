@@ -19,11 +19,11 @@ export class CreatePostService implements CreatePostUseCase {
     private readonly queryBus: QueryBusPort,
   ) {}
   public async execute(payload: CreatePostPort): Promise<PostUseCaseDto> {
+    console.log('payload :: ', payload);
     const postOwner: GetUserPreviewQueryResult = CoreAssert.notEmpty(
       await this.queryBus.sendQuery(GetUserPreviewQuery),
       Exception.create({ code: CommonMsg.ENTITY_NOT_FOUND_ERROR, overrideMessage: 'Post Owner not Found' }),
     );
-
     const post: Post = await Post.create({
       owner: await PostOwner.create(postOwner.id, postOwner.name),
       title: payload.title,

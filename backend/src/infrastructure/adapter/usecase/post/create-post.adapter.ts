@@ -18,9 +18,6 @@ export class CreatePostAdapter extends UseCaseValidateAdapter implements CreateP
   @IsString()
   public title: string;
 
-  @IsEnum(Region.getValues())
-  public region: Region;
-
   @Expose()
   @IsOptional()
   @IsNumber()
@@ -32,16 +29,20 @@ export class CreatePostAdapter extends UseCaseValidateAdapter implements CreateP
   public content?: string;
 
   @Expose()
+  @IsEnum(Region.getValues())
+  public region: Region;
+
+  @Expose()
   @IsEnum(Category.getValues())
-  category: Category;
+  public category: Category;
 
   @Expose()
   @IsEnum(DurationType.getValues())
-  durationType: DurationType;
+  public durationType: DurationType;
 
   @Expose()
   @IsEnum(RecruitMember.getValues())
-  recruitMember: RecruitMember;
+  public recruitMember: RecruitMember;
 
   public static async create(payload: CreatePostPort): Promise<CreatePostAdapter> {
     const adapter: CreatePostAdapter = plainToInstance(CreatePostAdapter, payload);
