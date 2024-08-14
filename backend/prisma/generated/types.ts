@@ -68,7 +68,7 @@ export type Post = {
     recruit_members: RecruitMember | null;
     duration_type: DurationType | null;
     created_at: Generated<Timestamp | null>;
-    updated_at: Timestamp | null;
+    updated_at: Generated<Timestamp | null>;
     edited_at: Timestamp | null;
     removed_at: Timestamp | null;
     published_at: Timestamp | null;
