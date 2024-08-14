@@ -35,8 +35,6 @@ const CustomSelect = ({
       </Button>
       <Collapse
         in={isOpen}
-        animateOpacity
-        style={{ transition: "height 200ms, opacity 200ms" }}
       >
         <VStack
           position="absolute"
