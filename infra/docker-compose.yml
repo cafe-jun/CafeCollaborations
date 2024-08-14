@@ -28,7 +28,8 @@ services:
       bash -c '
         bin/elasticsearch-plugin install analysis-nori;
         /usr/local/bin/docker-entrypoint.sh
-      '
+      '    
+
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.14.0

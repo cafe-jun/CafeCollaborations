@@ -2,8 +2,6 @@
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Button, Flex } from "@chakra-ui/react";
-import { useState } from "react";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
 import { PaginationContainer } from "./styled";
 

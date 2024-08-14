@@ -20,8 +20,7 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsString()
   private title: string;
 
-  @IsEnum(Category.getValues())
-  @IsString()
+  @IsEnum(Category)
   private category: Category;
 
   @IsOptional()
@@ -52,7 +51,7 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   private removedAt: Nullable<Date>;
 
   @IsOptional()
-  @IsEnum(Region.getValues())
+  @IsEnum(Region)
   private region: Region;
 
   @IsOptional()
@@ -76,7 +75,7 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     this.content = payload.content || null;
     this.status = payload.status || PostStatus.DRAFT;
     this.createdAt = payload.createdAt || new Date();
-    this.category = payload.category;
+    this.category = payload.category || Category.ACCOMMODATION_CODE;
     this.region = payload.region || Region.Seoul;
     this.durationType = payload.durationType || DurationType.LessThanOneMonth;
     this.recruitMember = payload.recruitMember || RecruitMember.Indefinite;

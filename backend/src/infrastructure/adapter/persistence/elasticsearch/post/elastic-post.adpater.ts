@@ -112,16 +112,19 @@ export class ElasticPostRepository implements PostRepositoryPort {
       index: this.index,
       body,
     });
+
     const items = result.hits.hits.map((hit) => {
+      console.log('hit ', hit);
       const result = {
-        id: Number(hit._source.id),
-        owner: hit._source.owner,
+        id: hit._source.id,
+        ownerId: hit._source.ownerid,
+        ownerEmail: hit._source.owneremail,
         title: hit._source.title,
         category: hit._source.category,
         content: hit._source.content,
         status: hit._source.status,
         durationType: hit._source?.durationType,
-        recuritMember: hit.source?.recuritMember,
+        recruitMember: hit.source?.recruitMember,
         region: hit._source.region,
         createdAt: hit._source.createdAt,
         updatedAt: hit._source.updatedAt,
@@ -129,17 +132,18 @@ export class ElasticPostRepository implements PostRepositoryPort {
 
       return new Post({
         id: result.id,
-        owner: new PostOwner(result.owner.id, result.owner.name),
+        owner: new PostOwner(result.ownerId, result.ownerEmail),
         title: result.title,
         content: result.content,
         status: result.status,
         category: result.category,
         region: result.region,
         durationType: result.durationType,
-        recruitMember: result.recuritMember,
+        recruitMember: result.recruitMember,
         createdAt: result.createdAt,
       });
     });
+    console.log('items ', items);
     return { items, totalCount: result.hits.total.value };
   }
 

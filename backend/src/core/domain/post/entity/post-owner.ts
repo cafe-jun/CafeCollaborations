@@ -1,8 +1,8 @@
 import { BaseEntity } from '@core/common/entity/base.entity';
-import { IsNumber } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class PostOwner extends BaseEntity<number> {
-  @IsNumber()
+  @IsString()
   private readonly name: string;
 
   constructor(id: number, name: string) {
@@ -17,6 +17,7 @@ export class PostOwner extends BaseEntity<number> {
 
   public static async create(id: number, name: string): Promise<PostOwner> {
     const postOwner: PostOwner = new PostOwner(id, name);
+
     await postOwner.validate();
     return postOwner;
   }

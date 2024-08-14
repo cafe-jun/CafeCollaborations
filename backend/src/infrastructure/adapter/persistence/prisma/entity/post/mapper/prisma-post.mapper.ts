@@ -18,9 +18,9 @@ export class PrismaPostMapper {
   private constructor() {
     throw new Error('PrismaPostMapper is a static class and should not be instantiated');
   }
-  public static toPrisma(post: Post): PrismaPost {
+  public static toPrisma(post: Post, id?: number): PrismaPost {
     return {
-      id: post.getId(),
+      id,
       userId: post.getOwner().getId(),
       title: post.getTitle(),
       category: post.getCategory().code as PrismaCategory,
@@ -29,7 +29,7 @@ export class PrismaPostMapper {
       durationType: post.getDurationType().code as PrismaDurationType,
       recruitMembers: post.getRecruitMember().code as PrismaRecruitMember,
       region: post.getRegion().code as PrismaRegion,
-      imageId: post.getImage().getId(),
+      imageId: null,
       createdAt: post.getCreatedAt(),
       publishedAt: post.getPublishedAt(),
       editedAt: post.getEditedAt(),

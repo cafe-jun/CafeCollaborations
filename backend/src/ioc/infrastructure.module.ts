@@ -8,6 +8,7 @@ import { DB } from '@lib/prisma/generated/types';
 import { Global, Module, Provider } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
+import { CqrsModule } from '@nestjs/cqrs';
 import { ElasticsearchModule, ElasticsearchService } from '@nestjs/elasticsearch';
 import { Kysely, PostgresAdapter, PostgresIntrospector, PostgresQueryCompiler } from 'kysely';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
@@ -16,7 +17,7 @@ import kyselyExtension from 'prisma-extension-kysely';
 export const PrismaToken = 'PrismaService';
 
 export const ElasticToken = 'ElasticsearchService';
-const CQRSProvider: Provider[] = [
+const CqrsProvider: Provider[] = [
   {
     provide: CoreDITokens.CommandBus,
     useClass: NestCommandBusAdapter,
@@ -88,9 +89,10 @@ const elasticProvider: Provider = {
     ElasticsearchModule.register({
       node: process.env.ELASTICSEARCH_NODE,
     }),
+    CqrsModule,
   ],
   providers: [
-    ...CQRSProvider,
+    ...CqrsProvider,
     prismaProvider,
     elasticProvider,
     {
@@ -98,6 +100,6 @@ const elasticProvider: Provider = {
       useClass: NestRestExceptionFilter,
     },
   ],
-  exports: [PrismaToken, ElasticToken, ...CQRSProvider],
+  exports: [PrismaToken, ElasticToken, ...CqrsProvider],
 })
 export class InfrastructureModule {}

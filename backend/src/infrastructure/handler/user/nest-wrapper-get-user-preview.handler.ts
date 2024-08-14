@@ -3,19 +3,17 @@ import { GetUserPreviewQueryResult } from '@core/common/message/query/queries/us
 import { Optional } from '@core/common/type/common.types';
 import { UserDiTokens } from '@core/domain/user/di/user-di.tokens';
 import { GetUserPreviewQueryHandler } from '@core/domain/user/handler/user.handler';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
-@Injectable()
 @QueryHandler(GetUserPreviewQuery)
-export class NestWrapperGetUserPreviewQueryHandler implements IQueryHandler {
+export class NestWrapperGetUserPreviewQueryHandler implements IQueryHandler<GetUserPreviewQuery> {
   constructor(
     @Inject(UserDiTokens.GetUserPreviewQueryHandler)
     private readonly handleService: GetUserPreviewQueryHandler,
   ) {}
   async execute(query: GetUserPreviewQuery): Promise<Optional<GetUserPreviewQueryResult>> {
     const result = await this.handleService.handle(query);
-    console.log(result);
     return result;
   }
 }

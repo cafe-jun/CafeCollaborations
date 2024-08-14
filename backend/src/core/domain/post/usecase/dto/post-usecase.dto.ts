@@ -52,6 +52,9 @@ export class PostUseCaseDto {
       dto.image = { id: postImage.getId(), url: postImage.getRelativePath() };
     }
     dto.region = post.getRegion();
+    dto.category = post.getCategory();
+    dto.durationType = post.getDurationType();
+    dto.recruitMember = post.getRecruitMember();
     dto.createdAt = post.getCreatedAt();
     dto.editedAt = post.getEditedAt() || null;
     dto.publishedAt = post.getPublishedAt() || null;

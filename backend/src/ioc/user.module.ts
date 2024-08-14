@@ -42,6 +42,6 @@ const handlerProvider: Provider[] = [
 @Module({
   controllers: [UserController],
   providers: [...persistenceProvider, ...useCaseProviders, ...handlerProvider],
-  exports: [UserDiTokens.UserRepository],
+  exports: [UserDiTokens.UserRepository, ...handlerProvider],
 })
 export class UserModule {}

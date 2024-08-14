@@ -48,9 +48,6 @@ export class PostController {
 
     @Inject(PostDITokens.GetAllPostListUseCase)
     private readonly getAllPostListUseCase: GetAllPostUseCase,
-
-    // @Inject(PostDITokens.SearchPostListUseCase)
-    // private readonly searchPostListUseCase: SearchPostUseCase,
   ) {}
 
   @Post()
