@@ -1,5 +1,5 @@
 import { Category } from '@core/common/enums/category.enum';
-import { DurationType } from '@core/common/enums/duration-type.enum';
+import { Duration } from '@core/common/enums/duration-type.enum';
 import { PostStatus } from '@core/common/enums/post-status.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
 import { Region } from '@core/common/enums/region.enum';
@@ -11,7 +11,7 @@ export type CreatePostPort = {
   imageId?: string;
   content?: string;
   region: Region;
-  durationType: DurationType;
+  duration: Duration;
   recruitMember: RecruitMember;
   status?: PostStatus;
   publishedAt?: Date;

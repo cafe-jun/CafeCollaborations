@@ -1,5 +1,5 @@
 import { Category } from '@core/common/enums/category.enum';
-import { DurationType } from '@core/common/enums/duration-type.enum';
+import { Duration } from '@core/common/enums/duration-type.enum';
 import { PostStatus } from '@core/common/enums/post-status.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
 import { Region } from '@core/common/enums/region.enum';
@@ -10,7 +10,7 @@ import {
   Post as PrismaPost,
   Region as PrismaRegion,
   RecruitMember as PrismaRecruitMember,
-  DurationType as PrismaDurationType,
+  Duration as PrismaDurationType,
   Category as PrismaCategory,
 } from '@prisma/client';
 
@@ -26,7 +26,7 @@ export class PrismaPostMapper {
       category: post.getCategory().code as PrismaCategory,
       content: post.getContent(),
       status: post.getStatus(),
-      durationType: post.getDurationType().code as PrismaDurationType,
+      duration: post.getDuration().code as PrismaDurationType,
       recruitMembers: post.getRecruitMember().code as PrismaRecruitMember,
       region: post.getRegion().code as PrismaRegion,
       imageId: null,
@@ -51,7 +51,7 @@ export class PrismaPostMapper {
       category: Category.getByCode(prismaPost.category),
       region: Region.getByCode(prismaPost.region),
       recruitMember: RecruitMember.getByCode(prismaPost.recruitMembers),
-      durationType: DurationType.getByCode(prismaPost.durationType),
+      duration: Duration.getByCode(prismaPost.duration),
       publishedAt: prismaPost.publishedAt,
     });
     return post;

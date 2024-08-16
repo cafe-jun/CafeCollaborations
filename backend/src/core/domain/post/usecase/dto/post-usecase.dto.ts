@@ -5,7 +5,7 @@ import { Post } from '../../entity/post';
 import { PostImage } from '../../entity/post-image';
 import { PostOwner } from '../../entity/post-owner';
 import { Region } from '@core/common/enums/region.enum';
-import { DurationType } from '@core/common/enums/duration-type.enum';
+import { Duration } from '@core/common/enums/duration-type.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
 import { Category } from '@core/common/enums/category.enum';
 
@@ -32,7 +32,7 @@ export class PostUseCaseDto {
 
   public region: Region;
 
-  public durationType: DurationType;
+  public duration: Duration;
 
   public recruitMember: RecruitMember;
 
@@ -53,7 +53,7 @@ export class PostUseCaseDto {
     }
     dto.region = post.getRegion();
     dto.category = post.getCategory();
-    dto.durationType = post.getDurationType();
+    dto.duration = post.getDuration();
     dto.recruitMember = post.getRecruitMember();
     dto.createdAt = post.getCreatedAt();
     dto.editedAt = post.getEditedAt() || null;

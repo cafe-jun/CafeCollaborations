@@ -63,7 +63,7 @@ export class PostController {
       imageId: body.imageId,
       category: body.category,
       region: body.region,
-      durationType: body.durationType,
+      duration: body.duration,
       recruitMember: body.recruitMember,
       status: body.status,
     });

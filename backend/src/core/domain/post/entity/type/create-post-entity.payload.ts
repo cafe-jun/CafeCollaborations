@@ -4,7 +4,7 @@ import { PostImage } from '../post-image';
 import { PostStatus } from '@core/common/enums/post-status.enum';
 import { Region } from '@core/common/enums/region.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
-import { DurationType } from '@core/common/enums/duration-type.enum';
+import { Duration } from '@core/common/enums/duration-type.enum';
 import { Category } from '@core/common/enums/category.enum';
 
 export type CreatePostEntityPayload = {
@@ -12,7 +12,7 @@ export type CreatePostEntityPayload = {
   title: string;
   image?: Nullable<PostImage>;
   content?: Nullable<string>;
-  durationType: DurationType;
+  duration: Duration;
   recruitMember: RecruitMember;
   region: Region;
   category: Category;

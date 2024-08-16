@@ -66,10 +66,12 @@ const ProjectDescriptionEditor = () => {
         />
       </Box>
 
-      <Box display="flex" justifyContent="flex-end">
-        <Button mr={2}>취소</Button>
-        <Button colorScheme="blue" onClick={handleSubmit}>
-          글 등록
+      <Box display="flex" justifyContent="flex-end" marginTop={"3rem"}>
+        <Button mr={2} size={"lg"}>
+          취소
+        </Button>
+        <Button colorScheme="blue" onClick={handleSubmit} size={"lg"}>
+          모집 등록
         </Button>
       </Box>
     </VStack>

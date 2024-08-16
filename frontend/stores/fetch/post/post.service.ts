@@ -36,6 +36,20 @@ class PostService extends Service {
       .then((res) => res.data);
   }
 
+  createPost(payload: {
+    title: string;
+    content: string;
+    region: string;
+    category: string;
+    recruitMember: string;
+    duration: string;
+    image: string;
+  }): Promise<PostModel> {
+    return this.http
+      .post<{ data: PostModel }>("/post", payload)
+      .then((res) => res.data);
+  }
+
   getComments(postId: number) {
     return this.http.get<PostModel[]>(`/post/${postId}/comments`);
   }

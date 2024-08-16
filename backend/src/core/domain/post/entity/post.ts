@@ -10,7 +10,7 @@ import { RemoveEntity } from '@core/common/entity/remove.entity';
 
 import { PostUseCaseDto } from '../usecase/dto/post-usecase.dto';
 import { Region } from '@core/common/enums/region.enum';
-import { DurationType } from '@core/common/enums/duration-type.enum';
+import { Duration } from '@core/common/enums/duration-type.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
 import { Category } from '@core/common/enums/category.enum';
 export class Post extends BaseEntity<number> implements RemoveEntity {
@@ -55,8 +55,8 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
   private region: Region;
 
   @IsOptional()
-  @IsEnum(DurationType)
-  private durationType: DurationType;
+  @IsEnum(Duration)
+  private duration: Duration;
 
   @IsOptional()
   @IsEnum(RecruitMember)
@@ -77,7 +77,7 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     this.createdAt = payload.createdAt || new Date();
     this.category = payload.category || Category.ACCOMMODATION_CODE;
     this.region = payload.region || Region.Seoul;
-    this.durationType = payload.durationType || DurationType.LessThanOneMonth;
+    this.duration = payload.duration || Duration.LessThanOneMonth;
     this.recruitMember = payload.recruitMember || RecruitMember.Indefinite;
     this.publishedAt = payload.publishedAt || null;
     this.removedAt = payload.removedAt || null;
@@ -126,8 +126,8 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     return this.region;
   }
 
-  public getDurationType(): DurationType {
-    return this.durationType;
+  public getDuration(): Duration {
+    return this.duration;
   }
 
   public getRecruitMember(): RecruitMember {
@@ -186,7 +186,7 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
       publishedAt: dto.publishedAt,
       createdAt: dto.createdAt,
       editedAt: dto.editedAt,
-      durationType: dto.durationType,
+      duration: dto.duration,
       recruitMember: dto.recruitMember,
       owner: new PostOwner(dto.owner.id, dto.owner.name),
     });

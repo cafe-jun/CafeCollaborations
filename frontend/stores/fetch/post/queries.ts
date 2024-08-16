@@ -17,6 +17,11 @@ const queryOptions = {
         keyword: query.keyword,
       }),
   }),
+  create: () => ({
+    queryKey: queryKeys.all,
+    queryFn: () =>
+      PostService.getPost({ pageNo: 1, pageSize: 20, keyword: "" }),
+  }),
   detail: (postId: number) => ({
     queryKey: queryKeys.detail(postId),
     queryFn: () => PostService.getPostDetail(postId),

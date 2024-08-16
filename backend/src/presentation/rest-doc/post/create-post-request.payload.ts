@@ -1,5 +1,5 @@
 import { Category } from '@core/common/enums/category.enum';
-import { DurationType } from '@core/common/enums/duration-type.enum';
+import { Duration } from '@core/common/enums/duration-type.enum';
 import { PostStatus } from '@core/common/enums/post-status.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
 import { Region } from '@core/common/enums/region.enum';
@@ -21,8 +21,8 @@ export class RestCreatePostRequestPayload {
   @ApiProperty({ type: 'enum', enum: Region.getValues(), default: Region.Seoul.code, required: false })
   public region: Region;
 
-  @ApiProperty({ type: 'enum', enum: DurationType.getValues(), default: DurationType.LessThanOneMonth.code, required: false })
-  public durationType: DurationType;
+  @ApiProperty({ type: 'enum', enum: Duration.getValues(), default: Duration.LessThanOneMonth.code, required: false })
+  public duration: Duration;
 
   @ApiProperty({ type: 'enum', enum: RecruitMember.getValues(), default: RecruitMember.OneToFive.code, required: false })
   public recruitMember: RecruitMember;

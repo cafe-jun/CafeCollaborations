@@ -38,13 +38,13 @@ export const RecruitMember = {
     RM1004: "RM1004"
 } as const;
 export type RecruitMember = (typeof RecruitMember)[keyof typeof RecruitMember];
-export const DurationType = {
+export const Duration = {
     DU1000: "DU1000",
     DU1002: "DU1002",
     DU1003: "DU1003",
     DU1004: "DU1004"
 } as const;
-export type DurationType = (typeof DurationType)[keyof typeof DurationType];
+export type Duration = (typeof Duration)[keyof typeof Duration];
 export const Region = {
     RE1000: "RE1000",
     RE1002: "RE1002",
@@ -66,7 +66,7 @@ export type Post = {
     status: PostStatus;
     region: Region | null;
     recruit_members: RecruitMember | null;
-    duration_type: DurationType | null;
+    duration: Duration | null;
     created_at: Generated<Timestamp | null>;
     updated_at: Generated<Timestamp | null>;
     edited_at: Timestamp | null;

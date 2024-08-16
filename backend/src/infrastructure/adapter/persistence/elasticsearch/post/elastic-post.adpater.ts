@@ -118,7 +118,7 @@ export class ElasticPostRepository implements PostRepositoryPort {
         category: hit._source.category,
         content: hit._source.content,
         status: hit._source.status,
-        durationType: hit._source?.durationType,
+        duration: hit._source?.duration,
         recruitMember: hit.source?.recruitMember,
         region: hit._source.region,
         createdAt: hit._source.createdAt,
@@ -133,12 +133,12 @@ export class ElasticPostRepository implements PostRepositoryPort {
         status: result.status,
         category: result.category,
         region: result.region,
-        durationType: result.durationType,
+        duration: result.duration,
         recruitMember: result.recruitMember,
         createdAt: result.createdAt,
       });
     });
-    console.log('items ', items);
+
     return { items, totalCount: result.hits.total.value };
   }
 

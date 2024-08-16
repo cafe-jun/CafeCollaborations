@@ -31,7 +31,7 @@ export class CreatePostService implements CreatePostUseCase {
       region: payload.region,
       status: payload.status,
       category: payload.category,
-      durationType: payload.durationType,
+      duration: payload.duration,
       recruitMember: payload.recruitMember,
       publishedAt: payload.publishedAt,
       createdAt: payload.createdAt,

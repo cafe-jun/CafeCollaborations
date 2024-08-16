@@ -1,15 +1,5 @@
 import React, { memo } from "react";
-import {
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  VStack,
-  Box,
-  Text,
-  Collapse,
-} from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { FormControl, FormLabel, Input, Box, Select } from "@chakra-ui/react";
 
 const CustomSelect = ({
   options,
@@ -22,51 +12,22 @@ const CustomSelect = ({
 }) => {
   return (
     <Box position="relative">
-      <Button
-        onClick={() => onToggle(fieldName)}
-        rightIcon={<ChevronDownIcon />}
-        width="100%"
-        justifyContent="space-between"
-        bg="white"
-        borderColor="gray.200"
-        _hover={{ borderColor: "blue.500" }}
+      <Select
+        placeholder={placeholder}
+        size="md"
+        borderColor="gray.500"
+        _hover={{ borderColor: "white.600" }}
+        _focus={{ borderColor: "white.600", boxShadow: "outline" }}
+        onChange={onChange}
       >
-        {value || placeholder}
-      </Button>
-      <Collapse in={isOpen}>
-        <VStack
-          position="absolute"
-          top="100%"
-          left={0}
-          right={0}
-          bg="white"
-          borderWidth={1}
-          borderColor="gray.200"
-          borderRadius="md"
-          maxH="200px"
-          overflowY="auto"
-          zIndex={1}
-          spacing={0}
-        >
-          {options.map((option) => (
-            <Box
-              key={option}
-              as="button"
-              width="100%"
-              textAlign="left"
-              py={2}
-              px={4}
-              _hover={{ bg: "gray.100" }}
-              onClick={() => {
-                onChange(option);
-                onToggle(fieldName);
-              }}
-            >
-              <Text>{option}</Text>
-            </Box>
-          ))}
-        </VStack>
-      </Collapse>
+        {options.map((option) => {
+          return (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          );
+        })}
+      </Select>
     </Box>
   );
 };

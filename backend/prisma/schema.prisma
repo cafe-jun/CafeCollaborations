@@ -61,7 +61,7 @@ enum RecruitMember {
   @@map("recruit_members")
 }
 
-enum DurationType {
+enum Duration {
   DU1000 // LessThanOneMonth
   DU1002 // OneToThreeMonths
   DU1003 // ThreeToSixMonths
@@ -106,7 +106,7 @@ model Post {
   status         PostStatus
   region         Region?
   recruitMembers RecruitMember? @map("recruit_members")
-  durationType   DurationType?  @map("duration_type")
+  duration       Duration?      @map("duration")
   createdAt      DateTime?      @default(now()) @map("created_at")
   updatedAt      DateTime?      @default(now()) @updatedAt @map("updated_at")
   editedAt       DateTime?      @map("edited_at")

@@ -1,6 +1,6 @@
 import { UseCaseValidateAdapter } from '@core/common/adapter/usecase/usecase-validate.adapter';
 import { Category } from '@core/common/enums/category.enum';
-import { DurationType } from '@core/common/enums/duration-type.enum';
+import { Duration } from '@core/common/enums/duration-type.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
 import { Region } from '@core/common/enums/region.enum';
 import { CreatePostPort } from '@core/domain/post/port/usecase/post.port';
@@ -39,9 +39,9 @@ export class CreatePostAdapter extends UseCaseValidateAdapter implements CreateP
   public category: Category;
 
   @Expose()
-  @IsEnum(DurationType)
-  @Transform(({ value }) => DurationType.getByCode(value), { toClassOnly: true })
-  public durationType: DurationType;
+  @IsEnum(Duration)
+  @Transform(({ value }) => Duration.getByCode(value), { toClassOnly: true })
+  public duration: Duration;
 
   @Expose()
   @IsEnum(RecruitMember)
