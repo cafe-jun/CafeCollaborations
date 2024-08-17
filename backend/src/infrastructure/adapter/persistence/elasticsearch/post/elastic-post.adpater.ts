@@ -19,10 +19,6 @@ export class ElasticPostRepository implements PostRepositoryPort {
     private readonly esService: ElasticsearchService,
   ) {}
 
-  // async onModuleInit() {
-  //   await this.createIndex();
-  // }
-
   private async createIndex() {
     const checkIndex = await this.esService.indices.exists({ index: this.index });
 
@@ -114,7 +110,6 @@ export class ElasticPostRepository implements PostRepositoryPort {
     });
 
     const items = result.hits.hits.map((hit) => {
-      console.log('hit ', hit);
       const result = {
         id: hit._source.id,
         ownerId: hit._source.ownerid,

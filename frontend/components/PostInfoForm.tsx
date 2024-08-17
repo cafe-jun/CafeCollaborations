@@ -26,7 +26,7 @@ const ProjectInfoForm = () => {
     if (field === "techStack") {
       return;
     }
-    if (field === "regionType") {
+    if (field === "region") {
       const result = regionItems.find((item) => item.name === value);
       if (!result) return;
       setFormData((prev) => ({ ...prev, [field]: result?.code }));
@@ -74,9 +74,9 @@ const ProjectInfoForm = () => {
             type="select"
             options={regionItems.map((item) => item.name)}
             value={formData.regionType}
-            onChange={handleChange("regionType")}
+            onChange={handleChange("region")}
             placeholder="모집 지역"
-            isOpen={openSelect === "regionType"}
+            isOpen={openSelect === "region"}
             onToggle={handleToggle}
             fieldName="regionType"
           />

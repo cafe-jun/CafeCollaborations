@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
   FormControl,
   FormLabel,
@@ -33,9 +33,7 @@ const CustomSelect = ({
       >
         {value || placeholder}
       </Button>
-      <Collapse
-        in={isOpen}
-      >
+      <Collapse in={isOpen}>
         <VStack
           position="absolute"
           top="100%"

@@ -4,7 +4,7 @@ import { Optional } from '@core/common/type/common.types';
 import { User } from '@core/domain/user/entity/user';
 import { GetUserPreviewQueryHandler } from '@core/domain/user/handler/user.handler';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/user.repository.port';
-import { isEmpty, isNotEmpty } from '@shared/data.helper';
+import { isEmpty } from '@shared/data.helper';
 
 export class HandleGetUserPreviewQueryService implements GetUserPreviewQueryHandler {
   constructor(private readonly userRepository: UserRepositoryPort) {}
