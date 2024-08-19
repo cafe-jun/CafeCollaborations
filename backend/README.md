@@ -46,20 +46,8 @@ presentation
 - 각 서비스 Module에 DI 하는 로직을 갖는다.
   - .RootModule  
     모든 모듈을 일괄 imports하는 최상위 모듈이다. ApplicationServer와 TestServer에서 서버 객체를 생성하는 곳에서 인자로 활용된다.
-  - InfrastructureModule
-    - imports
-      - CqrsModule
-      - TypeOrmModule
-    - providers
-      - NestHttpExceptionFilter
-      - NestHttpLoggingInterceptor
-      - NestCommandBusAdapter
-      - NestQueryBusAdapter
-      - NestEventBusAdapter
-    - exports
-      - CoreDITokens.CommandBus (Symbol)
-      - CoreDITokens.QueryBus (Symbol)
-      - CoreDITokens.EventBus (Symbol)
+  - InfrastructureModule - imports - CqrsModule - PrismaModule
+    f - providers - NestHttpExceptionFilter - NestHttpLoggingInterceptor - NestCommandBusAdapter - NestQueryBusAdapter - NestEventBusAdapter - exports - CoreDITokens.CommandBus (Symbol) - CoreDITokens.QueryBus (Symbol) - CoreDITokens.EventBus (Symbol)
   - 각종 서비스 모듈 (AuthModule, UserModule, PostModule, MediaModule 등)
 
 ## Infrastructure
@@ -70,26 +58,20 @@ presentation
     - Prisma
       - Entity
         - Entity
-        - EntityMapper
+        - Mapper
       - Repository
         Service에서 Repository port input을 통해 호출하는 Repository Adaper 이며, DB CRUD 구현체를 갖는다.
-      - Migration
-      - Logger - `typeorm`이 아닌 `@nestjs/common`의 `Logger`로 콘솔 출력하도록 커스터마이징 했다.
-    - Media File - Minio
-      - MinioMediaFileStorageAdapter
-        Minio 저장소로의 파일 upload, defineFileUploadDetails 메서드를 갖는다.
   - UseCase input adapter  
     Controller에서 UseCase를 execute 하기 전에 execute 메서드 인자에 포함되는 adapter로, UseCase에서 실행하기 전에 adapter 데이터를 생성하는데, new 메서드를 통해 생성할 때(new 키워드가 아닌 직접 구현한 new 메서드) 데이터 유효성 검사(validate)를 한 데이터 객체이다.
 - Config - 서버 및 외부 DB의 설정 파일
   - ApiServerConfig
     서버의 호스트, 포트, 액세스 토큰, 액세스 토큰 TTL, 로깅 활성여부 등
   - DatabaseConfig
-  - FileStorageConfig
 - Handler wrapper - NestJS  
   @nestjs/cqrs의 `IQueryHandler`, `IEventHandler` 등의 인터페이스를 구현한다.
   이 CQRS는 반드시 Bounded Context에서만 사용해야 하고, 시스템 전체에서 사용해서는 안된다.
   CQRS는 요구사항이 많아 복잡해진 도메인 모델을 한결 쉽게 다루기 위해 Command(CUD)와 Query(Read)로 분리해 개별적으로 확장 및 최적화 전략 적용을 가능하게 해준다.
-- Transaction wrapper - TypeORM & typeorm-transactional-cls-hooked
+- Transaction wrapper - prisma &
 
 ## Domain / Core Context
 
@@ -147,7 +129,7 @@ UseCase 구현체와 Command / Query / Event handler의 구현체를 갖는다.
   - Entity
   - RemovableEntity
 - Base ValueObject class
-- Exception (Base Exception class)
+- Exception (Base Exception class = 예외 처리 )
   Guard, Strategy, Base Entity, Base VO, 서비스 등에서 `new` 정적 메서드를 통해 예외를 생성하는데 사용된다.
 - Base UseCase interface
   - TransactionalUseCase
@@ -170,7 +152,6 @@ UseCase 구현체와 Command / Query / Event handler의 구현체를 갖는다.
     Controller에서 모든 API의 Base 응답 객체로 사용된다.
     code, message, timestamp, data 읽기 전용 필드와 success, error 정적 메서드를 갖는다.
     NestHttpExceptionFilter와 NestHttpLoggingInterceptor 에서도 응답 또는 로깅하는데 사용된다.
-    또한 e2e 테스트에서 예상 응답 객체인 ResponseExpect 클래스에서도 사용된다.
 - DI (Base DI tokens)
   - CoreDITokens
     CQERS의 핵심인 CommandBus, QueryBus, EventBus를 심볼로 갖는다.
@@ -201,16 +182,16 @@ IPoster is a simple fictional application that allows users to publish posts.
 
 1. User
 2. Post
-3. Media
 
 #### Use Cases
 
-- User -> IPoster
+- User -> Post
 
   1. `User` can create `Guest` account in `IPoster`
   2. `User` can create `Author` account in `IPoster`
 
 - User -> Post
+
   1. `Author` can create own draft `Post`
   2. `Author` can edit own `Post`
   3. `Author` can attach an image `Media` to own `Post`
@@ -223,21 +204,9 @@ IPoster is a simple fictional application that allows users to publish posts.
 
 ## Local Development
 
-- **Docker**
-
-  All necessary external services are described in the [./docker-compose.local.yml](./docker-compose.local.yaml):
-
-  - Run `docker-compose -f docker-compose.local.yaml up -d`
-  - Stop `docker-compose -f docker-compose.local.yaml stop`
-
-  Services:
-
-  1. PostgreSQL - [Credentials](./env/local.pg.env).
-  2. Minio - [Credentials](./env/local.minio.env).
-
 - **Building**
 
-  1. Install libraries - `npm install`
+  1. Install libraries - `pnpm install`
   2. Build application - `npm run build`
 
 - **Configuring**
