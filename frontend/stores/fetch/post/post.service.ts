@@ -1,6 +1,6 @@
-import Service from "@/stores/fetch/service";
-import { PostModel } from "@/stores/model/post/post.model";
-import { createApiQueryUrl } from "@/util/react-query";
+import Service from '@/stores/fetch/service';
+import { PostModel } from '@/stores/model/post/post.model';
+import { createApiQueryUrl } from '@/util/react-query';
 
 class PostService extends Service {
   getPost(query: {
@@ -15,7 +15,7 @@ class PostService extends Service {
       pageNo: number;
       pageSize: number;
       keyword: string;
-    }>("/post", {
+    }>('/post', {
       pageNo: query.pageNo,
       pageSize: query.pageSize,
       keyword: query.keyword,
@@ -43,10 +43,10 @@ class PostService extends Service {
     category: string;
     recruitMember: string;
     duration: string;
-    image: string;
+    imageId: number;
   }): Promise<PostModel> {
     return this.http
-      .post<{ data: PostModel }>("/post", payload)
+      .post<{ data: PostModel }>('/post', payload)
       .then((res) => res.data);
   }
 

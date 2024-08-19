@@ -1,31 +1,31 @@
-import React, { useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { Box, Text, Input, Button, VStack } from "@chakra-ui/react";
+import React, { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { Box, Text, Input, Button, VStack } from '@chakra-ui/react';
 
 const ProjectDescriptionEditor = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
 
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link', 'image'],
     ],
   };
 
   const formats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "list",
-    "bullet",
-    "link",
-    "image",
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'list',
+    'bullet',
+    'link',
+    'image',
   ];
 
   const handleSubmit = () => {
@@ -62,15 +62,15 @@ const ProjectDescriptionEditor = () => {
           value={content}
           onChange={setContent}
           placeholder="모집 정보에 대해 작성해주세요!"
-          style={{ height: "450px" }}
+          style={{ height: '450px' }}
         />
       </Box>
 
-      <Box display="flex" justifyContent="flex-end" marginTop={"3rem"}>
-        <Button mr={2} size={"lg"}>
+      <Box display="flex" justifyContent="flex-end" marginTop={'3rem'}>
+        <Button mr={2} size={'lg'}>
           취소
         </Button>
-        <Button colorScheme="blue" onClick={handleSubmit} size={"lg"}>
+        <Button colorScheme="blue" type="submit" size={'lg'}>
           모집 등록
         </Button>
       </Box>

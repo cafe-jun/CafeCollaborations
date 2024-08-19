@@ -1,27 +1,35 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { Box, VStack, Heading, SimpleGrid, Button } from "@chakra-ui/react";
-import FormField from "./FormField";
-import ProjectDescriptionEditor from "./PostDescription";
-import { categoryItems, regionItems } from "./post/PostList";
+import { useEffect, useRef, useState } from 'react';
+import { Box, VStack, Heading, SimpleGrid, Button } from '@chakra-ui/react';
+import FormField from './FormField';
+import ProjectDescriptionEditor from './PostDescription';
 import {
   categoryFormOptions,
   durationTypeFormOptions,
   recruitMemberFormOptions,
   regionFormOptions,
-} from "./post/FormOptions";
-
+} from './post/FormOptions';
+import { useSession } from 'next-auth/react';
+import { useForm } from 'react-hook-form';
+import postService from '@/stores/fetch/post/post.service';
 const ProjectInfoForm = () => {
   const formRef = useRef(null);
+  const { data: session } = useSession();
 
+  console.log('session :: ', session?.accessToken, session?.refreshToken);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [formData, setFormData] = useState({
-    region: "",
-    recruitMember: "",
-    duration: "",
-    category: "",
-    title: "",
-    content: "",
+    region: '',
+    recruitMember: '',
+    duration: '',
+    category: '',
+    title: '',
+    content: '',
     imageId: 1,
   });
 
@@ -47,28 +55,22 @@ const ProjectInfoForm = () => {
   const handleToggle = (fieldName) => {
     setOpenSelect((prev) => (prev === fieldName ? null : fieldName));
   };
-
-  useEffect(() => {
-    console.log(formData);
-  }, [
-    formData.category,
-    formData.duration,
-    formData.recruitMember,
-    formData.region,
-    formData.title,
-    formData.content,
-  ]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    // 폼 제출 로직
+  const onSubmit = async () => {
+    await postService.createPost({
+      title: formData.title,
+      content: formData.content,
+      category: formData.category,
+      duration: formData.duration,
+      recruitMember: formData.recruitMember,
+      region: formData.region,
+      imageId: formData.imageId,
+    });
   };
 
   return (
     <Box
       as="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       maxWidth="800px"
       margin="auto"
       padding={6}
@@ -84,9 +86,9 @@ const ProjectInfoForm = () => {
             type="select"
             options={regionFormOptions}
             value={formData.region}
-            onChange={handleChange("region")}
+            onChange={handleChange('region')}
             placeholder="지역 선택"
-            isOpen={openSelect === "region"}
+            isOpen={openSelect === 'region'}
             onToggle={handleToggle}
             fieldName="region"
           />
@@ -95,9 +97,9 @@ const ProjectInfoForm = () => {
             type="select"
             options={recruitMemberFormOptions}
             value={formData.recruitMember}
-            onChange={handleChange("recruitMember")}
+            onChange={handleChange('recruitMember')}
             placeholder="인원 선택"
-            isOpen={openSelect === "recruitMember"}
+            isOpen={openSelect === 'recruitMember'}
             onToggle={handleToggle}
             fieldName="recruitMember"
           />
@@ -107,8 +109,8 @@ const ProjectInfoForm = () => {
             type="select"
             options={durationTypeFormOptions}
             value={formData.duration}
-            onChange={handleChange("duration")}
-            isOpen={openSelect === "duration"}
+            onChange={handleChange('duration')}
+            isOpen={openSelect === 'duration'}
             onToggle={handleToggle}
             placeholder="기간 선택"
             fieldName="duration"
@@ -118,15 +120,15 @@ const ProjectInfoForm = () => {
             type="select"
             options={categoryFormOptions}
             value={formData.category}
-            onChange={handleChange("category")}
-            isOpen={openSelect === "category"}
+            onChange={handleChange('category')}
+            isOpen={openSelect === 'category'}
             onToggle={handleToggle}
             placeholder="업종 선택"
             fieldName="category"
           />
         </SimpleGrid>
 
-        <ProjectDescriptionEditor />
+        {/* <ProjectDescriptionEditor /> */}
       </VStack>
     </Box>
   );

@@ -10,7 +10,7 @@ import { isEmpty } from '@shared/data.helper';
 import { Exception } from '@core/common/exception/exception';
 
 @Injectable()
-export class JwtAccessTokenStrategy extends PassportStrategy(Strategy, 'access_token') implements OnModuleInit {
+export class JwtAccessTokenStrategy extends PassportStrategy(Strategy, 'access_token') {
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
@@ -22,10 +22,10 @@ export class JwtAccessTokenStrategy extends PassportStrategy(Strategy, 'access_t
       passReqToCallback: true,
     });
   }
-  async onModuleInit() {
-    const result = await this.jwtService.sign({ email: 'test@test.com', id: 1, sub: 1 });
-    console.log(result);
-  }
+  // async onModuleInit() {
+  //   const result = await this.jwtService.sign({ email: 'test@test.com', id: 1, sub: 1 });
+  //   console.log(result);
+  // }
 
   async validate(req: Request, payload: TokenPayload) {
     // request에 저장을 해놔야 Guard후에 controller 메서드에서 사용 가능

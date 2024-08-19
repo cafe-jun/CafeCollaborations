@@ -37,7 +37,6 @@ export class CreatePostService implements CreatePostUseCase {
       createdAt: payload.createdAt,
       editedAt: payload.editedAt,
     });
-    console.log(post);
     await this.postRepository.addPost(post);
     return PostUseCaseDto.newFromPost(post);
   }
