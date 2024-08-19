@@ -210,14 +210,6 @@ IPoster is a simple fictional application that allows users to publish posts.
   1. `User` can create `Guest` account in `IPoster`
   2. `User` can create `Author` account in `IPoster`
 
-- User -> Media
-
-  1. `Author` can create own `Media`
-  2. `Author` can edit own `Media`
-  3. `Author` can get own `Media`
-  4. `Author` can get own `Media` list
-  5. `Author` can remove own `Media`
-
 - User -> Post
   1. `Author` can create own draft `Post`
   2. `Author` can edit own `Post`
