@@ -1,7 +1,7 @@
 # NestJS Clean Architecture ([from](https://github.com/pvarentsov/typescript-clean-architecture))
 
 <p align="center"> 
-    <img src="../메인아키텍처.png">
+    <img src="../description//asset/메인아키텍처.png">
 </p>
 
 ## Presentation
@@ -62,7 +62,7 @@ presentation
   @nestjs/cqrs의 `IQueryHandler`, `IEventHandler` 등의 인터페이스를 구현한다.
   이 CQRS는 반드시 Bounded Context에서만 사용해야 하고, 시스템 전체에서 사용해서는 안된다.
   CQRS는 요구사항이 많아 복잡해진 도메인 모델을 한결 쉽게 다루기 위해 Command(CUD)와 Query(Read)로 분리해 개별적으로 확장 및 최적화 전략 적용을 가능하게 해준다.
-- Transaction wrapper - prisma &
+- Transaction wrapper - prisma & @nestjs-cls/transactional 적용
 
 ## Domain / Core Context
 
@@ -165,10 +165,6 @@ UseCase 구현체와 Command / Query / Event handler의 구현체를 갖는다.
     - EventHandler
       core/domain/서비스/각 이벤트 핸들러에서 사용될 Base 이벤트 핸들러
 
-## IPoster
-
-IPoster is a simple fictional application that allows users to publish posts.
-
 #### Main Entities
 
 1. User
@@ -178,20 +174,12 @@ IPoster is a simple fictional application that allows users to publish posts.
 
 - User -> Post
 
-  1. `User` can create `Guest` account in `IPoster`
-  2. `User` can create `Author` account in `IPoster`
+  1. `User` 는 비로그인 유저는 `Post` 읽을수 있다
+  2. `User` 는 `Post` 를 생성할수있다
 
 - User -> Post
 
-  1. `Author` can create own draft `Post`
-  2. `Author` can edit own `Post`
-  3. `Author` can attach an image `Media` to own `Post`
-  4. `Author` can publish own `Post`
-  5. `Author` can get own `Post`
-  6. `Author` can get own `Post` list
-  7. `Author` can remove own `Post`
-  8. `Author` and `Guest` can get published `Post`
-  9. `Author` and `Guest` can get list with published `Posts`
+  1. `Author` 는 자신의 포스터에 `Post` 수정/생성/발행 할 수 있다
 
 ## Local Development
 
