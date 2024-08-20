@@ -196,7 +196,8 @@ UseCase 구현체와 Command / Query / Event handler의 구현체를 갖는다.
 
 - User -> Post
 
-  1. `Author` 는 자신의 포스터에 `Post` 수정/생성/발행 할 수 있다
+  1. `Author` 는 `Post` 생성 할 수 있다
+  2. `Author` 는 자신의 포스터에 `Post` 수정/발행 할 수 있다
 
 ## Local Development
 
