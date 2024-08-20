@@ -1,4 +1,4 @@
-import Axios, { AxiosError, AxiosRequestConfig } from "axios";
+import Axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 export const axiosInstance = Axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL, // NEXT_API_URL 로 세팅시 발동이 안됨
@@ -12,7 +12,6 @@ export const customAxios = <T>(config: CustomAxiosProps): Promise<T> => {
   const headers = config?.Authentication
     ? {
         ...config?.headers,
-        // Cookie: `Authentication=${config?.Authentication}`,
       }
     : config?.headers;
 

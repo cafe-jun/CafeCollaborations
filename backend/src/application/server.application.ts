@@ -27,10 +27,6 @@ export class ServerApplication {
 
   private setVersioning(app: NestApp) {
     app.setGlobalPrefix('/api');
-    app.enableVersioning({
-      type: VersioningType.URI,
-      defaultVersion: '1',
-    });
   }
   private buildAPIDocumentation(app: NestApp): void {
     const title = 'NestJS Boilerplate API';

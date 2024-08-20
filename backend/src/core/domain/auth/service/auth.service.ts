@@ -43,12 +43,9 @@ export class AuthService {
 
   public async ssoLogin(token: string, provider: UserProvider): Promise<AuthToken> {
     const validateToken = this.providerValidateTokens[provider];
-    if (isEmpty(validateToken)) {
-      throw new NotFoundException('일차하는 Provider가 없습니다.');
-    }
+
     const user = await validateToken.validateToken(token);
     const isExistUser = await this.userRepository.findUserByEmail(user.getEmail());
-    console.log(isExistUser);
     if (!isExistUser) {
       const result = await this.userRepository.addUser(user);
       const authToken = await this.generateToken(result.id, user.getEmail());
@@ -56,7 +53,6 @@ export class AuthService {
       return authToken;
     }
     const authToken = await this.generateToken(isExistUser.getId(), user.getEmail());
-    console.log('authToken ', authToken);
     await this.updateRefreshToken(user.getId(), authToken.refreshToken);
     return authToken;
   }

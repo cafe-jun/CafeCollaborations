@@ -11,7 +11,6 @@ export class GetUserPreviewQuery {
   }
 
   public static create(by: { id: number }, options?: RepositoryFindOptions): GetUserPreviewQuery {
-    console.log('by ', by);
     return new GetUserPreviewQuery(by, options);
   }
 }

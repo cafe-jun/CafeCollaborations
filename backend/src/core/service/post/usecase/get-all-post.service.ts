@@ -14,7 +14,6 @@ export class GetAllPostListService implements GetAllPostUseCase {
       { pageNo: payload.pageNo, pageSize: payload.pageSize },
       { keyword: payload.keyword },
     );
-    console.log(items);
     const posts = PostUseCaseDto.newListFromPosts(items);
     const response = new PaginationResponse<PostUseCaseDto>({
       pageSize: payload.pageSize,

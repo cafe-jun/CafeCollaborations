@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import queryOptions from "./queries";
+import { useQuery } from '@tanstack/react-query';
+import queryOptions from './queries';
 
 export function usePost(query: {
   pageSize: number;
@@ -15,7 +15,7 @@ export function usePost(query: {
   );
 }
 
-export function useDetailPost({ postId }: { postId: number }) {
+export function PostDetail({ postId }: { postId: number }) {
   return useQuery(queryOptions.detail(postId));
 }
 

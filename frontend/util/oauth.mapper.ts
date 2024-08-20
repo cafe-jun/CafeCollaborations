@@ -2,24 +2,27 @@ export const OauthUserMapper = (
   account: any
 ): { provider: string; token: string } | null => {
   switch (account.provider) {
-    case "kakao":
+    case 'kakao':
       return {
-        provider: "KAKAO",
+        provider: 'KAKAO',
         token: account.access_token,
       };
-    case "google": {
+    case 'google': {
       return {
-        provider: "GOOGLE",
+        provider: 'GOOGLE',
         token: account.id_token,
       };
     }
-    case "naver": {
+    case 'naver': {
       return {
-        provider: "NAVER",
+        provider: 'NAVER',
         token: account.access_token,
       };
     }
     default:
-      return null;
+      return {
+        provider: 'local',
+        token: 'Test',
+      };
   }
 };

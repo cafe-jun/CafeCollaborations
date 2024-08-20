@@ -5,6 +5,7 @@ import KakaoProvider from 'next-auth/providers/kakao';
 import NaverProvider from 'next-auth/providers/naver';
 import { apiConfig } from './config/apiUrl';
 import { OauthUserMapper } from '@/util/oauth.mapper';
+import authService from '@/stores/fetch/auth/auth.service';
 
 const handler = NextAuth({
   providers: [
@@ -26,23 +27,15 @@ const handler = NextAuth({
     async signIn({ user, account, profile, email, credentials }) {
       try {
         const validateResult = OauthUserMapper(account);
-        const response = await axios.post<{
-          accessToken: string;
-          refreshToken: string;
-        }>(
-          apiConfig.path.validateToken,
-          { ...validateResult },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-          }
-        );
+        const response = await authService.validateToken({
+          provider: validateResult?.provider,
+          token: validateResult?.token,
+        });
         console.log('response ', response);
-        if (response.status === 200) {
-          user.accessToken = response.data.accessToken;
-          user.refreshToken = response.data.refreshToken;
+        if (response.accessToken) {
+          user.accessToken = response.accessToken;
+          user.refreshToken = response.refreshToken;
+          console.log('user ', user);
           return true;
         }
         return false;
@@ -51,7 +44,7 @@ const handler = NextAuth({
         return false;
       }
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token, user, account }) {
       if (user?.accessToken) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
