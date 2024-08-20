@@ -52,22 +52,31 @@ application
 
 ## Infrastructure
 
+```bash
+infrastructure
+├── adapter
+├── config
+├── handler
+└── transaction
+
+```
+
 - Adapter implementation
   - Persistence
-    - prisma
-      - Entity
-        - Entity
+    - `prisma`
+      - Entity (prisma schema 파일에 스키마가 존재)
         - Mapper
       - Repository
-        Service에서 Repository port input을 통해 호출하는 Repository Adaper 이며, DB CRUD 구현체를 갖는
-    - elasticsearch
+        Service에서 Repository port input을 통해 호출하는 Repository Adapter 이며, DB CUD 구현체를 갖는다
+    - `elasticsearch`
       - adapter
   - UseCase input adapter  
     Controller에서 UseCase를 execute 하기 전에 execute 메서드 인자에 포함되는 adapter로, UseCase에서 실행하기 전에 adapter 데이터를 생성하는데, new 메서드를 통해 생성할 때(new 키워드가 아닌 직접 구현한 new 메서드) 데이터 유효성 검사(validate)를 한 데이터 객체이다.
 - Config - 서버 및 외부 DB의 설정 파일
+
   - ApiServerConfig
-    서버의 호스트, 포트, 액세스 토큰, 액세스 토큰 TTL, 로깅 활성여부 등
-  - DatabaseConfig
+    서버의 포트, 액세스 토큰, 액세스 토큰 등
+
 - Handler wrapper - NestJS  
   @nestjs/cqrs의 `IQueryHandler`, `IEventHandler` 등의 인터페이스를 구현한다.
   이 CQRS는 반드시 Bounded Context에서만 사용해야 하고, 시스템 전체에서 사용해서는 안된다.
@@ -76,13 +85,13 @@ application
 
 ## Domain / Core Context
 
-비즈니스 로직 구현부는 아니고 도메인 객체 및 인터페이스를 제공한다. 이 앱에선 보일러플레이트로 User, Post, Media 컨텍스트를 갖는다.
+비즈니스 로직 구현가 아닌 도메인 객체 및 인터페이스를 제공.
 
 - Entity class, ValueObject class
 - Port interface
   Repository, FileStorage, UseCase의 input port 로 구성된다. 이 input port는 request DTO 형태의 인터페이스로 이해하면 된다.
   특정 UseCase가 TransactionalUseCase, UseCase를 상속받을 때 DTO와 함께 인자 타입으로 부여된다.
-  이 UseCase를 Service에서 상속받아 처리한다.
+  이 UseCase를 Service에서 상속받아 처리.
 - UseCase interface
   각 도메인 행위에 대한 UseCase, UseCase를 호출시 인자에 넣을 UseCasePort와 UseCaseDto를 갖는다.
   UseCasePort는
@@ -98,9 +107,7 @@ application
 
 UseCase 구현체와 Command / Query / Event handler의 구현체를 갖는다.
 
-이 앱에선 보일러플레이트로 User, Post, Media 서비스를 갖는다.
-
-기존의 계층형 아키텍처 기반 개발 환경에서는 팀이 아키텍처에 강제성을 부여하지 않는 이상 하나의 도메인 서비스는 비대해지기 쉽다. 너비가 넓어진 서비스는 영속성 계층에 많은 의존성을 갖게 되고, 표현 계층(웹 레이어)의 많은 컴포넌트가 이 서비스에 의존하게 된다.
+기존의 계층형 아키텍처 기반 개발 환경에서는 팀이 아키텍처에 강제성을 부여하지 않는 이상 하나의 도메인 서비스는 비대해지기 쉽다. 너비가 넓어진 서비스는 영속성 계층에 많은 의존성을 갖게 되고, 표현 계층(presentation 레이어)의 많은 컴포넌트가 이 서비스에 의존하게 된다.
 
 서비스의 복잡성을 낮추기 위해 하나의 도메인 서비스는 하나의 유스케이스만 담당하도록 하면 수정이 필요한 비즈니스 영역을 찾기도 쉽고 테스트하기에도 좋게 된다. 예를 들어 PostService에서 게시물 생성 유스케이스를 찾아 수정하는 것이 아니라 게시물 생성만을 위한 CreatePostService를 찾아 유스케이스를 수정하는 것이 있다.
 
@@ -108,9 +115,9 @@ UseCase 구현체와 Command / Query / Event handler의 구현체를 갖는다.
 
 - Service
   - Handler  
-    각종 CQE 핸들러를 implements 받아 handle 메서드를 구현하는 서비스 클래스이다.
+    각종 CQRS 핸들러를 implements 받아 handle 메서드를 구현하는 서비스 클래스이다.
     컨트롤러에서 CQE send 요청을 보내면 이를 처리하는 공간이다.
-    CQE 전달 및 수신 순서는 다음과 같다.
+    CQRS 전달 및 수신 순서는 다음과 같다.
     NestWrapper{비즈니스*로직*이름}{C/Q/E}Handler.handle(…) →
     Handle{비즈니스*로직*이름}{C/Q/E}Service.handle(…)
   - Usecase  
@@ -199,26 +206,4 @@ UseCase 구현체와 Command / Query / Event handler의 구현체를 갖는다.
   2. Build application - `npm run build`
 
 - **Configuring**
-
-  Configuring is based on the environment variables. All environment variables must be exposed before starting the application.
-  See [all environment variables](./env/local.app.env).
-
-- **Running**
-
-  - Start application - `npm run start`
-  - Expose [./env/local.app.env](./env/local.app.env) and start application - `npm run start:local`
-
-    <details>
-      <summary>
-        API documentation will be available on the endpoint <i>GET <a href="http://localhost:3005/documentation/" target="_blank" rel="noopener noreferrer">http://localhost:3005/documentation</a></i>
-      </summary>
-      <br>
-      
-      <p align="center"> 
-          <img src="./asset/ApiDocumentation.png">
-      </p>
-    </details>
-
-- **Linting**
-
-  - `npm run lint`
+  환경변수는 .env.example를 참고하여 .env 파일 적성
