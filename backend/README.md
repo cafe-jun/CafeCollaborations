@@ -16,6 +16,15 @@ presentation
 
 ## Application
 
+```bash
+application
+├── auth
+├── interceptor
+├── filter
+└── server.application
+
+```
+
 서버 애플리케이션의 기본 설정 예외 필터,인터셉터,인증/인가 를갖는다.
 
 - 서버 애플리케이션 설정 및 초기화 소스를 갖는다. (ServerApplication)
@@ -44,14 +53,15 @@ presentation
 ## Infrastructure
 
 - Adapter implementation
-  - Bus adapter(CQE) - NestJS
   - Persistence
-    - Prisma
+    - prisma
       - Entity
         - Entity
         - Mapper
       - Repository
-        Service에서 Repository port input을 통해 호출하는 Repository Adaper 이며, DB CRUD 구현체를 갖는다.
+        Service에서 Repository port input을 통해 호출하는 Repository Adaper 이며, DB CRUD 구현체를 갖는
+    - elasticsearch
+      - adapter
   - UseCase input adapter  
     Controller에서 UseCase를 execute 하기 전에 execute 메서드 인자에 포함되는 adapter로, UseCase에서 실행하기 전에 adapter 데이터를 생성하는데, new 메서드를 통해 생성할 때(new 키워드가 아닌 직접 구현한 new 메서드) 데이터 유효성 검사(validate)를 한 데이터 객체이다.
 - Config - 서버 및 외부 DB의 설정 파일
