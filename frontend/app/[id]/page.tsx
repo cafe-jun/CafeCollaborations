@@ -20,7 +20,6 @@ export function fetchPost(payload: { postId: number }) {
 export default function PostPage() {
   const pathname = usePathname();
   const postId = Number(pathname.split('/')[1]);
-  console.log(postId);
   const { data, refetch, isFetching } = fetchPost({
     postId,
   });
@@ -33,7 +32,12 @@ export default function PostPage() {
           tag={'체험단'}
           createdAt={data?.createdAt}
         />
-        <PostInfo />
+        <PostInfo
+          category={data?.category}
+          duration={data?.duration}
+          recruitMember={data?.recruitMember}
+          region={data?.region}
+        />
         <PostContent title={data?.title} content={data?.content} />
         <CommentSection />
       </VStack>

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Button, Flex } from "@chakra-ui/react";
-import ReactPaginate from "react-paginate";
-import { PaginationContainer } from "./styled";
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { Flex } from '@chakra-ui/react';
+import ReactPaginate from 'react-paginate';
+import { PaginationContainer } from './styled';
 
 export default function PostPagination({
   currentPage,

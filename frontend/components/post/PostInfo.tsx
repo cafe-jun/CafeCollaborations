@@ -1,7 +1,13 @@
-import { Text, VStack, HStack, Link, Icon } from "@chakra-ui/react";
-import { CalendarIcon, TimeIcon, ChatIcon } from "@chakra-ui/icons";
+import { Text, VStack, HStack, Link, Icon } from '@chakra-ui/react';
+import { CalendarIcon, TimeIcon, ChatIcon } from '@chakra-ui/icons';
+import { getLabelByFormValue } from './FormOptions';
 
-export default function PostInfo() {
+export default function PostInfo({
+  region,
+  duration,
+  recruitMember,
+  category,
+}) {
   return (
     <HStack
       spacing={8}
@@ -12,38 +18,36 @@ export default function PostInfo() {
     >
       <VStack align="start" spacing={2}>
         <HStack>
-          <Text fontWeight="bold">모집 구분:</Text>
-          <Text>체험단</Text>
+          <Text fontWeight="bold" fontSize={'large'}>
+            업종 구분:
+          </Text>
+          <Text fontSize={'large'}>
+            {getLabelByFormValue('category', category)}
+          </Text>
         </HStack>
         <HStack>
-          <Text fontWeight="bold">모집 인원:</Text>
-          <Text>1명</Text>
+          <Text fontWeight="bold" fontSize={'large'}>
+            모집 인원:
+          </Text>
+          <Text fontSize={'large'}>
+            {getLabelByFormValue('recruitMember', recruitMember)}
+          </Text>
         </HStack>
         <HStack>
-          <Text fontWeight="bold">연락 방법:</Text>
-          <Link color="blue.500">오픈톡</Link>
+          <Text fontWeight="bold" fontSize={'large'}>
+            활동 기간:
+          </Text>
+          <Text fontSize={'large'}>
+            {getLabelByFormValue('duration', duration)}
+          </Text>
         </HStack>
         <HStack>
-          <Text fontWeight="bold">모집 분야:</Text>
-          <Text>프론트엔드</Text>
-        </HStack>
-      </VStack>
-      <VStack align="start" spacing={2}>
-        <HStack>
-          <ChatIcon />
-          <Text>온/오프라인</Text>
-        </HStack>
-        <HStack>
-          <Icon as={CalendarIcon} />
-          <Text>2024.07.25</Text>
-        </HStack>
-        <HStack>
-          <Icon as={TimeIcon} />
-          <Text>3개월</Text>
-        </HStack>
-        <HStack>
-          <Icon as={ChatIcon} />
-          <Text>React</Text>
+          <Text fontWeight="bold" fontSize={'large'}>
+            지역 :
+          </Text>
+          <Text fontSize={'large'}>
+            {getLabelByFormValue('region', region)}
+          </Text>
         </HStack>
       </VStack>
     </HStack>

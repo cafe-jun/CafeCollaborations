@@ -20,6 +20,7 @@ export class GetAllPostListService implements GetAllPostUseCase {
       items: posts,
       totalCount: totalCount,
     });
+
     return response;
   }
 }

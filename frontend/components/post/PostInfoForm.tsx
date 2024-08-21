@@ -25,6 +25,7 @@ import {
   recruitMemberOptions,
   regionOptions,
 } from './FormOptions';
+import { useRouter } from 'next/navigation';
 
 type PostFormType = {
   region: string;
@@ -58,6 +59,7 @@ const modules = {
 
 const RegisterPostForm = () => {
   const formRef = useRef(null);
+  const router = useRouter();
   const fieldOptions = {
     category: categoryOptions,
     region: regionOptions,
@@ -100,7 +102,7 @@ const RegisterPostForm = () => {
     setOpenSelect((prev) => (prev === fieldName ? null : fieldName));
   };
   const onSubmit = async (data) => {
-    await postService.createPost({
+    const result = await postService.createPost({
       title: data.title,
       content: data.content,
       category: data.category,
@@ -109,6 +111,7 @@ const RegisterPostForm = () => {
       region: data.region,
       imageId: data.imageId,
     });
+    router.push(`/`);
   };
 
   return (

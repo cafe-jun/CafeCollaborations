@@ -12,7 +12,7 @@ import { PostUseCaseDto } from './dto/post-usecase.dto';
 import { UseCase } from '@core/common/usecase/usecase';
 import { PaginationResponse } from '@core/common/pagination/pagination.response';
 
-export interface CreatePostUseCase extends TransactionalUseCase<CreatePostPort, PostUseCaseDto> {}
+export interface CreatePostUseCase extends TransactionalUseCase<CreatePostPort, { id: number }> {}
 
 export interface EditPostUseCase extends TransactionalUseCase<EditPostPort, PostUseCaseDto> {}
 

@@ -31,11 +31,9 @@ const handler = NextAuth({
           provider: validateResult?.provider,
           token: validateResult?.token,
         });
-        console.log('response ', response);
         if (response.accessToken) {
           user.accessToken = response.accessToken;
           user.refreshToken = response.refreshToken;
-          console.log('user ', user);
           return true;
         }
         return false;

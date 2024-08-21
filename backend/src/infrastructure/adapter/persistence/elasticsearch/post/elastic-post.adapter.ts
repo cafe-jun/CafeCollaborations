@@ -7,8 +7,9 @@ import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repo
 import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
 import { ElasticToken } from '@di/infrastructure.module';
 import { SearchRequest } from '@elastic/elasticsearch/api/types';
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class ElasticPostRepository implements PostRepositoryPort {
@@ -50,7 +51,9 @@ export class ElasticPostRepository implements PostRepositoryPort {
               content: { type: 'text', analyzer: 'nori_analyzer' },
               category: { type: 'keyword' },
               status: { type: 'keyword' },
-              regionCode: { type: 'keyword' },
+              region: { type: 'keyword' },
+              duration: { type: 'keyword' },
+              recruitMember: { type: 'keyword' },
             },
           },
         },
@@ -81,13 +84,14 @@ export class ElasticPostRepository implements PostRepositoryPort {
           filter: [], // 필터를 배열로 초기화합니다.
         },
       },
+      sort: [{ id: 'desc' }],
     };
 
     if (filters?.keyword) {
       (body.query.bool.filter as any[]).push({
         multi_match: {
           query: filters.keyword,
-          fields: ['title^2', 'content'],
+          fields: ['title', 'content'],
           type: 'cross_fields',
           analyzer: 'nori_analyzer',
         },
@@ -169,7 +173,9 @@ export class ElasticPostRepository implements PostRepositoryPort {
       category: post.getCategory(),
       content: post.getContent(),
       status: post.getStatus(),
-      regionCode: post.getRegion(),
+      region: post.getRegion(),
+      duration: post.getDuration(),
+      recruitMember: post.getRecruitMember(),
     };
   }
 
@@ -187,7 +193,6 @@ export class ElasticPostRepository implements PostRepositoryPort {
       index: this.index,
       id: payload.id.toString(),
     });
-
-    return Post.toPostDomain(body._source);
+    return plainToInstance(Post, body);
   }
 }

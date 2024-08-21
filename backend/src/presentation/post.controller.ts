@@ -67,7 +67,7 @@ export class PostController {
       recruitMember: body.recruitMember,
       status: body.status,
     });
-    const createPost: PostUseCaseDto = await this.createPostUseCase.execute(adapter);
+    const createPost = await this.createPostUseCase.execute(adapter);
     return CoreApiResponse.success(createPost, 'Post created successfully');
   }
 

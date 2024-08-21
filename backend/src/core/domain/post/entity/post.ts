@@ -174,21 +174,4 @@ export class Post extends BaseEntity<number> implements RemoveEntity {
     await post.validate();
     return post;
   }
-
-  public static toPostDomain(dto: PostUseCaseDto): Post {
-    return new Post({
-      id: dto.id,
-      title: dto.title,
-      status: dto.status,
-      content: dto.content,
-      category: dto.category,
-      region: dto.region,
-      publishedAt: dto.publishedAt,
-      createdAt: dto.createdAt,
-      editedAt: dto.editedAt,
-      duration: dto.duration,
-      recruitMember: dto.recruitMember,
-      owner: new PostOwner(dto.owner.id, dto.owner.name),
-    });
-  }
 }

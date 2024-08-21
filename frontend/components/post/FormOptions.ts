@@ -1,3 +1,5 @@
+type FormType = 'category' | 'recruitMember' | 'duration' | 'region';
+
 const regionOptions: { label: string; value: string }[] = [
   { label: '서울', value: 'RE1000' },
   { label: '경기', value: 'RE1002' },
@@ -34,9 +36,23 @@ const categoryOptions: { label: string; value: string }[] = [
   { label: '애완용품', value: 'CA1006' }, // PetSupplies
 ];
 
+const fieldOptions = {
+  category: categoryOptions,
+  region: regionOptions,
+  recruitMember: recruitMemberOptions,
+  duration: durationOptions,
+};
+
+const getLabelByFormValue = (type: FormType, value: string) => {
+  const typeOptions = fieldOptions[type];
+  const option = typeOptions.find((type) => type.value === value);
+  return option?.label;
+};
+
 export {
   regionOptions,
   recruitMemberOptions,
   durationOptions,
   categoryOptions,
+  getLabelByFormValue,
 };

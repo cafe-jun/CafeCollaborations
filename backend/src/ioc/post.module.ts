@@ -15,7 +15,7 @@ import { PublishPostService } from '@core/service/post/usecase/publish-post.serv
 import { RemovePostService } from '@core/service/post/usecase/remove-post.service';
 import { GetAllPostListService } from '@core/service/post/usecase/get-all-post.service';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { ElasticPostRepository } from '@infrastructure/adapter/persistence/elasticsearch/post/elastic-post.adpater';
+import { ElasticPostRepository } from '@infrastructure/adapter/persistence/elasticsearch/post/elastic-post.adapter';
 
 export const persistencePostProvider: Provider[] = [
   {
@@ -50,7 +50,7 @@ const useCaseProviders: Provider[] = [
   {
     provide: PostDITokens.GetPostDetailUseCase,
     useFactory: (postRepository) => new GetPostDetailService(postRepository),
-    inject: [PostDITokens.PostReadRepository],
+    inject: [PostDITokens.PostWriteRepository],
   },
   {
     provide: PostDITokens.PublishPostUseCase,

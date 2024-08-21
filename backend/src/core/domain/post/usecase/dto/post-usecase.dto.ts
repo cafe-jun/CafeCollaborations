@@ -13,8 +13,10 @@ export class PostUseCaseDto {
   @Expose()
   public id: number;
 
+  @Expose()
   public image: Nullable<{ id: number; url: string }>;
 
+  @Expose()
   public owner: { id: number; name: string };
 
   @Expose()
@@ -27,20 +29,16 @@ export class PostUseCaseDto {
   public status: PostStatus;
 
   @Expose()
-  @Transform(({ value }) => value.code, { toClassOnly: true })
-  public category: Category;
+  public category: string;
 
   @Expose()
-  @Transform(({ value }) => value.code, { toClassOnly: true })
-  public region: Region;
+  public region: string;
 
   @Expose()
-  @Transform(({ value }) => value.code, { toClassOnly: true })
-  public duration: Duration;
+  public duration: string;
 
   @Expose()
-  @Transform(({ value }) => value.code, { toClassOnly: true })
-  public recruitMember: RecruitMember;
+  public recruitMember: string;
 
   public createdAt: Date;
 
@@ -53,20 +51,26 @@ export class PostUseCaseDto {
     const postOwner: PostOwner = post.getOwner();
     const postImage: Nullable<PostImage> = post.getImage();
 
-    dto.owner = { id: postOwner.getId(), name: postOwner.getName() };
-    dto.image = null;
-
     if (postImage) {
       dto.image = { id: postImage.getId(), url: postImage.getRelativePath() };
     }
-    dto.region = post.getRegion();
-    dto.category = post.getCategory();
-    dto.duration = post.getDuration();
-    dto.recruitMember = post.getRecruitMember();
-    dto.createdAt = post.getCreatedAt();
-    dto.editedAt = post.getEditedAt() || null;
-    dto.publishedAt = post.getPublishedAt() || null;
-    return plainToInstance(PostUseCaseDto, dto);
+    const result: PostUseCaseDto = {
+      id: post.getId(),
+      owner: { id: postOwner.getId(), name: postOwner.getName() },
+      category: post.getCategory().code,
+      region: post.getRegion().code,
+      duration: post.getDuration().code,
+      recruitMember: post.getRecruitMember().code,
+      title: post.getTitle(),
+      content: post.getContent(),
+      createdAt: post.getCreatedAt(),
+      editedAt: post.getEditedAt(),
+      status: post.getStatus(),
+      publishedAt: post.getPublishedAt(),
+      image: { id: 1, url: 'http://localhost:3000' },
+    };
+
+    return result;
   }
 
   public static newListFromPosts(posts: Post[]): PostUseCaseDto[] {

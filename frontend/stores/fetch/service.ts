@@ -43,7 +43,6 @@ class Service {
   ): Promise<T> {
     try {
       const session = await getSession();
-      console.log('session ', session);
       const response = await fetch(this.baseURL + url, {
         method,
         headers: {
