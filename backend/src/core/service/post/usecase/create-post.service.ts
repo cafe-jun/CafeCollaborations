@@ -24,6 +24,7 @@ export class CreatePostService implements CreatePostUseCase {
       Exception.create({ code: CommonMsg.ENTITY_NOT_FOUND_ERROR, overrideMessage: 'Post Owner not Found' }),
     );
 
+    console.log('PostOwner ', postOwner);
     const post: Post = await Post.create({
       owner: await PostOwner.create(postOwner.id, postOwner.name),
       title: payload.title,
@@ -37,6 +38,7 @@ export class CreatePostService implements CreatePostUseCase {
       createdAt: payload.createdAt,
       editedAt: payload.editedAt,
     });
+    console.log('post ', post);
     await this.postRepository.addPost(post);
     return PostUseCaseDto.newFromPost(post);
   }

@@ -1,6 +1,6 @@
 import { PostStatus } from '@core/common/enums/post-status.enum';
 import { Nullable } from '@core/common/type/common.types';
-import { Expose, plainToInstance } from 'class-transformer';
+import { Expose, plainToInstance, Transform } from 'class-transformer';
 import { Post } from '../../entity/post';
 import { PostImage } from '../../entity/post-image';
 import { PostOwner } from '../../entity/post-owner';
@@ -26,15 +26,23 @@ export class PostUseCaseDto {
   @Expose()
   public status: PostStatus;
 
+  @Expose()
+  @Transform(({ value }) => value.code, { toClassOnly: true })
   public category: Category;
 
-  public createdAt: Date;
-
+  @Expose()
+  @Transform(({ value }) => value.code, { toClassOnly: true })
   public region: Region;
 
+  @Expose()
+  @Transform(({ value }) => value.code, { toClassOnly: true })
   public duration: Duration;
 
+  @Expose()
+  @Transform(({ value }) => value.code, { toClassOnly: true })
   public recruitMember: RecruitMember;
+
+  public createdAt: Date;
 
   public editedAt: Nullable<Date>;
 
@@ -58,8 +66,7 @@ export class PostUseCaseDto {
     dto.createdAt = post.getCreatedAt();
     dto.editedAt = post.getEditedAt() || null;
     dto.publishedAt = post.getPublishedAt() || null;
-
-    return dto;
+    return plainToInstance(PostUseCaseDto, dto);
   }
 
   public static newListFromPosts(posts: Post[]): PostUseCaseDto[] {

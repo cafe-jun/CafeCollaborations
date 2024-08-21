@@ -24,6 +24,7 @@ export class PrismaPostRepository implements PostRepositoryPort {
 
   public async addPost(post: Post): Promise<{ id: number }> {
     const prismaPost = PrismaPostMapper.toPrisma(post);
+    console.log('prismaPost ', prismaPost);
     const savePost = await this.prismaService.post.create({
       data: prismaPost,
     });

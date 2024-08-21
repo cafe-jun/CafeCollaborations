@@ -14,7 +14,7 @@ import {
   Avatar,
   Text,
 } from '@chakra-ui/react';
-import LoginModal from './LoginModal';
+import LoginModal from '../auth/LoginModal';
 import { useSession, signOut } from 'next-auth/react';
 import { ChevronDownIcon, BellIcon } from '@chakra-ui/icons';
 import Link from 'next/link';

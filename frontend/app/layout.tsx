@@ -1,13 +1,13 @@
-"use client";
-import { Inter } from "next/font/google";
-import { ChakraProvider, Container } from "@chakra-ui/react";
-import { SessionProvider } from "next-auth/react";
-import Header from "@/components/Header";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
-import ReactQueryProviders from "@/hooks/useReactQuery";
+'use client';
+import { Inter } from 'next/font/google';
+import { ChakraProvider, Container } from '@chakra-ui/react';
+import { SessionProvider } from 'next-auth/react';
+import Header from '@/components/header/Header';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useState } from 'react';
+import ReactQueryProviders from '@/hooks/useReactQuery';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
   children,

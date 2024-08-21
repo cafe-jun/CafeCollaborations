@@ -1,3 +1,5 @@
+import { getSession, useSession } from 'next-auth/react';
+
 interface HTTPInstance {
   get<T>(url: string, config?: RequestInit): Promise<T>;
   delete<T>(url: string, config?: RequestInit): Promise<T>;
@@ -40,10 +42,13 @@ class Service {
     config?: RequestInit
   ): Promise<T> {
     try {
+      const session = await getSession();
+      console.log('session ', session);
       const response = await fetch(this.baseURL + url, {
         method,
         headers: {
           ...this.headers,
+          Authorization: `Bearer ${session?.accessToken}`,
           'Content-Type': 'application/json',
           ...config?.headers,
         },

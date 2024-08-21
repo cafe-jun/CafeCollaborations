@@ -16,7 +16,6 @@ import { OAuthValidateToken } from '../validate/oauth.validate';
 import { GoogleValidateToken } from '../validate/google.validate';
 import { KakaoValidateToken } from '../validate/kakao.validate';
 import { NaverValidateToken } from '../validate/naver.validate';
-import { isEmpty } from '@shared/data.helper';
 
 @Injectable()
 export class AuthService {
@@ -43,7 +42,6 @@ export class AuthService {
 
   public async ssoLogin(token: string, provider: UserProvider): Promise<AuthToken> {
     const validateToken = this.providerValidateTokens[provider];
-
     const user = await validateToken.validateToken(token);
     const isExistUser = await this.userRepository.findUserByEmail(user.getEmail());
     if (!isExistUser) {
@@ -58,7 +56,8 @@ export class AuthService {
   }
 
   public async findByUserById(id: number): Promise<Optional<User>> {
-    return await this.userRepository.findUserById(id);
+    const result = await this.userRepository.findUserById(id);
+    return result;
   }
 
   async refreshToken(id: number, email: string, refreshToken: string): Promise<AuthToken> {
@@ -73,21 +72,14 @@ export class AuthService {
 
   async generateToken(id: number, email: string): Promise<AuthToken> {
     const payload: TokenPayload = { sub: id, email: email };
-
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.sign(payload, {
-        secret: process.env.JWT_ACCESS_SECRET,
-        expiresIn: +process.env.JWT_ACCESS_EXPIRATION_TIME,
-      }),
-      this.jwtService.sign(payload, {
-        secret: process.env.JWT_REFRESH_SECRET,
-        expiresIn: +process.env.JWT_REFRESH_EXPIRATION_TIME,
-      }),
-    ]);
-
+    const accessToken = await this.jwtService.sign(payload);
+    const refreshToken = await this.jwtService.sign(payload, {
+      expiresIn: +process.env.JWT_REFRESH_EXPIRATION_TIME,
+      secret: process.env.JWT_REFRESH_SECRET,
+    });
     return { accessToken, refreshToken };
   }
   private async updateRefreshToken(id: number, refreshToken: string) {
-    await this.redisClient.set(`REFRESH_TOKEN ${id}`, refreshToken, 'EX', 60 * 60 * 24 * 7);
+    await this.redisClient.set(`REFRESH_TOKEN:${id}`, refreshToken, 'EX', 60 * 60 * 24 * 7);
   }
 }

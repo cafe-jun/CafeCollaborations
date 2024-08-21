@@ -17,7 +17,7 @@ export class JwtAccessTokenStrategy extends PassportStrategy(Strategy, 'access_t
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: ApiConfig.JWT_ACCESS_KEY,
+      secretOrKey: ApiConfig.JWT_ACCESS_SECRET,
       // validate 함수에 첫번째 인자에 request를 넘겨줌
       passReqToCallback: true,
     });
@@ -29,7 +29,10 @@ export class JwtAccessTokenStrategy extends PassportStrategy(Strategy, 'access_t
 
   async validate(req: Request, payload: TokenPayload) {
     // request에 저장을 해놔야 Guard후에 controller 메서드에서 사용 가능
+    console.log('req', req);
+    console.log('payload ', payload);
     const user = await this.authService.findByUserById(payload.sub);
+
     if (isEmpty(user)) {
       throw new Error('todo auth error ');
     }

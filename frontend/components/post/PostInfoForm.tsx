@@ -9,21 +9,22 @@ import {
   SimpleGrid,
   Button,
   Text,
-  Input,
   FormControl,
 } from '@chakra-ui/react';
-import {
-  categoryFormOptions,
-  durationTypeFormOptions,
-  recruitMemberFormOptions,
-  regionFormOptions,
-} from './post/FormOptions';
 import { useSession } from 'next-auth/react';
 import { Controller, useForm } from 'react-hook-form';
 import postService from '@/stores/fetch/post/post.service';
-import CustomSelect from './form/CustomSelect';
-import InputField from './form/InputField';
+
 import ReactQuill from 'react-quill';
+
+import CustomSelect from '@components/form/CustomSelect';
+import InputField from '@components/form/InputField';
+import {
+  categoryOptions,
+  durationOptions,
+  recruitMemberOptions,
+  regionOptions,
+} from './FormOptions';
 
 type PostFormType = {
   region: string;
@@ -55,16 +56,14 @@ const modules = {
   ],
 };
 
-const ProjectInfoForm = () => {
+const RegisterPostForm = () => {
   const formRef = useRef(null);
   const fieldOptions = {
-    category: categoryFormOptions,
-    region: regionFormOptions,
-    recruitMember: recruitMemberFormOptions,
-    duration: durationTypeFormOptions,
+    category: categoryOptions,
+    region: regionOptions,
+    recruitMember: recruitMemberOptions,
+    duration: durationOptions,
   };
-
-  const { data: session } = useSession();
 
   const {
     control,
@@ -128,7 +127,7 @@ const ProjectInfoForm = () => {
         <SimpleGrid columns={2} spacing={6}>
           <CustomSelect
             label="지역 구분"
-            options={regionFormOptions}
+            options={regionOptions}
             onChange={handleChange('region')}
             placeholder="지역 선택"
             isOpen={openSelect === 'region'}
@@ -138,7 +137,7 @@ const ProjectInfoForm = () => {
           />
           <CustomSelect
             label="모집 인원"
-            options={recruitMemberFormOptions}
+            options={recruitMemberOptions}
             onChange={handleChange('recruitMember')}
             placeholder="인원 선택"
             isOpen={openSelect === 'recruitMember'}
@@ -151,7 +150,7 @@ const ProjectInfoForm = () => {
 
           <CustomSelect
             label="진행 기간"
-            options={durationTypeFormOptions}
+            options={durationOptions}
             onChange={handleChange('duration')}
             isOpen={openSelect === 'duration'}
             onToggle={handleToggle}
@@ -161,7 +160,7 @@ const ProjectInfoForm = () => {
           />
           <CustomSelect
             label="업종 구분"
-            options={categoryFormOptions}
+            options={categoryOptions}
             onChange={handleChange('category')}
             isOpen={openSelect === 'category'}
             onToggle={handleToggle}
@@ -221,4 +220,4 @@ const ProjectInfoForm = () => {
   );
 };
 
-export default ProjectInfoForm;
+export default RegisterPostForm;

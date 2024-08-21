@@ -1,7 +1,7 @@
 "use client";
 
-import NoticeBanner from "@/components/NoticeBanner";
-import PopularPosts from "@/components/PopularPosts";
+import NoticeBanner from "@/components/banner/NoticeBanner";
+import PopularPosts from "@/components/popular/PopularPosts";
 import PostList from "@/components/post/PostList";
 import PostPagination from "@/components/post/PostPagination";
 import { useState } from "react";
