@@ -44,9 +44,9 @@ class PostService extends Service {
     recruitMember: string;
     duration: string;
     imageId: number;
-  }): Promise<PostModel> {
+  }): Promise<{ id: number}> {
     return this.http
-      .post<{ data: PostModel }>('/post', payload)
+      .post<{ data: { id: number } }>('/post', payload)
       .then((res) => res.data);
   }
 

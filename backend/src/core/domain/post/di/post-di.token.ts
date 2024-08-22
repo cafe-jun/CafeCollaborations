@@ -17,6 +17,6 @@ export class PostDITokens {
   // Repositories
 
   public static readonly PostWriteRepository: unique symbol = Symbol('PostWriteRepository');
-
+  public static readonly PostSearchRepository: unique symbol = Symbol('PostSearchRepository');
   public static readonly PostReadRepository: unique symbol = Symbol('PostReadRepository');
 }

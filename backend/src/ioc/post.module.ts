@@ -19,7 +19,7 @@ import { ElasticPostRepository } from '@infrastructure/adapter/persistence/elast
 
 export const persistencePostProvider: Provider[] = [
   {
-    provide: PostDITokens.PostReadRepository,
+    provide: PostDITokens.PostSearchRepository,
     useFactory: (elasticService: ElasticsearchService) => new ElasticPostRepository(elasticService),
     inject: [ElasticToken],
   },
@@ -49,8 +49,8 @@ const useCaseProviders: Provider[] = [
   },
   {
     provide: PostDITokens.GetPostDetailUseCase,
-    useFactory: (postRepository) => new GetPostDetailService(postRepository),
-    inject: [PostDITokens.PostWriteRepository],
+    useFactory: (postSearchRepository, postWriteRepository) => new GetPostDetailService(postSearchRepository, postWriteRepository),
+    inject: [PostDITokens.PostSearchRepository, PostDITokens.PostWriteRepository],
   },
   {
     provide: PostDITokens.PublishPostUseCase,
@@ -71,7 +71,7 @@ const useCaseProviders: Provider[] = [
   {
     provide: PostDITokens.GetAllPostListUseCase,
     useFactory: (postRepository) => new GetAllPostListService(postRepository),
-    inject: [PostDITokens.PostReadRepository, PostDITokens.PostWriteRepository],
+    inject: [PostDITokens.PostSearchRepository],
   },
 ];
 

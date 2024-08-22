@@ -38,7 +38,7 @@ export default function PostPage() {
           recruitMember={data?.recruitMember}
           region={data?.region}
         />
-        <PostContent title={data?.title} content={data?.content} />
+        <PostContent content={data?.content} />
         <CommentSection />
       </VStack>
     </Container>

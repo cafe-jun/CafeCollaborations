@@ -3,13 +3,16 @@ import { RepositoryRemoveOptions } from '@core/common/persistence/repoistory.opt
 import { Optional } from '@core/common/type/common.types';
 import { Post } from '@core/domain/post/entity/post';
 import { PostOwner } from '@core/domain/post/entity/post-owner';
+import { ElasticPostPayload } from '@core/domain/post/entity/type/elastic-post.payload';
 import { PostRepositoryPort } from '@core/domain/post/port/persistence/post.repository.port';
-import { PostUseCaseDto } from '@core/domain/post/usecase/dto/post-usecase.dto';
 import { ElasticToken } from '@di/infrastructure.module';
 import { SearchRequest } from '@elastic/elasticsearch/api/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { plainToInstance } from 'class-transformer';
+import { isEmpty } from '@shared/data.helper';
+import { Category } from '@core/common/enums/category.enum';
+import { RecruitMember } from '@core/common/enums/recruite-member.enum';
+import { Duration } from '@core/common/enums/duration-type.enum';
 
 @Injectable()
 export class ElasticPostRepository implements PostRepositoryPort {
@@ -189,10 +192,25 @@ export class ElasticPostRepository implements PostRepositoryPort {
   }
 
   async findPostById(payload: { id: number }): Promise<Optional<Post>> {
-    const { body } = await this.esService.get<{ _source: PostUseCaseDto }>({
+    const { body } = await this.esService.search<{ _source: ElasticPostPayload }>({
       index: this.index,
-      id: payload.id.toString(),
+      body: {
+        query: {
+          match: { _id: payload.id },
+        },
+      },
     });
-    return plainToInstance(Post, body);
+    if (isEmpty(body._source)) return;
+    return new Post({
+      id: body._source.id,
+      title: body._source.title,
+      content: body._source.content,
+      category: Category.getByCode(body._source.category),
+      recruitMember: RecruitMember.getByCode(body._source.recruitMember),
+      duration: Duration.getByCode(body._source.duration),
+      region: Region.getByCode(body._source.region),
+      owner: new PostOwner(body._source.ownerid, body._source.owneremail),
+      createdAt: body._source.createdAt,
+    });
   }
 }

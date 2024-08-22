@@ -111,7 +111,7 @@ const RegisterPostForm = () => {
       region: data.region,
       imageId: data.imageId,
     });
-    router.push(`/`);
+    router.push(`/${result.id}`);
   };
 
   return (
