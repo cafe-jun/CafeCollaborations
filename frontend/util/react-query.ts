@@ -4,17 +4,27 @@ import {
   dehydrate,
   QueryState,
   QueryKey,
-} from "@tanstack/react-query";
-import { isEqual } from "@/util/loadash";
-import { cache } from "react";
+} from '@tanstack/react-query';
+import { isEqual } from '@/util/loadash';
+import { cache } from 'react';
 
 // utils/api.js
-export const createApiQueryUrl = <T extends {}>(
+export const createApiQueryUrl = <
+  T extends Record<string, string | string[] | number | number[]>
+>(
   basePath: string,
   params: T
 ) => {
-  const queryString = new URLSearchParams(params).toString();
-  return `${basePath}?${queryString}`;
+  const searchParams = new URLSearchParams();
+  console.log(params);
+  Object.entries(params).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      searchParams.append(key, `[${value.toString()}]`);
+    } else {
+      searchParams.append(key, value.toString());
+    }
+  });
+  return `${basePath}?${searchParams}`;
 };
 
 export const getQueryClient = cache(() => new QueryClient());
@@ -43,7 +53,7 @@ export async function getDehydratedQuery<Q extends QueryProps>({
   );
 
   return dehydratedQuery as DehydratedQueryExtended<
-    UnwrapPromise<ReturnType<Q["queryFn"]>>
+    UnwrapPromise<ReturnType<Q['queryFn']>>
   >;
 }
 
@@ -56,7 +66,7 @@ export async function getDehydratedQueries<Q extends QueryProps[]>(queries: Q) {
   );
 
   return dehydrate(queryClient).queries as DehydratedQueryExtended<
-    UnwrapPromise<ReturnType<Q[number]["queryFn"]>>
+    UnwrapPromise<ReturnType<Q[number]['queryFn']>>
   >[];
 }
 

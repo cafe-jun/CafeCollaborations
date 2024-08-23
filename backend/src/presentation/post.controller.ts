@@ -94,10 +94,13 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: HttpStatus.OK, type: RestApiModelPost })
   public async getAllPostsList(@Query() query: RestGetAllPostListQuery): Promise<CoreApiResponse<PostUseCaseDto[]>> {
+    console.log('query ', query);
     const adapter: GetAllPostListAdapter = await GetAllPostListAdapter.create({
       pageNo: query.pageNo,
       pageSize: query.pageSize,
       keyword: query.keyword,
+      regionItems: query.regionItems,
+      categoryItems: query.categoryItems,
     });
     const result = await this.getAllPostListUseCase.execute(adapter);
 

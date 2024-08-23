@@ -7,6 +7,8 @@ class PostService extends Service {
     pageNo: number;
     pageSize: number;
     keyword: string;
+    regionItems: string[];
+    categoryItems: string[];
   }): Promise<{
     data: PostModel[];
     meta: { totalCount: number; totalPage: number; currentPage: number };
@@ -15,10 +17,14 @@ class PostService extends Service {
       pageNo: number;
       pageSize: number;
       keyword: string;
+      regionItems: string[];
+      categoryItems: string[];
     }>('/post', {
       pageNo: query.pageNo,
       pageSize: query.pageSize,
       keyword: query.keyword,
+      regionItems: query.regionItems,
+      categoryItems: query.categoryItems,
     });
     return this.http
       .get<{
@@ -44,7 +50,7 @@ class PostService extends Service {
     recruitMember: string;
     duration: string;
     imageId: number;
-  }): Promise<{ id: number}> {
+  }): Promise<{ id: number }> {
     return this.http
       .post<{ data: { id: number } }>('/post', payload)
       .then((res) => res.data);

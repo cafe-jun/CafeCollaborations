@@ -9,4 +9,10 @@ export class RestGetAllPostListQuery {
 
   @ApiProperty({ type: 'string', required: false, title: '검색 텍스트' })
   keyword: string;
+
+  @ApiProperty({ type: 'array', required: false, title: '지역 코드' })
+  regionItems: string[];
+
+  @ApiProperty({ type: 'array', required: false, title: '카테고리 코드' })
+  categoryItems: string[];
 }

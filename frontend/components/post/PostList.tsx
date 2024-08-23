@@ -18,6 +18,7 @@ import PostPagination from './PostPagination';
 import { useEffect, useState } from 'react';
 import PostMenu from './PostMenu';
 import PostItem from './PostItem';
+import { categoryOptions, regionOptions } from './FormOptions';
 
 export const regionItems = [
   { name: '경기', code: 'RE1000' },
@@ -49,6 +50,10 @@ export default function PostList() {
 
   const [searchKeyword, setSearchKeyword] = useState<string>('');
 
+  const [regionItems, setRegionItems] = useState<string[]>([]);
+
+  const [categoryItems, setCategoryItems] = useState<string[]>([]);
+
   const handleSearchKeyworkd = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(e.target.value);
   };
@@ -64,6 +69,8 @@ export default function PostList() {
     pageSize: 20,
     pageNo: currentPage,
     keyword: searchKeyword,
+    regionItems: regionItems,
+    categoryItems: categoryItems,
   });
 
   const handleSearchKeyword = () => {
@@ -73,6 +80,11 @@ export default function PostList() {
   useEffect(() => {
     refetch();
   }, [currentPage, refetch]);
+
+  useEffect(() => {
+    refetch();
+  }, [regionItems, categoryItems]);
+
   if (!data?.data) return;
 
   return (
@@ -82,13 +94,17 @@ export default function PostList() {
           title={'지역'}
           isOpen={openMenu === '업종'}
           onToggle={() => handleMenuToggle('업종')}
-          items={regionItems}
+          items={regionOptions}
+          itemsValue={regionItems}
+          setItemsValue={setRegionItems}
         />
         <PostMenu
           title={'업종'}
           isOpen={openMenu === '지역'}
           onToggle={() => handleMenuToggle('지역')}
-          items={categoryItems}
+          items={categoryOptions}
+          itemsValue={categoryItems}
+          setItemsValue={setCategoryItems}
         />
         <Spacer />
         <Flex mb={4} alignItems="center" justifyContent="center">

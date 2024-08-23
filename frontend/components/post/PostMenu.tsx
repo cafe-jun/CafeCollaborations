@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   Button,
   Image,
@@ -11,34 +11,36 @@ import {
   PopoverContent,
   PopoverTrigger,
   SimpleGrid,
-} from "@chakra-ui/react";
-import { useState } from "react";
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 
 type PostMenuProps = {
   title: string;
   isOpen: boolean;
   onToggle: () => void;
-  items: { name: string; code: string }[];
+  items: { label: string; value: string }[];
+  itemsValue;
+  setItemsValue;
 };
 export default function PostMenu({
   title,
   isOpen,
   onToggle,
   items,
+  itemsValue,
+  setItemsValue,
 }: PostMenuProps) {
-  const [selectedItems, setSelectedItems] = useState<
-    {
-      name: string;
-      code: string;
-    }[]
-  >([]);
-  const handleSelect = (item: { name: string; code: string }) => {
-    if (selectedItems.includes({ name: item.name, code: item.code })) {
-      setSelectedItems(selectedItems.filter((t) => t !== item));
+  const handleSelect = (item: { label: string; value: string }) => {
+    const { label, value } = item;
+    if (itemsValue.includes(value)) {
+      setItemsValue(itemsValue.filter((selectItem) => selectItem !== value));
     } else {
-      setSelectedItems([...selectedItems, item]);
+      setItemsValue([...itemsValue, value]);
     }
   };
+  useEffect(() => {
+    console.log('selectedItems ', itemsValue);
+  }, [itemsValue]);
   return (
     <div>
       <Popover placement="bottom-start" isOpen={isOpen} onClose={onToggle}>
@@ -46,7 +48,7 @@ export default function PostMenu({
           <Button
             width="8rem"
             height="3rem"
-            textAlign={"center"}
+            textAlign={'center'}
             rightIcon={<ChevronDownIcon />}
             onClick={onToggle}
           >
@@ -58,22 +60,18 @@ export default function PostMenu({
             <SimpleGrid columns={2} spacing={1} width="12rem">
               {items.map((item) => (
                 <Button
-                  key={item.name}
+                  key={item.value}
                   size="lg"
                   width="5rem"
                   variant={
-                    items.includes({ code: item.code, name: item.name })
-                      ? "solid"
-                      : "outline"
+                    itemsValue.includes(item.value) ? 'solid' : 'outline'
                   }
                   colorScheme={
-                    items.includes({ code: item.code, name: item.name })
-                      ? "blue"
-                      : "gray"
+                    itemsValue.includes(item.value) ? 'blue' : 'gray'
                   }
                   onClick={() => handleSelect(item)}
                 >
-                  {item.name}
+                  {item.label}
                 </Button>
               ))}
             </SimpleGrid>

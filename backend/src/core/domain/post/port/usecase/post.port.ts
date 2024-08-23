@@ -52,4 +52,6 @@ export type GetAllPostListPort = {
   pageNo: number;
   pageSize: number;
   keyword?: string;
+  regionItems: string[];
+  categoryItems: string[];
 };
