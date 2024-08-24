@@ -1,8 +1,6 @@
 import { Box } from '@chakra-ui/react';
-import DOMPurify from 'dompurify';
+import xss from 'xss';
 
 export default function PostContent({ content }) {
-  const cleanHTML = DOMPurify.sanitize(content);
-
-  return <Box dangerouslySetInnerHTML={{ __html: cleanHTML }} />;
+  return <Box dangerouslySetInnerHTML={{ __html: xss(content) }} />;
 }

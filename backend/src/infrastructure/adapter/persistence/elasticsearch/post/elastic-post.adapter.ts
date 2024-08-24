@@ -76,7 +76,7 @@ export class ElasticPostRepository implements PostRepositoryPort {
     });
   }
 
-  async findPosts(paging: { pageNo: number; pageSize: number }, filters?: { category?: string; region?: Region; keyword?: string }) {
+  async findPosts(paging: { pageNo: number; pageSize: number }, filters?: { category?: string[]; region?: string[]; keyword?: string }) {
     const body: SearchRequest['body'] = {
       from: (paging.pageNo - 1) * paging.pageSize,
       size: paging.pageSize,
@@ -105,12 +105,13 @@ export class ElasticPostRepository implements PostRepositoryPort {
       });
     }
     if (filters?.category) {
-      (body.query.bool.filter as any[]).push({ term: { category: filters.category } });
+      (body.query.bool.filter as any[]).push({ terms: { 'category.keyword': filters.category } });
     }
 
     if (filters?.region) {
-      (body.query.bool.filter as any[]).push({ term: { region: filters.region } });
+      (body.query.bool.filter as any[]).push({ terms: { 'region.keyword': filters.region } });
     }
+    console.log(JSON.stringify(body.query.bool.filter));
     const { body: result } = await this.esService.search({
       index: this.index,
       body,

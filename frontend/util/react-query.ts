@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-query';
 import { isEqual } from '@/util/loadash';
 import { cache } from 'react';
-
+import qs from 'qs';
 // utils/api.js
 export const createApiQueryUrl = <
   T extends Record<string, string | string[] | number | number[]>
@@ -15,15 +15,7 @@ export const createApiQueryUrl = <
   basePath: string,
   params: T
 ) => {
-  const searchParams = new URLSearchParams();
-  console.log(params);
-  Object.entries(params).forEach(([key, value]) => {
-    if (Array.isArray(value)) {
-      searchParams.append(key, `[${value.toString()}]`);
-    } else {
-      searchParams.append(key, value.toString());
-    }
-  });
+  const searchParams = qs.stringify(params);
   return `${basePath}?${searchParams}`;
 };
 

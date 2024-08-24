@@ -24,8 +24,8 @@ services:
       - "9200:9200"
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
- 
-
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/init:/usr/share/elasticsearch/config/init
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.14.0

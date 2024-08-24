@@ -12,7 +12,7 @@ export class GetAllPostListService implements GetAllPostUseCase {
   async execute(payload: GetAllPostListPort): Promise<PaginationResponse<PostUseCaseDto>> {
     const { items, totalCount } = await this.postRepository.findPosts(
       { pageNo: payload.pageNo, pageSize: payload.pageSize },
-      { keyword: payload.keyword },
+      { keyword: payload.keyword, category: payload.categoryItems, region: payload.regionItems },
     );
     const posts = PostUseCaseDto.newListFromPosts(items);
     const response = new PaginationResponse<PostUseCaseDto>({

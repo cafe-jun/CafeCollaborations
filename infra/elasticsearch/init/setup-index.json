@@ -1,0 +1,31 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1,
+    "analysis": {
+      "tokenizer": {
+        "nori_tokenizer": {
+          "type": "nori_tokenizer"
+        }
+      },
+      "analyzer": {
+        "nori_analyzer": {
+          "type": "custom",
+          "tokenizer": "nori_tokenizer"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": { "type": "integer" },
+      "title": { "type": "text", "analyzer": "nori_analyzer" },
+      "content": { "type": "text", "analyzer": "nori_analyzer" },
+      "category": { "type": "keyword" },
+      "status": { "type": "keyword" },
+      "region": { "type": "keyword" },
+      "duration": { "type": "keyword" },
+      "recruitMember": { "type": "keyword" }
+    }
+  }
+}

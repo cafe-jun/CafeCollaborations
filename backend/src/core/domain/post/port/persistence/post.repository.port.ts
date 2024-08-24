@@ -6,7 +6,7 @@ export interface PostRepositoryPort {
   findPostById(payload: { id: number }): Promise<Optional<Post>>;
   findPosts(
     paging: { pageNo: number; pageSize: number },
-    filters?: { category?: string; regionCode?: string; keyword?: string },
+    filters?: { category?: string[]; region?: string[]; keyword?: string },
   ): Promise<{ items: Post[]; totalCount: number }>;
   addPost(post: Post): Promise<{ id: number }>;
   updatePost(post: Post): Promise<{ id: number }>;

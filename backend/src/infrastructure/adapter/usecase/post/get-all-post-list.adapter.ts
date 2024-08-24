@@ -18,23 +18,17 @@ export class GetAllPostListAdapter extends UseCaseValidateAdapter implements Get
   @IsOptional()
   keyword: string;
 
-  @Transform(({ value }) => JSON.parse(value))
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => String)
+  @IsOptional()
   regionItems: string[];
 
-  @Transform(({ value }) => JSON.parse(value))
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => String)
+  @IsOptional()
   categoryItems: string[];
 
   public static async create(payload: GetAllPostListPort): Promise<GetAllPostListAdapter> {
-    console.log('payload :: ', payload);
     const adapter: GetAllPostListAdapter = plainToInstance(GetAllPostListAdapter, payload);
     await adapter.validate();
-    console.log('adapter :; ', adapter);
     return adapter;
   }
 }

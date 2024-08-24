@@ -23,6 +23,7 @@ export class GetPostDetailService implements GetPostDetailUseCase {
         await this.postWriteRepository.findPostById({ id: payload.postId }),
         Exception.create({ code: CommonMsg.ENTITY_NOT_FOUND_ERROR.getDescription(), overrideMessage: 'Post not found.' }),
       );
+
       return PostUseCaseDto.newFromPost(originPost);
     }
     return PostUseCaseDto.newFromPost(searchPost);

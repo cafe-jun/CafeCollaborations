@@ -19,29 +19,7 @@ import { useEffect, useState } from 'react';
 import PostMenu from './PostMenu';
 import PostItem from './PostItem';
 import { categoryOptions, regionOptions } from './FormOptions';
-
-export const regionItems = [
-  { name: '경기', code: 'RE1000' },
-  { name: '서울', code: 'RE1001' },
-  { name: '강원', code: 'RE1002' },
-  { name: '충북', code: 'RE1003' },
-  { name: '충남', code: 'RE1004' },
-  { name: '전북', code: 'RE1005' },
-  { name: '전남', code: 'RE1006' },
-  { name: '경북', code: 'RE1007' },
-  { name: '경남', code: 'RE1008' },
-  { name: '제주', code: 'RE1009' },
-];
-
-export const categoryItems = [
-  { name: '숙박', code: 'CA1000' },
-  { name: '먹거리', code: 'CA1001' },
-  { name: '패션', code: 'CA1002' },
-  { name: '뷰티', code: 'CA1003' },
-  { name: '앱', code: 'CA1004' },
-  { name: '생활용품', code: 'CA1005' },
-  { name: '애견용품', code: 'CA1006' },
-];
+import { isEmpty } from '../../util/loadash';
 
 export default function PostList() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -125,9 +103,13 @@ export default function PostList() {
         </Flex>
       </HStack>
       <SimpleGrid columns={[1, 2, 3, 4]} spacing={5}>
-        {data?.data?.map((post, index) => (
-          <PostItem key={index} post={post} index={index} />
-        ))}
+        {data.data.length === 0 ? (
+          <Text>업종의 장치가 없습니다.</Text>
+        ) : (
+          data?.data?.map((post, index) => (
+            <PostItem key={index} post={post} index={index} />
+          ))
+        )}
       </SimpleGrid>
       <PostPagination
         currentPage={currentPage}
