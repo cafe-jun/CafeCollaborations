@@ -57,6 +57,13 @@ export const Region = {
     RE1009: "RE1009"
 } as const;
 export type Region = (typeof Region)[keyof typeof Region];
+export type Comment = {
+    id: Generated<number>;
+    user_id: number;
+    post_id: number;
+    content: string;
+    created_at: Generated<Timestamp>;
+};
 export type Post = {
     id: Generated<number>;
     title: string;
@@ -93,6 +100,7 @@ export type User = {
     role: UserRole;
 };
 export type DB = {
+    comments: Comment;
     post_tags: PostTag;
     posts: Post;
     tags: Tag;

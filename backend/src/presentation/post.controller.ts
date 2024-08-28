@@ -26,6 +26,9 @@ import { RemovePostAdapter } from '@infrastructure/adapter/usecase/post/remove-p
 import { GetAllPostListAdapter } from '@infrastructure/adapter/usecase/post/get-all-post-list.adapter';
 import { RestGetAllPostListQuery } from './rest-doc/post/get-all-post-list.query';
 import { RestApiModelPost } from './rest-doc/post/post.model';
+import { RestCreateCommentRequestPayload } from './rest-doc/comment/create-comment-request.payload';
+import { CreateCommentAdapter } from '@infrastructure/adapter/usecase/comment/create-comment.adapter';
+import { CreateCommentUseCase } from '@core/domain/comment/usecase/comment.usecase';
 
 @Controller('post')
 @ApiTags('posts')
@@ -48,6 +51,9 @@ export class PostController {
 
     @Inject(PostDITokens.GetAllPostListUseCase)
     private readonly getAllPostListUseCase: GetAllPostUseCase,
+
+    @Inject(PostDITokens.CreateCommentUseCase)
+    private readonly createCommentUseCase: CreateCommentUseCase,
   ) {}
 
   @Post()
@@ -150,6 +156,17 @@ export class PostController {
   public async removePost(@HttpUser() user: RestUserPayload, @Param('postId') postId: number): Promise<CoreApiResponse<void>> {
     const adapter: RemovePostAdapter = await RemovePostAdapter.create({ executorId: user.id, postId: postId });
     await this.removePostUseCase.execute(adapter);
+    return CoreApiResponse.success();
+  }
+
+  @Post(':postId/comments')
+  public async createComments(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Body() body: RestCreateCommentRequestPayload,
+    @HttpUser() user: RestUserPayload,
+  ) {
+    const adapter: CreateCommentAdapter = await CreateCommentAdapter.create({ executorId: user.id, content: body.content, postId });
+    await this.createCommentUseCase.execute(adapter);
     return CoreApiResponse.success();
   }
 

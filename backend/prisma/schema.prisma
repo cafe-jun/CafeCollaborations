@@ -67,7 +67,7 @@ enum Duration {
   DU1003 // ThreeToSixMonths
   DU1004 // MoreThanSixMonths
 
-  @@map("duration_types")
+  @@map("durations")
 }
 
 enum Region {
@@ -92,6 +92,7 @@ model User {
   createdAt DateTime       @default(now()) @map("created_at")
   post      Post[]
   role      UserRole
+  comment   Comment[]
 
   @@map("users")
 }
@@ -106,7 +107,7 @@ model Post {
   status         PostStatus
   region         Region?
   recruitMembers RecruitMember? @map("recruit_members")
-  duration       Duration?      @map("duration")
+  duration       Duration?
   createdAt      DateTime?      @default(now()) @map("created_at")
   updatedAt      DateTime?      @default(now()) @updatedAt @map("updated_at")
   editedAt       DateTime?      @map("edited_at")
@@ -114,6 +115,7 @@ model Post {
   publishedAt    DateTime?      @map("published_at")
   userId         Int            @map("user_id")
   postTag        PostTag[]
+  comment        Comment[]
 
   @@map("posts")
 }
@@ -135,4 +137,16 @@ model Tag {
   postTag   PostTag @relation(fields: [postTagId], references: [id])
 
   @@map("tags")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  postId    Int      @map("post_id")
+  content   String
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("comments")
 }
