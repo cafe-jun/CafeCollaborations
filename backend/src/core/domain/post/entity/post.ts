@@ -7,12 +7,11 @@ import { PostImage } from './post-image';
 import { CreatePostEntityPayload } from './type/create-post-entity.payload';
 import { EditPostEntityPayload } from './type/edit-post-entity.payload';
 import { RemoveEntity } from '@core/common/entity/remove.entity';
-
-import { PostUseCaseDto } from '../usecase/dto/post-usecase.dto';
 import { Region } from '@core/common/enums/region.enum';
 import { Duration } from '@core/common/enums/duration-type.enum';
 import { RecruitMember } from '@core/common/enums/recruite-member.enum';
 import { Category } from '@core/common/enums/category.enum';
+
 export class Post extends BaseEntity<number> implements RemoveEntity {
   @IsInstance(PostOwner)
   private readonly owner: PostOwner;
