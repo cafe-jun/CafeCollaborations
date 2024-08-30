@@ -29,6 +29,7 @@ import { RestApiModelPost } from './rest-doc/post/post.model';
 import { RestCreateCommentRequestPayload } from './rest-doc/comment/create-comment-request.payload';
 import { CreateCommentAdapter } from '@infrastructure/adapter/usecase/comment/create-comment.adapter';
 import { CreateCommentUseCase } from '@core/domain/comment/usecase/comment.usecase';
+import { CommentDITokens } from '@core/domain/comment/di/comment-di.token';
 
 @Controller('post')
 @ApiTags('posts')
@@ -52,7 +53,7 @@ export class PostController {
     @Inject(PostDITokens.GetAllPostListUseCase)
     private readonly getAllPostListUseCase: GetAllPostUseCase,
 
-    @Inject(PostDITokens.CreateCommentUseCase)
+    @Inject(CommentDITokens.CreateCommentUseCase)
     private readonly createCommentUseCase: CreateCommentUseCase,
   ) {}
 

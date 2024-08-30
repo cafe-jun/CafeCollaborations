@@ -10,7 +10,6 @@ export class PostDITokens {
   public static readonly RemovePostUseCase: unique symbol = Symbol('RemovePostUseCase');
   public static readonly GetAllPostListUseCase: unique symbol = Symbol('GetAllPostListUseCase');
   public static readonly SearchPostListUseCase: unique symbol = Symbol('SearchPostListUseCase');
-  public static readonly CreateCommentUseCase: unique symbol = Symbol('CreateCommentUseCase');
 
   // Handlers
 

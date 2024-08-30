@@ -16,8 +16,9 @@ export class Comment extends BaseEntity<number> implements RemoveEntity {
   @IsString()
   private content: Nullable<string>;
 
-  constructor(payload: CreateCommentEntityPayload) {
+  constructor(payload: CreateCommentEntityPayload, id?: number) {
     super();
+    this.id = id;
     this.owner = payload.owner;
     this.content = payload.content;
     this.postId = payload.postId;
