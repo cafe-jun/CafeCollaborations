@@ -2,6 +2,7 @@
 import { Box, Button, Input, Text, Flex, Textarea } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FaCommentDots } from 'react-icons/fa';
+import CommentForm from './CommentForm';
 
 const CommentBox = () => {
   const [comment, setComment] = useState('');
@@ -23,18 +24,7 @@ const CommentBox = () => {
       <Text fontSize="x-large" fontWeight="bold">
         댓글 {comments.length}
       </Text>
-      <Flex mt="4" align="center">
-        <Box as={FaCommentDots} color="yellow.400" w="10" h="10" />
-        <Textarea
-          height="6.5rem"
-          ml="2"
-          placeholder="댓글을 입력하세요."
-          value={comment}
-          onChange={handleCommentChange}
-          borderRadius={'20'}
-          fontSize={'large'}
-        />
-      </Flex>
+      <CommentForm />
       <Flex justifyContent={'end'}>
         <Button
           onClick={handleCommentSubmit}

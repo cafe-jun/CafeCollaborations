@@ -9,6 +9,7 @@ import { PrismaModule, PrismaService } from 'nestjs-prisma';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { PostModule } from './post.module';
 import { CqrsModule } from '@nestjs/cqrs';
+import { CommentModule } from './comment.module';
 
 @Module({
   imports: [

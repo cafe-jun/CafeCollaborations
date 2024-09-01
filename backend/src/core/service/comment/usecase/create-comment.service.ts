@@ -20,6 +20,7 @@ export class CreateCommentService implements CreateCommentUseCase {
   ) {}
 
   async execute(payload: CreateCommentPort): Promise<{ id: number }> {
+    console.log('payload ', payload);
     const owner: GetUserPreviewQueryResult = CoreAssert.notEmpty(
       await this.queryBus.sendQuery(GetUserPreviewQuery.create({ id: payload.executorId })),
       Exception.create({ code: CommonMsg.ENTITY_NOT_FOUND_ERROR, overrideMessage: 'Comment Owner not Found' }),
@@ -28,7 +29,7 @@ export class CreateCommentService implements CreateCommentUseCase {
       await this.postRepository.findPostById({ id: payload.postId }),
       Exception.create({ code: CommonMsg.ENTITY_NOT_FOUND_ERROR, overrideMessage: 'PostId not Found' }),
     );
-
+    console.log('owner ', owner);
     const comment: Comment = await Comment.create({
       owner: new CommentOwner({ id: payload.executorId, name: owner.name }),
       postId: payload.postId,

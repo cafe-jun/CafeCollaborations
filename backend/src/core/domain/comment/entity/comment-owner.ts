@@ -16,8 +16,7 @@ export class CommentOwner extends BaseEntity<number> {
   }
 
   public static async create(id: number, name: string): Promise<CommentOwner> {
-    const postOwner: CommentOwner = new CommentOwner(id, name);
-
+    const postOwner: CommentOwner = new CommentOwner({ id, name });
     await postOwner.validate();
     return postOwner;
   }

@@ -12,7 +12,7 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(Strategy, 'refresh
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.access_token;
+          return request?.cookies?.refresh_token;
         },
       ]),
       secretOrKey: ApiConfig,

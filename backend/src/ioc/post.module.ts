@@ -16,6 +16,7 @@ import { RemovePostService } from '@core/service/post/usecase/remove-post.servic
 import { GetAllPostListService } from '@core/service/post/usecase/get-all-post.service';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { ElasticPostRepository } from '@infrastructure/adapter/persistence/elasticsearch/post/elastic-post.adapter';
+import { CommentModule } from './comment.module';
 
 export const persistencePostProvider: Provider[] = [
   {
@@ -76,6 +77,7 @@ const useCaseProviders: Provider[] = [
 ];
 
 @Module({
+  imports: [CommentModule],
   providers: [...persistencePostProvider, ...useCaseProviders],
   controllers: [PostController],
   exports: [...persistencePostProvider],

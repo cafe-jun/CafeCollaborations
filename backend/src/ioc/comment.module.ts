@@ -7,11 +7,18 @@ import { CreateCommentService } from '@core/service/comment/usecase/create-comme
 import { CreateCommentUseCase } from '@core/domain/comment/usecase/comment.usecase';
 import { CoreDITokens } from '@core/common/di/core-di.token';
 import { PostDITokens } from '@core/domain/post/di/post-di.token';
+import { persistencePostProvider } from './post.module';
+import { PrismaPostRepository } from '@infrastructure/adapter/persistence/prisma/repository/post/prisma.post.repository';
 
 export const persistenceCommentProvider: Provider[] = [
   {
     provide: CommentDITokens.CommentReadRepository,
     useFactory: (prismaService: PrismaService) => new PrismaCommentRepository(prismaService),
+    inject: [PrismaToken],
+  },
+  {
+    provide: PostDITokens.PostWriteRepository,
+    useFactory: (prismaService: PrismaService) => new PrismaPostRepository(prismaService),
     inject: [PrismaToken],
   },
 ];
@@ -29,6 +36,6 @@ const useCaseProviders: Provider[] = [
 
 @Module({
   providers: [...useCaseProviders, ...persistenceCommentProvider],
-  exports: [...persistenceCommentProvider],
+  exports: [...persistenceCommentProvider, ...useCaseProviders],
 })
 export class CommentModule {}

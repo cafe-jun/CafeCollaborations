@@ -11,7 +11,6 @@ import {
   Text,
   FormControl,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
 import { Controller, useForm } from 'react-hook-form';
 import postService from '@/stores/fetch/post/post.service';
 
