@@ -1,11 +1,15 @@
 // components/CommentBox.js
 import { Box, Button, Input, Text, Flex, Textarea } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCommentDots } from 'react-icons/fa';
 import CommentForm from './CommentForm';
+import { useComments } from '@/stores/fetch/comment/useComment.hook';
 
 const CommentBox = () => {
   const [comment, setComment] = useState('');
+
+  const [currentPage, setCurrentPage] = useState();
+
   const [comments, setComments] = useState([]);
 
   const handleCommentChange = (e) => {
@@ -18,6 +22,20 @@ const CommentBox = () => {
       setComment('');
     }
   };
+
+  const { data, refetch } = useComments({
+    pageNo: 1,
+    pageSize: 10,
+    postId: 7,
+  });
+
+  const handleSearchKeyword = () => {
+    refetch();
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, refetch]);
 
   return (
     <Box w="full" maxW="1000px" mx="auto" mt="6">

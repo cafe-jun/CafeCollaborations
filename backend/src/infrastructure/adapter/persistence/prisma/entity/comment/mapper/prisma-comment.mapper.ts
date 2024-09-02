@@ -26,6 +26,7 @@ export class PrismaCommentMapper {
         }),
         content: prismaComment.content,
         postId: prismaComment.postId,
+        createdAt: prismaComment.createdAt,
       },
       prismaComment.id,
     );

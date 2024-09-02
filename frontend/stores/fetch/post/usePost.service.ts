@@ -22,7 +22,3 @@ export function usePost(query: {
 export function PostDetail({ postId }: { postId: number }) {
   return useQuery(queryOptions.detail(postId));
 }
-
-export function useComments({ postId }: { postId: number }) {
-  return useQuery(queryOptions.comments(postId));
-}

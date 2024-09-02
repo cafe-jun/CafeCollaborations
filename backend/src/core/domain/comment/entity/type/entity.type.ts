@@ -4,4 +4,5 @@ export type CreateCommentEntityPayload = {
   content: string;
   owner: CommentOwner;
   postId: number;
+  createdAt: Date;
 };

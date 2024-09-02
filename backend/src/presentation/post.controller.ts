@@ -28,8 +28,10 @@ import { RestGetAllPostListQuery } from './rest-doc/post/get-all-post-list.query
 import { RestApiModelPost } from './rest-doc/post/post.model';
 import { RestCreateCommentRequestPayload } from './rest-doc/comment/create-comment-request.payload';
 import { CreateCommentAdapter } from '@infrastructure/adapter/usecase/comment/create-comment.adapter';
-import { CreateCommentUseCase } from '@core/domain/comment/usecase/comment.usecase';
+import { CreateCommentUseCase, GetAllCommentUseCase } from '@core/domain/comment/usecase/comment.usecase';
 import { CommentDITokens } from '@core/domain/comment/di/comment-di.token';
+import { RestGetAllCommentListQuery } from './rest-doc/comment/get-all-comment-list.query';
+import { GetAllCommentAdapter } from '@infrastructure/adapter/usecase/comment/get-all-comment.adapter';
 
 @Controller('post')
 @ApiTags('posts')
@@ -55,6 +57,9 @@ export class PostController {
 
     @Inject(CommentDITokens.CreateCommentUseCase)
     private readonly createCommentUseCase: CreateCommentUseCase,
+
+    @Inject(CommentDITokens.GetAllCommentListUseCase)
+    private readonly getAllCommentUseCase: GetAllCommentUseCase,
   ) {}
 
   @Post()
@@ -172,6 +177,25 @@ export class PostController {
     console.log('user ', user);
     const adapter: CreateCommentAdapter = await CreateCommentAdapter.create({ executorId: user.id, content: body.content, postId });
     await this.createCommentUseCase.execute(adapter);
+    return CoreApiResponse.success();
+  }
+
+  @Get(':postId/comments')
+  @HttpAuth()
+  @HttpCode(HttpStatus.OK)
+  @ApiBody({ type: RestCreateCommentRequestPayload })
+  @ApiBearerAuth()
+  public async getAllComments(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Query() dto: RestGetAllCommentListQuery,
+    @HttpUser() user: RestUserPayload,
+  ) {
+    const adapter: GetAllCommentAdapter = await GetAllCommentAdapter.create({
+      pageNo: dto.pageNo,
+      pageSize: dto.pageSize,
+      postId,
+    });
+    await this.getAllCommentUseCase.execute(adapter);
     return CoreApiResponse.success();
   }
 

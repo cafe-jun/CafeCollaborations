@@ -16,12 +16,15 @@ export class Comment extends BaseEntity<number> implements RemoveEntity {
   @IsString()
   private content: Nullable<string>;
 
+  private createdAt: Date;
+
   constructor(payload: CreateCommentEntityPayload, id?: number) {
     super();
     this.id = id;
     this.owner = payload.owner;
     this.content = payload.content;
     this.postId = payload.postId;
+    this.createdAt = payload.createdAt;
   }
 
   public getId(): number {
@@ -38,6 +41,10 @@ export class Comment extends BaseEntity<number> implements RemoveEntity {
 
   public getOwner(): CommentOwner {
     return this.owner;
+  }
+
+  public getCreatedAt(): Date {
+    return this.createdAt;
   }
 
   public async remove(): Promise<void> {
