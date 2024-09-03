@@ -6,7 +6,7 @@ import PostInfo from '@/components/post/PostInfo';
 import PostHeader from '@/components/post/PostHeader';
 import PostContent from '@/components/post/PostContent';
 import CommentSection from '@/components/post/CommentSection';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { PostDetail } from '@/stores/fetch/post/usePost.service';
 
 export function fetchPost(payload: { postId: number }) {
@@ -39,7 +39,7 @@ export default function PostPage() {
           region={data?.region}
         />
         <PostContent content={data?.content} />
-        <CommentSection />
+        <CommentSection postId={postId} />
       </VStack>
     </Container>
   );

@@ -3,6 +3,7 @@ import { Request } from 'express';
 
 export type RestUserPayload = {
   id: number;
+  sub: number;
   email: string;
   provider: UserProvider;
 };
