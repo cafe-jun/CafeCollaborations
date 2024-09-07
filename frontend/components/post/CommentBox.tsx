@@ -9,7 +9,7 @@ import PostPagination from './PostPagination';
 const CommentBox = ({ postId }: { postId: number }) => {
   const [comment, setComment] = useState('');
 
-  const [currentPage, setCurrentPage] = useState<number>();
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const [comments, setComments] = useState([]);
 
@@ -23,8 +23,8 @@ const CommentBox = ({ postId }: { postId: number }) => {
   };
 
   const { data, refetch } = useComments({
-    pageNo: 1,
-    pageSize: 10,
+    pageNo: currentPage || 1,
+    pageSize: 5,
     postId,
   });
 

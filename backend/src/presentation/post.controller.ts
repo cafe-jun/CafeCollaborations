@@ -194,8 +194,8 @@ export class PostController {
       pageSize: dto.pageSize,
       postId,
     });
-    const comment = await this.getAllCommentUseCase.execute(adapter);
-    return CoreApiResponse.success(comment.items);
+    const result = await this.getAllCommentUseCase.execute(adapter);
+    return CoreApiResponse.success(result.items, 'Comments fetched successfully', result.meta);
   }
 
   // private setFileStorageBasePath(posts: PostUseCaseDto[]): void {

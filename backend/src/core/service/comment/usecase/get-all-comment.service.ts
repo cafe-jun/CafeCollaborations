@@ -9,11 +9,13 @@ export class GetAllCommentService implements GetAllCommentUseCase {
 
   async execute(payload: GetAllCommentPort): Promise<PaginationResponse<CommentUseCaseDto>> {
     const { items, totalCount } = await this.commentRepository.findComments(payload.postId, { pageNo: payload.pageNo, pageSize: payload.pageSize });
+
     const response = new PaginationResponse<CommentUseCaseDto>({
       pageSize: payload.pageSize,
       items: CommentUseCaseDto.newListFromComments(items),
       totalCount: totalCount,
     });
+
     return response;
   }
 }
