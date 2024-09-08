@@ -28,9 +28,9 @@ export class PrismaCommentRepository implements CommentRepositoryPort {
         id,
       },
     });
-    if (isEmpty(comment)) {
-      return null;
-    }
+
+    if (isEmpty(comment)) return null;
+
     return PrismaCommentMapper.toDomain(comment);
   }
 
@@ -41,12 +41,16 @@ export class PrismaCommentRepository implements CommentRepositoryPort {
       where: {
         postId,
       },
+      include: {
+        user: true,
+      },
     });
     const totalCount = await this.prismaService.comment.count({
       where: {
         postId,
       },
     });
+
     return { items: PrismaCommentMapper.toDomainEntities(comments), totalCount };
   }
 }

@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 export default function Home() {
   const { data } = useSession();
-  console.log(data);
+  // console.log(data);
   return (
     <>
       {/* 서버 사이드 렌더링 & 서버 컴포넌트 */}

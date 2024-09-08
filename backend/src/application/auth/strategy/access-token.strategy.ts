@@ -20,12 +20,12 @@ export class JwtAccessTokenStrategy extends PassportStrategy(Strategy, 'access_t
       // validate 함수에 첫번째 인자에 request를 넘겨줌
       passReqToCallback: true,
     });
-    console.log(this.jwtService.sign({ sub: 2, email: 'test' }));
+    // console.log(this.jwtService.sign({ sub: 2, email: 'test' }));
   }
 
   async validate(req: Request, payload: TokenPayload) {
     // request에 저장을 해놔야 Guard후에 controller 메서드에서 사용 가능
-    console.log('payload ', payload);
+
     const user = await this.authService.findByUserById(payload.sub);
 
     if (isEmpty(user)) {

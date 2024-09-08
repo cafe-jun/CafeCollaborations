@@ -174,7 +174,6 @@ export class PostController {
     @Body() body: RestCreateCommentRequestPayload,
     @HttpUser() user: RestUserPayload,
   ) {
-    console.log('user ', user);
     const adapter: CreateCommentAdapter = await CreateCommentAdapter.create({ executorId: user.id, content: body.content, postId });
     await this.createCommentUseCase.execute(adapter);
     return CoreApiResponse.success();

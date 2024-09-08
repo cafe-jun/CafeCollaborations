@@ -111,7 +111,7 @@ export class ElasticPostRepository implements PostRepositoryPort {
     if (filters?.region) {
       (body.query.bool.filter as any[]).push({ terms: { 'region.keyword': filters.region } });
     }
-    console.log(JSON.stringify(body.query.bool.filter));
+
     const { body: result } = await this.esService.search({
       index: this.index,
       body,

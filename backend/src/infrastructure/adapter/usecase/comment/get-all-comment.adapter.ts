@@ -21,7 +21,7 @@ export class GetAllCommentAdapter extends UseCaseValidateAdapter implements GetA
 
   public static async create(payload: GetAllCommentPort): Promise<GetAllCommentAdapter> {
     const adapter: GetAllCommentAdapter = plainToInstance(GetAllCommentAdapter, payload);
-    console.log('adapter ', adapter);
+
     await adapter.validate();
 
     return adapter;

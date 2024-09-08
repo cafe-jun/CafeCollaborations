@@ -16,7 +16,6 @@ export class CommentUseCaseDto {
   public createdAt: Date;
 
   public static newFromComment(comment: Comment): CommentUseCaseDto {
-    const dto: CommentUseCaseDto = plainToInstance(CommentUseCaseDto, comment);
     const commentOwner: CommentOwner = comment.getOwner();
     const result: CommentUseCaseDto = {
       id: comment.getId(),
