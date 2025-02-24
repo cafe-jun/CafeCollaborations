@@ -91,7 +91,7 @@ Docker를 사용하여 인프라를 관리하며, 애플리케이션을 다양�
 ### 프로젝트 실행
 
 - 프론트엔드는 `http://localhost:3000`에서 접근 가능합니다.
-- 백엔드 API는 `http://localhost:3001/api`에서 접근 가능합니다.
+- 백엔드 API는 `http://localhost:3001/api` swagger 는 `http://localhost:3001/docs/api` 에서 접근 가능합니다.
 
 ### 환경 변수 설정
 

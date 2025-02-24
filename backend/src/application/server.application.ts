@@ -5,7 +5,7 @@ import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { ApiConfig } from '@infrastructure/config/api-config';
 import { PrismaService } from 'nestjs-prisma';
 import cookieParser from 'cookie-parser';
-import { Logger, VersioningType } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 
 export class ServerApplication {
   private readonly logger = new Logger(ServerApplication.name);
@@ -33,7 +33,8 @@ export class ServerApplication {
     const description = 'NestJS Boilerplate API Documentation';
     const version = '1.0.0';
 
-    const options = new DocumentBuilder().setTitle(title).setDescription(description).setVersion(version).addBearerAuth().build(); // 토큰 내용 추가.build();
+    // 토큰 내용 추가.build();
+    const options = new DocumentBuilder().setTitle(title).setDescription(description).setVersion(version).addBearerAuth().build();
     const document: OpenAPIObject = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('docs/api', app, document);
   }
