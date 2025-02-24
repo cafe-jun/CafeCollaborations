@@ -22,7 +22,7 @@ export class PrismaCommentMapper {
       {
         owner: new CommentOwner({
           id: prismaComment.userId,
-          name: prismaComment.userId.toString(),
+          name: prismaComment['user'].name, // TODO join 하는 방법 알아보기
         }),
         content: prismaComment.content,
         postId: prismaComment.postId,

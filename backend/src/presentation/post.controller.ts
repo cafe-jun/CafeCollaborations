@@ -174,7 +174,6 @@ export class PostController {
     @Body() body: RestCreateCommentRequestPayload,
     @HttpUser() user: RestUserPayload,
   ) {
-    console.log('user ', user);
     const adapter: CreateCommentAdapter = await CreateCommentAdapter.create({ executorId: user.id, content: body.content, postId });
     await this.createCommentUseCase.execute(adapter);
     return CoreApiResponse.success();
@@ -195,8 +194,8 @@ export class PostController {
       pageSize: dto.pageSize,
       postId,
     });
-    const comment = await this.getAllCommentUseCase.execute(adapter);
-    return CoreApiResponse.success(comment.items);
+    const result = await this.getAllCommentUseCase.execute(adapter);
+    return CoreApiResponse.success(result.items, 'Comments fetched successfully', result.meta);
   }
 
   // private setFileStorageBasePath(posts: PostUseCaseDto[]): void {

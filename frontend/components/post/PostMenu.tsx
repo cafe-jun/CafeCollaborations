@@ -38,9 +38,9 @@ export default function PostMenu({
       setItemsValue([...itemsValue, value]);
     }
   };
-  useEffect(() => {
-    console.log('selectedItems ', itemsValue);
-  }, [itemsValue]);
+  // useEffect(() => {
+  //   console.log('selectedItems ', itemsValue);
+  // }, [itemsValue]);
   return (
     <div>
       <Popover placement="bottom-start" isOpen={isOpen} onClose={onToggle}>

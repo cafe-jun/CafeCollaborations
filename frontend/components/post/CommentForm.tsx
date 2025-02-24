@@ -10,7 +10,7 @@ type CommentFormType = {
   contents: string;
 };
 
-const CommentForm = ({ postId }: { postId: number }) => {
+const CommentForm = ({ postId, refech }: { postId: number; refech }) => {
   const [content, setContent] = useState('');
 
   const {
@@ -26,11 +26,13 @@ const CommentForm = ({ postId }: { postId: number }) => {
     },
   });
 
-  const onSubmit = (data) => {
-    const result = commentService.createComment({
+  const onSubmit = async (data) => {
+    await commentService.createComment({
       content,
       postId,
     });
+    setContent('');
+    refech();
   };
 
   return (

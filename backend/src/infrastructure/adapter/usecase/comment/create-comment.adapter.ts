@@ -21,7 +21,6 @@ export class CreateCommentAdapter extends UseCaseValidateAdapter implements Crea
   public postId: number;
 
   public static async create(payload: CreateCommentPort): Promise<CreateCommentAdapter> {
-    console.log('payload ', payload);
     const adapter: CreateCommentAdapter = plainToInstance(CreateCommentAdapter, payload);
     await adapter.validate();
 
